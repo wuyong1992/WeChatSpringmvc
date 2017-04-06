@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yanmai.mapper.UserMapper">
+    <!--<resultMap id="userinfo" type="com.yancom.yanmai.modelodel.User">
+        <id column="id" property="id" jdbcType="INT" />
+        <result column="openId" property="openId" jdbcType="VARCHAR" />
+        <result column="unionId" property="unionId" jdbcType="VARCHAR" />
+        <result column="sex" property="sex" jdbcType="TINYINT" />
+        <result column="language" property="language" jdbcType="VARCHAR" />
+        <result column="username" property="username" jdbcType="VARCHAR" />
+        <result column="phoneNum" property="phoneNum" jdbcType="VARCHAR" />
+        <result column="city" property="city" jdbcType="VARCHAR" />
+        <result column="province" property="province" jdbcType="VARCHAR" />
+        <result column="country" property="country" jdbcType="VARCHAR" />
+        <result column="isSubscribe" property="isSubscribe" jdbcType="TINYINT" />
+        <result column="isMember" property="isMember" jdbcType="TINYINT" />
+        <result column="registerTime" property="registerTime" jdbcType="DATE" />
+        <result column="vipTime" property="vipTime" jdbcType="DATE" />
+        <result column="userPortrait" property="userPortrait" jdbcType="VARCHAR" />
+    </resultMap>-->
+    <sql id="Base_Column_List">
+        openId, unionId, sex, language, username, phoneNum, city, province, country, isSubscribe, isMember, userPortrait
+    </sql>
+
+
+    <select id="selectUserByOpenId" parameterType="java.lang.String" resultType="com.yanmai.model.User">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM userinfo
+        WHERE openId = #{openId}
+    </select>
+
+    <insert id="addUser" parameterType="com.yanmai.model.User">
+        INSERT INTO userinfo
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="openId != null">
+                openId,
+            </if>
+            <if test="unionId != null">
+                unionId,
+            </if>
+            <if test="sex != null">
+                sex,
+            </if>
+            <if test="language != null">
+                language,
+            </if>
+            <if test="username != null">
+                username,
+            </if>
+            <if test="city != null">
+                city,
+            </if>
+            <if test="province != null">
+                province,
+            </if>
+            <if test="country != null">
+                country,
+            </if>
+            <if test="isSubscribe != null">
+                isSubscribe,
+            </if>
+            <!--<if test="registerTime != null">
+                registerTime,
+            </if>-->
+            <if test="userPortrait != null">
+                userPortrait,
+            </if>
+        </trim>
+
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="openId != null">
+                #{openId},
+            </if>
+            <if test="unionId != null">
+                #{unionId},
+            </if>
+            <if test="sex != null">
+                #{sex},
+            </if>
+            <if test="language != null">
+                #{language},
+            </if>
+            <if test="username != null">
+                #{username},
+            </if>
+            <if test="city != null">
+                #{city},
+            </if>
+            <if test="province != null">
+                #{province},
+            </if>
+            <if test="country != null">
+                #{country},
+            </if>
+            <if test="isSubscribe != null">
+                #{isSubscribe},
+            </if>
+            <!--<if test="registerTime != null">
+                #{registerTime},
+            </if>-->
+            <if test="userPortrait != null">
+                #{userPortrait},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateSubscribe" parameterType="com.yanmai.model.User">
+        UPDATE userinfo SET isSubscribe = #{isSubscribe} WHERE openid = #{openid}
+    </update>
+
+    <update id="updateUser" parameterType="com.yanmai.model.User">
+        UPDATE userinfo
+        <set>
+            <if test="sex != null">
+                sex = #{sex},
+            </if>
+            <if test="language != null">
+                language = #{language},
+            </if>
+            <if test="username != null">
+                username = #{username},
+            </if>
+            <if test="phoneNum != null">
+                phoneNum = #{phoneNum},
+            </if>
+            <if test="city != null">
+                city = #{city},
+            </if>
+            <if test="province != null">
+                province = #{province},
+            </if>
+            <if test="country != null">
+                country = #{country},
+            </if>
+            <if test="isSubscribe != null">
+                isSubscribe = #{isSubscribe},
+            </if>
+            <if test="isMember != null">
+                isMember = #{isMember},
+            </if>
+            <!--<if test="registerTime != null">
+                registerTime = #{registerTime},
+            </if>
+            <if test="vipTime != null">
+                vipTime = #{vipTime},
+            </if>-->
+            <if test="userPortrait != null">
+                userPortrait = #{userPortrait},
+            </if>
+        </set>
+        WHERE openId = #{openId}
+    </update>
+</mapper>
