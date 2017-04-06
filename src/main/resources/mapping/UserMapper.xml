@@ -19,7 +19,7 @@
         <result column="userPortrait" property="userPortrait" jdbcType="VARCHAR" />
     </resultMap>-->
     <sql id="Base_Column_List">
-        openId, unionId, sex, language, username, phoneNum, city, province, country, isSubscribe, isMember, userPortrait
+        openId, unionId, sex, language, username, phoneNum, city, province, country, isSubscribe,registerTime,vipTime, isMember, userPortrait
     </sql>
 
 
@@ -60,9 +60,9 @@
             <if test="isSubscribe != null">
                 isSubscribe,
             </if>
-            <!--<if test="registerTime != null">
+            <if test="registerTime != null">
                 registerTime,
-            </if>-->
+            </if>
             <if test="userPortrait != null">
                 userPortrait,
             </if>
@@ -96,9 +96,9 @@
             <if test="isSubscribe != null">
                 #{isSubscribe},
             </if>
-            <!--<if test="registerTime != null">
+            <if test="registerTime != null">
                 #{registerTime},
-            </if>-->
+            </if>
             <if test="userPortrait != null">
                 #{userPortrait},
             </if>

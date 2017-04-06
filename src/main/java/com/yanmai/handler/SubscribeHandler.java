@@ -59,7 +59,7 @@ public class SubscribeHandler extends AbstractHandler {
         user.setProvince(wxMpUser.getProvince());
         user.setCountry(wxMpUser.getCountry());
         user.setIsSubscribe(1);     //设这为关注用户
-        //user.setRegisterTime(new Date(wxMpUser.getSubscribeTime()));
+        user.setRegisterTime(new Date(wxMpUser.getSubscribeTime()));//TODO 时间可以存储，但是数据不对
         user.setUserPortrait(wxMpUser.getHeadImgUrl());
 
 
