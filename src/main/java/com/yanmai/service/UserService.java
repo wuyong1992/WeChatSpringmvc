@@ -16,4 +16,9 @@ public interface UserService {
     public void addUser(User user);
 
     public void updateOrAddUser(String openid, User user);
+
+    public void updateUser(User user);
+
+    public void updateSubscribe (String openId);
+
 }

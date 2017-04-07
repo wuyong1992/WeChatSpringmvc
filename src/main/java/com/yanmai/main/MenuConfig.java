@@ -16,7 +16,7 @@ import java.util.List;
  * Created by admin on 2017/3/30.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+@ContextConfiguration(locations = {"classpath:spring-mybatis.xml"})
 public class MenuConfig {
 
     @Autowired

@@ -13,8 +13,10 @@ public interface UserMapper {
     public User selectUserByOpenId(String openId);
     //添加用户
     public void addUser(User user);
-    //修改用户关注状态
+    //修改用户信息
     public void updateUser(User user);
 
+    //更改用户关注状态
+    public void updateSubscribe(String openId);
 
 }

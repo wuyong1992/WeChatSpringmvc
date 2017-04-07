@@ -56,5 +56,18 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    //更新用户信息
+    @Override
+    public void updateUser(User user) {
+        userMapper.updateUser(user);
+    }
+
+    @Override
+    public void updateSubscribe(String openId) {
+
+        userMapper.updateSubscribe(openId);
+
+    }
+
 
 }

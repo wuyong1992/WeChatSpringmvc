@@ -78,5 +78,5 @@
     </bean>
 
     <!-- 默认首页 -->
-    <mvc:view-controller path="/" view-name="index"/>
+    <mvc:view-controller path="/" view-name="test"/>
 </beans>

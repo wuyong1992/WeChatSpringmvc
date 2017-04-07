@@ -105,8 +105,8 @@
         </trim>
     </insert>
 
-    <update id="updateSubscribe" parameterType="com.yanmai.model.User">
-        UPDATE userinfo SET isSubscribe = #{isSubscribe} WHERE openid = #{openid}
+    <update id="updateSubscribe" parameterType="java.lang.String">
+        UPDATE userinfo SET isSubscribe = #{isSubscribe} WHERE openid = #{openId}
     </update>
 
     <update id="updateUser" parameterType="com.yanmai.model.User">
@@ -139,12 +139,12 @@
             <if test="isMember != null">
                 isMember = #{isMember},
             </if>
-            <!--<if test="registerTime != null">
+            <if test="registerTime != null">
                 registerTime = #{registerTime},
             </if>
             <if test="vipTime != null">
                 vipTime = #{vipTime},
-            </if>-->
+            </if>
             <if test="userPortrait != null">
                 userPortrait = #{userPortrait},
             </if>

@@ -51,7 +51,7 @@ public class SubscribeHandler extends AbstractHandler {
         user = new User();
 
         user.setOpenId(wxMpUser.getOpenId());
-        user.setUnionId(wxMpUser.getUnionId());
+        user.setUnionId(wxMpUser.getUnionId());     //TODO 值为null
         user.setSex(wxMpUser.getSexId());
         user.setLanguage(wxMpUser.getLanguage());
         user.setUsername(wxMpUser.getNickname());
@@ -59,9 +59,8 @@ public class SubscribeHandler extends AbstractHandler {
         user.setProvince(wxMpUser.getProvince());
         user.setCountry(wxMpUser.getCountry());
         user.setIsSubscribe(1);     //设这为关注用户
-        user.setRegisterTime(new Date(wxMpUser.getSubscribeTime()));//TODO 时间可以存储，但是数据不对
+        user.setRegisterTime(new Date(wxMpUser.getSubscribeTime()*1000));// 创建时间单位秒，需转换成毫秒
         user.setUserPortrait(wxMpUser.getHeadImgUrl());
-
 
         //先判断该用户是否已经存在，例如取消关注后再管注的
         userService.updateOrAddUser(user.getOpenId(),user);
@@ -73,10 +72,10 @@ public class SubscribeHandler extends AbstractHandler {
             .toUser(wxMessage.getFromUser())
             .build();
 
-        //获取时间参数
+        //获取时间参数,单位秒
         Long createTime = wxMessage.getCreateTime();
-        //装换成Date类
-        Date date = new Date(createTime);
+        //装换成Date类，转换单位毫秒
+        Date date = new Date(createTime*1000);
         //格式化改时间
         String formatCreateTime = DateUtils.formatDateTime(date);
         logger.info("subscribeMessageHandler" +"用户名为："+wxMpUser.getNickname()

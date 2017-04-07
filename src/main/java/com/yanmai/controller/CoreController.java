@@ -30,9 +30,9 @@ public class CoreController extends GenericController {
     @Autowired
     private CoreService coreService;
 
-    @RequestMapping(value = "index")
-    public String index() {
-        return "index";
+    @RequestMapping(value = "test")
+    public String testWeb() {
+        return "test";
     }
 
     /**

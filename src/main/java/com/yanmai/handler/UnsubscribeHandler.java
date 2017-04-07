@@ -1,6 +1,8 @@
 package com.yanmai.handler;
 
+import com.yanmai.model.User;
 import com.yanmai.service.CoreService;
+import com.yanmai.service.UserService;
 import com.yanmai.util.DateUtils;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.common.session.WxSessionManager;
@@ -24,10 +26,26 @@ public class UnsubscribeHandler extends AbstractHandler {
 
     @Autowired
     protected CoreService coreService;
+    @Autowired
+    private UserService userService;
+
+    private User user;
+
+
     @Override
     public WxMpXmlOutMessage handle(WxMpXmlMessage wxMpXmlMessage, Map<String, Object> map, WxMpService wxMpService, WxSessionManager wxSessionManager) throws WxErrorException {
 
         //TODO 这里可以写取消关注后的业务逻辑，比如更新该用户在数据库中的状态
+
+        //用户取消关注后，将该用户的关注状态改为0；其它信息不动，并非删除该用户
+        String openId =  wxMpXmlMessage.getFromUser();
+
+        user = new User();
+        user.setOpenId(openId);
+        user.setIsSubscribe(0);
+        userService.updateUser(user);
+
+
 
         WxMpUser wxMpUser = coreService.getUserInfo(wxMpXmlMessage.getFromUser(),"zh_CN");
         //FromUser即为openid
@@ -35,10 +53,11 @@ public class UnsubscribeHandler extends AbstractHandler {
         //获取时间参数
         Long createTime = wxMpXmlMessage.getCreateTime();
         //装换成Date类
-        Date date = new Date(createTime);
+        Date date = new Date(createTime*1000);
         //格式化改时间
         String formatCreateTime = DateUtils.formatDateTime(date);
 
+        //取消关注后该该内容并不会发送到用户手机上，此处只是防止空指针
         WxMpXmlOutTextMessage m
                 = WxMpXmlOutMessage.TEXT()
                 .content("谢谢你的关注，再会！")

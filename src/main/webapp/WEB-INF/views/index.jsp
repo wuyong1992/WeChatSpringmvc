@@ -6,10 +6,12 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>主页</title>
     <jsp:include page="${pageContext.request.contextPath}/headInfo.jsp"/>
+
 </head>
 <body style="margin-bottom: 60px">
 
@@ -17,9 +19,21 @@
 <div class="swiper-container" data-space-between='10' data-pagination='.swiper-pagination' data-autoplay="1000"
      style="height: 180px">
     <div class="swiper-wrapper">
-        <div class="swiper-slide"><img src="${pageContext.request.contextPath}/images/banner_01.jpg" width="100%"></div>
-        <div class="swiper-slide"><img src="${pageContext.request.contextPath}/images/banner_01.jpg" width="100%"></div>
-        <div class="swiper-slide"><img src="${pageContext.request.contextPath}/images/banner_01.jpg" width="100%"></div>
+        <div class="swiper-slide"><img src="${pageContext.request.contextPath}/images/banner_01.jpg" style="width: 100%;height: inherit"></div>
+        <div class="swiper-slide"><img src="${pageContext.request.contextPath}/images/banner_01.jpg" style="width: 100%;height: inherit"></div>
+        <div class="swiper-slide"><img src="${pageContext.request.contextPath}/images/banner_01.jpg" style="width: 100%;height: inherit"></div>
+    </div>
+
+    <div style="position: absolute;bottom: 0px;z-index: 3;background-color:rgba(255,255,255,0.51);width: 100%;height: 20%">
+        <p style="width: 32%;display: inline-block;text-align: center;">
+            Dennis Yang
+        </p>
+        <p style="width: 32%;display: inline-block;text-align: center">
+            【个人介绍】
+        </p>
+        <p style="width: 32%;display: inline-block;text-align: center">
+            133********
+        </p>
     </div>
 </div>
 
@@ -70,9 +84,12 @@
 <article class="weui-article" style="padding-top: 0;padding-bottom: 0">
     <span>太惊讶了哇呀呀呀呀呀呀有</span>
     <div class="weui-flex" style="text-align: center">
-        <div class="weui-flex__item"><a href="javascript:"><img src="${pageContext.request.contextPath}/images/sucai.png" width="80%"></a></div>
-        <div class="weui-flex__item"><a href="javascript:"><img src="${pageContext.request.contextPath}/images/sucai.png" width="80%"></a></div>
-        <div class="weui-flex__item"><a href="javascript:"><img src="${pageContext.request.contextPath}/images/sucai.png" width="80%"></a></div>
+        <div class="weui-flex__item"><a href="javascript:"><img
+                src="${pageContext.request.contextPath}/images/sucai.png" width="80%"></a></div>
+        <div class="weui-flex__item"><a href="javascript:"><img
+                src="${pageContext.request.contextPath}/images/sucai.png" width="80%"></a></div>
+        <div class="weui-flex__item"><a href="javascript:"><img
+                src="${pageContext.request.contextPath}/images/sucai.png" width="80%"></a></div>
     </div>
 </article>
 
@@ -83,8 +100,6 @@
     <h4>美貌与智慧并存</h4>
     <a href="javascript:"><img src="${pageContext.request.contextPath}/images/banner_01.jpg" alt=""></a>
 </article>
-
-
 
 
 <%--引入底部信息--%>
