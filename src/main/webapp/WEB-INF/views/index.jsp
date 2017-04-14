@@ -26,13 +26,13 @@
 
     <div style="position: absolute;bottom: 0px;z-index: 3;background-color:rgba(255,255,255,0.51);width: 100%;height: 20%">
         <p style="width: 32%;display: inline-block;text-align: center;">
-            Dennis Yang
+            ${user.username}
         </p>
         <p style="width: 32%;display: inline-block;text-align: center">
             【个人介绍】
         </p>
         <p style="width: 32%;display: inline-block;text-align: center">
-            133********
+            ${user.phoneNum}
         </p>
     </div>
 </div>

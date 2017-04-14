@@ -3,7 +3,9 @@ package com.yanmai.main;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.bean.menu.WxMenu;
 import me.chanjar.weixin.common.bean.menu.WxMenuButton;
+import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -35,7 +37,7 @@ public class MenuConfig {
         WxMenuButton wxMenuButton1 = new WxMenuButton();
         wxMenuButton1.setName("我的微站");
         wxMenuButton1.setType(WxConsts.BUTTON_VIEW);
-        wxMenuButton1.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd94942f3d437c924&redirect_uri=http%3A%2F%2Fb.wujixuanyi.com%2FuserInfo&response_type=code&scope=snsapi_userinfo#wechat_redirect");
+        wxMenuButton1.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd94942f3d437c924&redirect_uri=http%3A%2F%2Fb.wujixuanyi.com%2FgetMainAccessToken&response_type=code&scope=snsapi_base#wechat_redirect四月 14, 2017 10:37:41 下午 org.springframework.context.support.GenericApplicationContext doClose");
 
         //第二个菜单
         WxMenuButton wxMenuButton2 = new WxMenuButton();
@@ -55,7 +57,7 @@ public class MenuConfig {
         WxMenuButton wxMenuButton3_2 = new WxMenuButton();
         wxMenuButton3_2.setName("个人中心");
         wxMenuButton3_2.setType(WxConsts.BUTTON_VIEW);
-        wxMenuButton3_2.setUrl("http://yanmai.wechat.com.ngrok.cc/userInfo");
+        wxMenuButton3_2.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd94942f3d437c924&redirect_uri=http%3A%2F%2Fb.wujixuanyi.com%2FuserInfo&response_type=code&scope=snsapi_base#wechat_redirect");
         WxMenuButton wxMenuButton3_3 = new WxMenuButton();
         wxMenuButton3_3.setName("我的订单");
         wxMenuButton3_3.setType(WxConsts.BUTTON_VIEW);
@@ -91,13 +93,10 @@ public class MenuConfig {
 
     //运行获取url
 
-   /* @Test
+    /*@Test
     public void getUrl() throws WxErrorException {
-        String url =  wxMpService.oauth2buildAuthorizationUrl("http://b.wujixuanyi.com/userInfo",WxConsts.OAUTH2_SCOPE_USER_INFO,null);
+        String url =  wxMpService.oauth2buildAuthorizationUrl("http://b.wujixuanyi.com/getMainAccessToken",WxConsts.OAUTH2_SCOPE_BASE,null);
         System.out.print(url);
-
-        //https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd94942f3d437c924&redirect_uri=http%3A%2F%2Fb.wujixuanyi.com%2FuserInfo&response_type=code&scope=snsapi_userinfo#wechat_redirect
-
     }*/
 
 

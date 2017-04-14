@@ -21,7 +21,7 @@
         <p class="weui-tabbar__label">发现</p>
     </a>
     <%----%>
-    <a href="/userInfo" class="weui-tabbar__item">
+    <a href="/user" class="weui-tabbar__item">
         <div class="weui-tabbar__icon">
             <img src="images/button04.png" alt="">
         </div>
