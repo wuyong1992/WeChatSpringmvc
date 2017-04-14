@@ -29,13 +29,13 @@ public class MenuConfig {
     }*/
 
 
-    public WxMenu creatMenu (){
+    public WxMenu creatMenu() {
 
         //第一个菜单
         WxMenuButton wxMenuButton1 = new WxMenuButton();
         wxMenuButton1.setName("我的微站");
         wxMenuButton1.setType(WxConsts.BUTTON_VIEW);
-        wxMenuButton1.setUrl("http://yanmai.wechat.com.ngrok.cc/main");
+        wxMenuButton1.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd94942f3d437c924&redirect_uri=http%3A%2F%2Fb.wujixuanyi.com%2FuserInfo&response_type=code&scope=snsapi_userinfo#wechat_redirect");
 
         //第二个菜单
         WxMenuButton wxMenuButton2 = new WxMenuButton();
@@ -88,5 +88,17 @@ public class MenuConfig {
 
         return wxMenu;
     }
+
+    //运行获取url
+
+   /* @Test
+    public void getUrl() throws WxErrorException {
+        String url =  wxMpService.oauth2buildAuthorizationUrl("http://b.wujixuanyi.com/userInfo",WxConsts.OAUTH2_SCOPE_USER_INFO,null);
+        System.out.print(url);
+
+        //https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd94942f3d437c924&redirect_uri=http%3A%2F%2Fb.wujixuanyi.com%2FuserInfo&response_type=code&scope=snsapi_userinfo#wechat_redirect
+
+    }*/
+
 
 }

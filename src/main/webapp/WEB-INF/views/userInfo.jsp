@@ -35,10 +35,11 @@
     <div class="weui-panel__bd">
         <a href="/changePortrait" class="weui-media-box weui-media-box_appmsg userPortrait" >
             <div class="weui-media-box__hd">
-                <img class="weui-media-box__thumb" src="${pageContext.request.contextPath}/images/bateman.jpg">
+                <%--<img class="weui-media-box__thumb" src="${pageContext.request.contextPath}/images/bateman.jpg">--%>
+                <img class="weui-media-box__thumb" src="${user.userPortrait}">
             </div>
             <div class="weui-media-box__bd">
-                <h4 class="weui-media-box__title">Dennis Yang</h4>
+                <h4 class="weui-media-box__title">${user.username}</h4>
                 <p class="weui-media-box__desc">133*******</p>
                 <p class="weui-media-box__desc">到期日期：YYYY-MM-dd</p>
             </div>
@@ -79,7 +80,7 @@
 </a>
     <a class="weui-cell weui-cell_access" href="javascript:;">
         <div class="weui-cell__bd">
-            <p>姓名：Dennis Yang</p>
+            <p>姓名：${user.username}</p>
         </div>
         <div class="weui-cell__ft">
         </div>

@@ -53,7 +53,6 @@ public class CoreServiceImpl implements CoreService {
     private MenuHandler menuHandler;
 
 
-
     protected Logger logger = LoggerFactory.getLogger(getClass());
     private WxMpMessageRouter router;
 
@@ -149,4 +148,10 @@ public class CoreServiceImpl implements CoreService {
         return wxMpUser;
     }
 
+    /*@Override
+    public WxMpUser getUserInfoByOAuth2() {
+        wxMpService.oauth2buildAuthorizationUrl("http://b.wujixuanyi.com/", WxConsts.OAUTH2_SCOPE_USER_INFO, null);
+
+    }
+*/
 }

@@ -55,4 +55,8 @@ public interface CoreService {
      */
     WxMpUser getUserInfo(String openid, String lang);
 
+    //网页授权
+
+    //WxMpUser getUserInfoByOAuth2();
+
 }
