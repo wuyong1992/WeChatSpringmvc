@@ -157,10 +157,11 @@ public class ViewController extends GenericController {
             Long phoneNum = Long.parseLong(phone);
             user.setPhoneNum(phoneNum);
         }
-
         userService.updateUser(user);
 
         return "redirect:/user";
     }
+
+
 
 }
