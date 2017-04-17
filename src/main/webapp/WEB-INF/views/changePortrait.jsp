@@ -26,20 +26,24 @@
     </div>
 </div>
 
-
-<%--<div class="weui-cells weui-cells_form" style="margin: 0 auto">
-    <div class="weui-cell">
-        <div class="weui-cell__bd">
-            <div class="weui-uploader">
-                <div class="weui-uploader__bd">
-                    <div class="weui-uploader__input-box">
-                        <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" multiple="">
-                    </div>
-                </div>
+<%--TODO 实现头像更换--%>
+<div style="margin: 0 auto">
+    <%--<form action="/goUserinfoByChangeImg" method="post">--%>
+        <div class="weui-flex">
+            <div class="weui-flex__item">
+                <img src="${user.userPortrait}" alt="">
             </div>
         </div>
-    </div>
-</div>--%>
+        <%--<div class="weui-flex">--%>
+            <%--<div class="weui-flex__item">--%>
+                <%--<input type="file" name="file" value="选择头像">--%>
+            <%--</div>--%>
+            <%--<div class="weui-flex__item">--%>
+                <%--<input type="submit" value="确认">--%>
+            <%--</div>--%>
+        <%--</div>--%>
+    <%--</form>--%>
+</div>
 
 
 <%--底部--%>

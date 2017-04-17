@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>首页</title>
@@ -33,14 +34,14 @@
 <%--头像简介--%>
 <div class="weui-panel weui-panel_access">
     <div class="weui-panel__bd">
-        <a href="/changePortrait" class="weui-media-box weui-media-box_appmsg userPortrait" >
+        <a href="/changePortrait" class="weui-media-box weui-media-box_appmsg userPortrait">
             <div class="weui-media-box__hd">
-                <%--<img class="weui-media-box__thumb" src="${pageContext.request.contextPath}/images/bateman.jpg">--%>
+                <%--TODO 获取用户的默认头像，如果有赊着自己的头像，则改用自定义--%>
                 <img class="weui-media-box__thumb" src="${user.userPortrait}">
             </div>
             <div class="weui-media-box__bd">
                 <h4 class="weui-media-box__title">${user.username}</h4>
-                <p class="weui-media-box__desc">133*******</p>
+                <p class="weui-media-box__desc">${user.phoneNum}</p>
                 <p class="weui-media-box__desc">到期日期：YYYY-MM-dd</p>
             </div>
         </a>
@@ -78,23 +79,23 @@
     <div class="weui-cell__ft">
     </div>
 </a>
-    <a class="weui-cell weui-cell_access" href="javascript:;">
+    <a class="weui-cell weui-cell_access" href="/changeUserinfo">
         <div class="weui-cell__bd">
             <p>姓名：${user.username}</p>
         </div>
         <div class="weui-cell__ft">
         </div>
     </a>
-    <a class="weui-cell weui-cell_access" href="javascript:;">
+    <a class="weui-cell weui-cell_access" href="/changeUserinfo">
         <div class="weui-cell__bd">
-            <p>联系方式：133********</p>
+            <p>联系方式：${user.phoneNum}</p>
         </div>
         <div class="weui-cell__ft">
         </div>
     </a>
-    <a class="weui-cell weui-cell_access" href="javascript:;">
+    <a class="weui-cell weui-cell_access" href="/changeUserinfo">
         <div class="weui-cell__bd">
-            <p>所在城市：安徽省芜湖市镜湖区</p>
+            <p>所在城市：${user.city}</p>
         </div>
         <div class="weui-cell__ft">
         </div>
@@ -102,7 +103,10 @@
 </div>
 
 <%--退出按钮--%>
-<a href="javascript:;" class="weui-btn  weui-btn_primary" style="width: 60%;text-align: center;margin-top: 20px">退出登录</a>
+<a href="javascript:;" class="weui-btn  weui-btn_primary"
+   style="width: 60%;text-align: center;margin-top: 20px;margin-bottom: 100px">
+    退出登录
+</a>
 
 <%--底部--%>
 <jsp:include page="${pageContext.request.contextPath}/bottomMenu.jsp"/>

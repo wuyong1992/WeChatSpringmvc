@@ -8,10 +8,11 @@ import lombok.Setter;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.result.WxMpOAuth2AccessToken;
-import me.chanjar.weixin.mp.bean.result.WxMpUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -22,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 @Getter
 @Setter
-//@SessionAttributes("user")
+@SessionAttributes("user")
 public class ViewController extends GenericController {
 
     @Autowired
@@ -48,30 +49,27 @@ public class ViewController extends GenericController {
             wxMpOAuth2AccessToken = wxMpService.oauth2refreshAccessToken(wxMpOAuth2AccessToken.getRefreshToken());
         }
 
-        //TODO openId放入session中会不会更好？
+        //openId放入session
         String openId = wxMpOAuth2AccessToken.getOpenId();
-
         request.getSession().setAttribute("openId", openId);
-        //获取用户信息
-        //WxMpUser wxMpUser = wxMpService.oauth2getUserInfo(wxMpOAuth2AccessToken,null);
 
         //跳转到controller
         return "redirect:/user";
     }
 
     @RequestMapping(value = "user")
-    public String goUser(HttpServletRequest request) {
-
+    public ModelAndView goUser(HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView();
         String openId = (String) request.getSession().getAttribute("openId");
         user = userService.getUserinfo(openId);
         if (user != null) {
-            request.getSession().setAttribute("user", user);
+            modelAndView.addObject("user", user);
+            modelAndView.setViewName("userInfo");
         } else {
-            return "请关注该公众号";
+            return null;
         }
 
-
-        return "userInfo";
+        return modelAndView;
     }
 
 
@@ -107,10 +105,62 @@ public class ViewController extends GenericController {
     }
 
     @RequestMapping(value = "changePortrait")
-    public String goChangePortrait() {
+    public ModelAndView goChangePortrait(HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView();
+        String openId = (String) request.getSession().getAttribute("openId");
+        user = userService.getUserinfo("openId");
 
-        return "changePortrait";
+        modelAndView.addObject("user", user);
+        modelAndView.setViewName("changePortrait");
+
+        return modelAndView;
     }
 
+    @RequestMapping(value = "goUserinfoByChangeImg")
+    public ModelAndView goUserinfoByChangeImg() {
+        ModelAndView modelAndView = new ModelAndView();
+
+
+        return modelAndView;
+    }
+
+    //修改个人信息页面
+    @RequestMapping(value = "changeUserinfo")
+    public ModelAndView changeUserinfo(HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView();
+        user = (User) request.getSession().getAttribute("user");
+        modelAndView.addObject("user", user);
+        modelAndView.setViewName("changeUserinfo");
+
+        return modelAndView;
+    }
+
+
+    //连接数据库更新用户
+    @RequestMapping(value = "updateUserinfo")
+    public String updateUserinfo(HttpServletRequest request) {
+        String username = request.getParameter("username");
+        logger.info("username======================" + username);
+        String city = request.getParameter("city");
+        logger.info("city======================" + city);
+        String phone = request.getParameter("phoneNum");
+        logger.info("phoneNum======================" + phone);
+
+
+        if (!"".equals(username)) {
+            user.setUsername(username);
+        }
+        if (!"".equals(city.trim())) {
+            user.setCity(city);
+        }
+        if (!"".equals(phone.trim())) {
+            Long phoneNum = Long.parseLong(phone);
+            user.setPhoneNum(phoneNum);
+        }
+
+        userService.updateUser(user);
+
+        return "redirect:/user";
+    }
 
 }

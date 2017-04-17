@@ -18,7 +18,6 @@
     </bean>
 
 
-
     <!--配置druid数据源-->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
         <!-- 基本属性 url、user、password -->
@@ -86,6 +85,19 @@
     <!--配置wxMpService-->
     <bean id="wxMpService" class="me.chanjar.weixin.mp.api.impl.WxMpServiceImpl">
         <property name="wxMpConfigStorage" ref="wxMpConfigStorage"></property>
+    </bean>
+
+    <!--配置WxPayConfig-->
+    <bean id="payConfig" class="com.github.binarywang.wxpay.config.WxPayConfig">
+        <property name="appId" value="${appid}"/>
+        <!--微信支付商户号-->
+        <property name="mchId" value="${partener_id}"/>
+        <property name="mchKey" value="${partener_key}"/>
+    </bean>
+
+    <!--配置WxPayService-->
+    <bean id="payService" class="com.github.binarywang.wxpay.service.impl.WxPayServiceImpl">
+        <property name="config" ref="payConfig"/>
     </bean>
 
 
