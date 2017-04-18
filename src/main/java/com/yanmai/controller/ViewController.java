@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.InputStream;
 
 /**
  * TODO 项目中controller名称和jsp名称需要最终修改
@@ -125,19 +126,26 @@ public class ViewController extends GenericController {
         return modelAndView;
     }
 
-    //下载用户上传图片
+
+    //接收页面传递的serverId即media_id下载用户上传的图片
     @RequestMapping(value = "downloadImage")
-    public String downloadImage(HttpServletRequest request){
+    public String downloadImage(HttpServletRequest request) throws WxErrorException {
         String serverId = request.getParameter("serverIds");
+        //获取输入流
+        //TODO 40007 不合法的媒体文件id why？
+        //InputStream inputStream = wxMpService.getMaterialService().materialImageOrVoiceDownload(serverId);
+
 
         //TODO 处理下载图片的逻辑
-        System.out.print("下载ing==========================serverIds："+serverId);
-        return "";
+        //获取serverId没问题
+        logger.info("下载ing==========================serverIds："+serverId);
+        return null;
     }
 
 
 
 
+    //
     @RequestMapping(value = "goUserinfoByChangeImg")
     public ModelAndView goUserinfoByChangeImg() {
         ModelAndView modelAndView = new ModelAndView();
@@ -156,10 +164,6 @@ public class ViewController extends GenericController {
 
         return modelAndView;
     }
-
-
-
-
 
 
 
@@ -188,7 +192,6 @@ public class ViewController extends GenericController {
 
         return "redirect:/user";
     }
-
 
 
 }
