@@ -5,6 +5,7 @@ import com.yanmai.service.CoreService;
 import com.yanmai.service.UserService;
 import lombok.Getter;
 import lombok.Setter;
+import me.chanjar.weixin.common.bean.WxJsapiSignature;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.result.WxMpOAuth2AccessToken;
@@ -104,17 +105,38 @@ public class ViewController extends GenericController {
         return "index";
     }
 
+
+    //更改头像
     @RequestMapping(value = "changePortrait")
-    public ModelAndView goChangePortrait(HttpServletRequest request) {
+    public ModelAndView goChangePortrait(HttpServletRequest request) throws WxErrorException {
         ModelAndView modelAndView = new ModelAndView();
         String openId = (String) request.getSession().getAttribute("openId");
-        user = userService.getUserinfo("openId");
+        user = userService.getUserinfo(openId);
 
         modelAndView.addObject("user", user);
         modelAndView.setViewName("changePortrait");
 
+        logger.info("=================================");
+
+        WxJsapiSignature wxJsapiSignature = wxMpService.createJsapiSignature("http://b.wujixuanyi.com/changePortrait");
+        logger.info("wxJsapiSignature======================>"+wxJsapiSignature);
+        modelAndView.addObject("wxJsapiSignature",wxJsapiSignature);
+
         return modelAndView;
     }
+
+    //下载用户上传图片
+    @RequestMapping(value = "downloadImage")
+    public String downloadImage(HttpServletRequest request){
+        String serverId = request.getParameter("serverIds");
+
+        //TODO 处理下载图片的逻辑
+        System.out.print("下载ing==========================serverIds："+serverId);
+        return "";
+    }
+
+
+
 
     @RequestMapping(value = "goUserinfoByChangeImg")
     public ModelAndView goUserinfoByChangeImg() {
@@ -126,7 +148,7 @@ public class ViewController extends GenericController {
 
     //修改个人信息页面
     @RequestMapping(value = "changeUserinfo")
-    public ModelAndView changeUserinfo(HttpServletRequest request) {
+    public ModelAndView changeUserinfo(HttpServletRequest request) throws WxErrorException {
         ModelAndView modelAndView = new ModelAndView();
         user = (User) request.getSession().getAttribute("user");
         modelAndView.addObject("user", user);
@@ -134,6 +156,11 @@ public class ViewController extends GenericController {
 
         return modelAndView;
     }
+
+
+
+
+
 
 
     //连接数据库更新用户
