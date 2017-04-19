@@ -10,8 +10,7 @@
 <head>
     <title>上传头像</title>
     <jsp:include page="${pageContext.request.contextPath}/headInfo.jsp"/>
-    <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js">
-    </script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
 </head>
 <body>
 <script>
@@ -44,7 +43,7 @@
     // 更换头像按钮点击
     function uploadImg() {
         wx.chooseImage({
-            count: 1,
+            count: 1,                             //指定可以上传几张图片
             sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
             sourceType: ['album', 'camera'],      // 可以指定来源是相册还是相机，默认二者都有
             success: function (res) {
@@ -73,7 +72,7 @@
         });
     }
 
-    //TODO 点击提交按钮应该判断选择了几张图片，如果选择超过一张，或者没有选择应该弹窗组织提交
+
 
 </script>
 

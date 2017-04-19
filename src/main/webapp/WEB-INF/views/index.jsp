@@ -38,11 +38,11 @@
 </div>
 
 <%--菜单--%>
-<div class="weui-flex" style="text-align: center;margin-bottom: 10px">
-    <div class="weui-flex__item"><a href="javascript:;" style="color: #3f4346">首页</a></div>
-    <div class="weui-flex__item"><a href="javascript:;" style="color: #3f4346">产品介绍</a></div>
-    <div class="weui-flex__item"><a href="javascript:;" style="color: #3f4346">合作加盟</a></div>
-    <div class="weui-flex__item"><a href="javascript:;" style="color: #3f4346">玄灸图谱</a></div>
+<div class="weui-flex" style="text-align: center;margin-bottom: 10px;margin-top: 10px">
+    <div class="weui-flex__item"><a href="javascript:;" style="color: #3f4346"><img style="width: 80%;text-align: center;margin: 0 auto;vertical-align: middle;display: table-cell;" src="${pageContext.request.contextPath}/images/shouye.png" alt=""></a></div>
+    <div class="weui-flex__item"><a href="javascript:;" style="color: #3f4346"><img style="width: 80%;text-align: center;margin: 0 auto;vertical-align: middle;display: table-cell;" src="${pageContext.request.contextPath}/images/hezuo.png" alt=""></a></div>
+    <div class="weui-flex__item"><a href="javascript:;" style="color: #3f4346"><img style="width: 80%;text-align: center;margin: 0 auto;vertical-align: middle;display: table-cell;" src="${pageContext.request.contextPath}/images/chanp.png" alt=""></a></div>
+    <div class="weui-flex__item"><a href="javascript:;" style="color: #3f4346"><img style="width: 80%;text-align: center;margin: 0 auto;vertical-align: middle;display: table-cell;" src="${pageContext.request.contextPath}/images/tupu.png" alt=""></a></div>
 </div>
 
 <hr>

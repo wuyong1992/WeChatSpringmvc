@@ -168,7 +168,7 @@ public class ViewController extends GenericController {
         modelAndView.setViewName("userInfo");
 
         String serverId = request.getParameter("serverIds");
-        if (serverId == null) {
+        if ("".equals(serverId)) {
             return modelAndView;
         }
 
@@ -241,15 +241,16 @@ public class ViewController extends GenericController {
         String serverId = request.getParameter("serverIds");
         logger.info("serverId===================>"+serverId);
 
+        if ("".equals(serverId)){
+            return modelAndView;
+        }
+
         //获取输入流
         //该方法是获取永久素材，用来获取临时素材会报 40007 不合法的媒体文件id
         //InputStream inputStream = wxMpService.getMaterialService().materialImageOrVoiceDownload(serverId);
         //下载图片并保存到临时文件，默认为：tomcat安装目录下的temp文件
         File file = wxMpService.getMaterialService().mediaDownload(serverId);
 
-        if (!file.exists()){
-            return modelAndView;
-        }
         //图片名称
         String fileName = file.getName();
 

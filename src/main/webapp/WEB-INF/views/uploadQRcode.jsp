@@ -10,13 +10,14 @@
 <head>
     <title>上传二维码</title>
     <jsp:include page="${pageContext.request.contextPath}/headInfo.jsp"/>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
 </head>
 <body>
 <script>
 
     //TODO 配置不成功 why？
     wx.config({
-        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
         appId: "${wxJsapiSignature.appId}", // 必填，公众号的唯一标识
         timestamp: "${wxJsapiSignature.timestamp}", // 必填，生成签名的时间戳
         nonceStr: "${wxJsapiSignature.nonceStr}", // 必填，生成签名的随机串
@@ -42,7 +43,7 @@
     // 更换头像按钮点击
     function uploadQRcode() {
         wx.chooseImage({
-            count: 1,
+            count: 1,                             //指定可以上传几张图片
             sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
             sourceType: ['album', 'camera'],      // 可以指定来源是相册还是相机，默认二者都有
             success: function (res) {
@@ -90,15 +91,13 @@
 
 <a href="/goHowTOUploadQRcode" class="weui-btn weui-btn_primary" style="width: 80%;margin-top: 10px">如何上传二维码</a>
 
-<button onclick="uploadQRcode()" class="weui-btn weui-btn_primary"
-        style="margin-bottom: 10px;margin-top: 10px;width: 80%">点击选择二维码
-</button>
+<button onclick="uploadQRcode()" class="weui-btn weui-btn_primary" style="margin-bottom: 10px;margin-top: 10px;width: 80%">点击选择二维码</button>
 
 
-<form action="/downloadImage" method="post" >
+<form action="/downloadQRcode" method="post">
     <input type="hidden" name="serverIds" id="serverIds" value=""/>
 
-    <button type="submit" class="weui-btn weui-btn_primary" style="width: 80%;margin-bottom: 10px">点击上传二维码</button>
+    <button type="submit" class="weui-btn weui-btn_primary" style="width: 80%;margin-bottom: 10px">确定</button>
 </form>
 <%--版权--%>
 <div class="weui-footer" style="margin: 100px auto">
