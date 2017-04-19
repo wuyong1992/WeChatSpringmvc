@@ -12,13 +12,13 @@
         <div class="weui-tabbar__icon">
             <img src="images/button02.png" alt="">
         </div>
-        <p class="weui-tabbar__label">通讯录</p>
+        <p class="weui-tabbar__label">加盟合作</p>
     </a>
     <a href="javascript:;" class="weui-tabbar__item">
         <div class="weui-tabbar__icon">
             <img src="images/button03.png" alt="">
         </div>
-        <p class="weui-tabbar__label">发现</p>
+        <p class="weui-tabbar__label">产品介绍</p>
     </a>
     <%----%>
     <a href="/user" class="weui-tabbar__item">

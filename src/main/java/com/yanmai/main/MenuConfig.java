@@ -65,9 +65,9 @@ public class MenuConfig {
         wxMenuButton3_4.setType(WxConsts.BUTTON_CLICK);
         wxMenuButton3_4.setKey("key4_4");
         WxMenuButton wxMenuButton3_5 = new WxMenuButton();
-        wxMenuButton3_5.setName("使用帮助");
+        wxMenuButton3_5.setName("联系我们");
         wxMenuButton3_5.setType(WxConsts.BUTTON_VIEW);
-        wxMenuButton3_5.setUrl("https://www.baidu.com/");
+        wxMenuButton3_5.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd94942f3d437c924&redirect_uri=http%3A%2F%2Fb.wujixuanyi.com%2FgoContactUs&response_type=code&scope=snsapi_base#wechat_redirect14:10:31.479 [Thread-2] INFO com.alibaba.druid.pool.DruidDataSource - {dataSource-1} closed");
 
         //整合第三个菜单
         List<WxMenuButton> subButtons = new ArrayList();
@@ -93,7 +93,7 @@ public class MenuConfig {
 
     /*@Test
     public void getUrl() throws WxErrorException {
-        String url =  wxMpService.oauth2buildAuthorizationUrl("http://b.wujixuanyi.com/getMainAccessToken",WxConsts.OAUTH2_SCOPE_BASE,null);
+        String url =  wxMpService.oauth2buildAuthorizationUrl("http://b.wujixuanyi.com/goContactUs",WxConsts.OAUTH2_SCOPE_BASE,null);
         System.out.print(url);
     }*/
 

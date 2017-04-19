@@ -32,6 +32,6 @@ public class User {
     private Date registerTime;      //注册时间
     private Date vipTime;           //VIP充值时间
     private String userPortrait;   //用户头像地址
-
+    private String QRcode;          //用户二维码地址
 
 }

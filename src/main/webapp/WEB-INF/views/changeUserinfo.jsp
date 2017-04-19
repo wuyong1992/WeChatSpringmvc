@@ -52,10 +52,10 @@
 </form>
 
 <%--版权--%>
-<div class="weui-footer">
+<div class="weui-footer" style="margin: 100px auto">
     <p class="weui-footer__links">
         <a href="javascript:void(0);" class="weui-footer__link">关注无极玄服务</a>
-        <a href="javascript:void(0);" class="weui-footer__link">联系我们</a>
+        <a href="/contactUs" class="weui-footer__link">联系我们</a>
     </p>
     <p class="weui-footer__text">Copyright © 2017 芜湖雁脉传媒文化有限公司版权所有</p>
 </div>

@@ -3,12 +3,15 @@ package com.yanmai.controller;
 import com.yanmai.model.User;
 import com.yanmai.service.CoreService;
 import com.yanmai.service.UserService;
+import com.yanmai.util.FileUtil;
+import com.yanmai.util.StringUtil;
 import lombok.Getter;
 import lombok.Setter;
 import me.chanjar.weixin.common.bean.WxJsapiSignature;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.result.WxMpOAuth2AccessToken;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +19,8 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.InputStream;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * TODO 项目中controller名称和jsp名称需要最终修改
@@ -38,6 +42,7 @@ public class ViewController extends GenericController {
     private User user;
 
 
+    //个人信息controller
     @RequestMapping(value = "userInfo")
     public String goUserInfo(HttpServletRequest request) throws WxErrorException {
         //获取code
@@ -59,6 +64,7 @@ public class ViewController extends GenericController {
         return "redirect:/user";
     }
 
+    //个人信息
     @RequestMapping(value = "user")
     public ModelAndView goUser(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView();
@@ -94,6 +100,7 @@ public class ViewController extends GenericController {
         return "redirect:/main";
     }
 
+    //主页
     @RequestMapping(value = "main")
     public String goIndex(HttpServletRequest request) {
         String openId = (String) request.getSession().getAttribute("openId");
@@ -104,6 +111,106 @@ public class ViewController extends GenericController {
             return "请关注该公众号";
         }
         return "index";
+    }
+
+    //联系我们controller
+    @RequestMapping(value = "goContactUs")
+    public String goContactUs(HttpServletRequest request) throws WxErrorException {
+        String code = request.getParameter("code");
+        logger.info("code：" + code);
+
+        //获取AccessToken！！！
+        WxMpOAuth2AccessToken wxMpOAuth2AccessToken = wxMpService.oauth2getAccessToken(code);
+        logger.info("wxMpOAuth2AccessToken:" + wxMpOAuth2AccessToken);
+        if (wxMpService.oauth2validateAccessToken(wxMpOAuth2AccessToken)) {
+            wxMpOAuth2AccessToken = wxMpService.oauth2refreshAccessToken(wxMpOAuth2AccessToken.getRefreshToken());
+        }
+        //openId放入session
+        String openId = wxMpOAuth2AccessToken.getOpenId();
+        request.getSession().setAttribute("openId", openId);
+
+        return "contactUs";
+    }
+
+    //联系我们
+    @RequestMapping(value = "contactUs")
+    public String contactUs(HttpServletRequest request) throws WxErrorException {
+
+        return "contactUs";
+    }
+
+    //vip服务价值
+    @RequestMapping(value = "goVipServeValue")
+    public String goVipServeValue() {
+        return "vipServeValue";
+    }
+
+    //上传二维码
+    @RequestMapping(value = "uploadQRcode")
+    public ModelAndView goUploadQRcode(HttpServletRequest request) throws WxErrorException {
+        ModelAndView modelAndView = new ModelAndView();
+        String openId = (String) request.getSession().getAttribute("openId");
+        user = userService.getUserinfo(openId);
+
+        modelAndView.addObject("user", user);
+        modelAndView.setViewName("uploadQRcode");
+
+        WxJsapiSignature wxJsapiSignature = wxMpService.createJsapiSignature("http://b.wujixuanyi.com/uploadQRcode");
+        modelAndView.addObject("wxJsapiSignature", wxJsapiSignature);
+        return modelAndView;
+
+    }
+
+    //保存二维码
+    @RequestMapping(value = "downloadQRcode")
+    public ModelAndView downloadQRcode(HttpServletRequest request) throws WxErrorException, IOException {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("userInfo");
+
+        String serverId = request.getParameter("serverIds");
+        if (serverId == null) {
+            return modelAndView;
+        }
+
+        //下载图片并保存到临时文件，默认为：tomcat安装目录下的temp文件
+        File file = wxMpService.getMaterialService().mediaDownload(serverId);
+        //图片名称
+        String fileName = file.getName();
+
+        //将图片放到复制到webapp目录下的img文件，方便访问
+        //目标位置
+        String destPath = "C:\\apache-tomcat-8.0.14\\webapps\\QRcode";
+
+        //调用util
+        FileUtil.copyFileAndDelSrcFile(file, destPath);
+
+        //获取原来的头像地址，并删除头像
+        String openId = (String) request.getSession().getAttribute("openId");
+        user = userService.getUserinfo(openId);
+        String oldQRcodePath = user.getQRcode();
+
+        if (oldQRcodePath != null) {
+            //取反，表示不是以数字结尾,分割字符串，取出文件名称
+            String QRcodeName = StringUtil.getImgName(oldQRcodePath);
+            File file1 = new File("C:\\apache-tomcat-8.0.14\\webapps\\QRcode\\" + QRcodeName);
+            FileUtils.deleteQuietly(file1);
+        }
+
+        //更新数据库中的头像地址
+        user.setQRcode("http://b.wujixuanyi.com/QRcode/" + fileName);
+        userService.updateUser(user);
+
+        modelAndView.addObject("user", user);
+
+        return modelAndView;
+    }
+
+
+    //如何上传二维码
+    @RequestMapping(value = "goHowTOUploadQRcode")
+    public String goHowTOUploadQRcode() {
+
+        return "howToUploadQRcode";
     }
 
 
@@ -117,11 +224,9 @@ public class ViewController extends GenericController {
         modelAndView.addObject("user", user);
         modelAndView.setViewName("changePortrait");
 
-        logger.info("=================================");
-
         WxJsapiSignature wxJsapiSignature = wxMpService.createJsapiSignature("http://b.wujixuanyi.com/changePortrait");
-        logger.info("wxJsapiSignature======================>"+wxJsapiSignature);
-        modelAndView.addObject("wxJsapiSignature",wxJsapiSignature);
+        logger.info("wxJsapiSignature======================>" + wxJsapiSignature);
+        modelAndView.addObject("wxJsapiSignature", wxJsapiSignature);
 
         return modelAndView;
     }
@@ -129,27 +234,59 @@ public class ViewController extends GenericController {
 
     //接收页面传递的serverId即media_id下载用户上传的图片
     @RequestMapping(value = "downloadImage")
-    public String downloadImage(HttpServletRequest request) throws WxErrorException {
+    public ModelAndView downloadImage(HttpServletRequest request) throws WxErrorException, IOException {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("userInfo");
+
         String serverId = request.getParameter("serverIds");
+        logger.info("serverId===================>"+serverId);
+
         //获取输入流
-        //TODO 40007 不合法的媒体文件id why？
+        //该方法是获取永久素材，用来获取临时素材会报 40007 不合法的媒体文件id
         //InputStream inputStream = wxMpService.getMaterialService().materialImageOrVoiceDownload(serverId);
+        //下载图片并保存到临时文件，默认为：tomcat安装目录下的temp文件
+        File file = wxMpService.getMaterialService().mediaDownload(serverId);
+
+        if (!file.exists()){
+            return modelAndView;
+        }
+        //图片名称
+        String fileName = file.getName();
 
 
-        //TODO 处理下载图片的逻辑
-        //获取serverId没问题
-        logger.info("下载ing==========================serverIds："+serverId);
-        return null;
+        //将图片放到复制到webapp目录下的img文件，方便访问
+        //目标位置
+        String destPath = "C:\\apache-tomcat-8.0.14\\webapps\\img";
+
+        //调用util
+        FileUtil.copyFileAndDelSrcFile(file, destPath);
+
+        //获取原来的头像地址，并删除头像
+        String openId = (String) request.getSession().getAttribute("openId");
+        user = userService.getUserinfo(openId);
+        String oldPortraitPath = user.getUserPortrait();
+        //如果改路径的字符串结果是数字，则说明是微信自动获取的头像，是存放在微信服务器的，不予处理
+        //如果不是以数字结尾，则是用户自定义的头像，可以更新并删除
+        if (!StringUtil.endWithNum(oldPortraitPath)) {
+            //取反，表示不是以数字结尾,分割字符串，取出文件名称
+            String imgName = StringUtil.getImgName(oldPortraitPath);
+            File file1 = new File("C:\\apache-tomcat-8.0.14\\webapps\\img\\" + imgName);
+            FileUtils.deleteQuietly(file1);
+        }
+
+        //更新数据库中的头像地址
+        user.setUserPortrait("http://b.wujixuanyi.com/img/" + fileName);
+        userService.updateUser(user);
+
+        modelAndView.addObject("user", user);
+
+        return modelAndView;
     }
-
-
-
 
     //
     @RequestMapping(value = "goUserinfoByChangeImg")
     public ModelAndView goUserinfoByChangeImg() {
         ModelAndView modelAndView = new ModelAndView();
-
 
         return modelAndView;
     }
@@ -166,17 +303,12 @@ public class ViewController extends GenericController {
     }
 
 
-
-    //连接数据库更新用户
+    //连接数据库更新用户信息
     @RequestMapping(value = "updateUserinfo")
     public String updateUserinfo(HttpServletRequest request) {
         String username = request.getParameter("username");
-        logger.info("username======================" + username);
         String city = request.getParameter("city");
-        logger.info("city======================" + city);
         String phone = request.getParameter("phoneNum");
-        logger.info("phoneNum======================" + phone);
-
 
         if (!"".equals(username)) {
             user.setUsername(username);
@@ -192,6 +324,8 @@ public class ViewController extends GenericController {
 
         return "redirect:/user";
     }
+
+    //上传二维码
 
 
 }

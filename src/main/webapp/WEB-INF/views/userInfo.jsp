@@ -11,10 +11,6 @@
 <head>
     <title>首页</title>
     <jsp:include page="${pageContext.request.contextPath}/headInfo.jsp"/>
-    <%--<script src="${pageContext.request.contextPath}/js/viewjs.js"></script>--%>
-    <script>
-
-    </script>
 </head>
 <body>
 
@@ -36,7 +32,6 @@
     <div class="weui-panel__bd">
         <a href="/changePortrait" class="weui-media-box weui-media-box_appmsg userPortrait">
             <div class="weui-media-box__hd">
-                <%--TODO 获取用户的默认头像，如果有赊着自己的头像，则改用自定义--%>
                 <img class="weui-media-box__thumb" src="${user.userPortrait}">
             </div>
             <div class="weui-media-box__bd">
@@ -51,7 +46,7 @@
 <hr>
 
 <%--个人信息--%>
-<div class="weui-cells">
+<div class="weui-cells" style="margin-bottom: 50px">
     <a class="weui-cell weui-cell_access" href="javascript:;">
         <div class="weui-cell__bd">
             <p>开通VIP</p>
@@ -59,7 +54,7 @@
         <div class="weui-cell__ft">
         </div>
     </a>
-    <a class="weui-cell weui-cell_access" href="javascript:;">
+    <a class="weui-cell weui-cell_access" href="/goVipServeValue">
         <div class="weui-cell__bd">
             <p>VIP服务价值</p>
         </div>
@@ -72,7 +67,7 @@
         </div>
         <div class="weui-cell__ft">
         </div>
-    </a><a class="weui-cell weui-cell_access" href="javascript:;">
+    </a><a class="weui-cell weui-cell_access" href="/uploadQRcode">
     <div class="weui-cell__bd">
         <p>上传二维码</p>
     </div>
@@ -103,10 +98,10 @@
 </div>
 
 <%--退出按钮--%>
-<a href="javascript:;" class="weui-btn  weui-btn_primary"
+<%--<a href="javascript:;" class="weui-btn  weui-btn_primary"
    style="width: 60%;text-align: center;margin-top: 20px;margin-bottom: 100px">
     退出登录
-</a>
+</a>--%>
 
 <%--底部--%>
 <jsp:include page="${pageContext.request.contextPath}/bottomMenu.jsp"/>

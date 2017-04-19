@@ -276,6 +276,15 @@
             <artifactId>druid</artifactId>
             <version>1.0.28</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+        <!--io流工具类-->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.5</version>
+        </dependency>
+
     </dependencies>
 
 
