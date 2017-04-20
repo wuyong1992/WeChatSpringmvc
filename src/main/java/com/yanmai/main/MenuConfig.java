@@ -41,7 +41,7 @@ public class MenuConfig {
         WxMenuButton wxMenuButton2 = new WxMenuButton();
         wxMenuButton2.setName("升级开通");
         wxMenuButton2.setType(WxConsts.BUTTON_VIEW);
-        wxMenuButton2.setUrl("https://www.baidu.com/");
+        wxMenuButton2.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd94942f3d437c924&redirect_uri=http%3A%2F%2Fb.wujixuanyi.com%2FgoOpen&response_type=code&scope=snsapi_base#wechat_redirect16:52:37.543 [Thread-2] INFO com.alibaba.druid.pool.DruidDataSource - {dataSource-1} closed");
 
         //第三个菜单，分5个二级自菜单
         WxMenuButton wxMenuButton3 = new WxMenuButton();
@@ -89,11 +89,11 @@ public class MenuConfig {
         return wxMenu;
     }
 
-    //运行获取url
+    //运行获取 网页授权url
 
     /*@Test
     public void getUrl() throws WxErrorException {
-        String url =  wxMpService.oauth2buildAuthorizationUrl("http://b.wujixuanyi.com/goContactUs",WxConsts.OAUTH2_SCOPE_BASE,null);
+        String url = wxMpService.oauth2buildAuthorizationUrl("http://b.wujixuanyi.com/goOpen", WxConsts.OAUTH2_SCOPE_BASE, null);
         System.out.print(url);
     }*/
 

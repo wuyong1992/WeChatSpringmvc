@@ -113,7 +113,7 @@ public class ViewController extends GenericController {
         return "index";
     }
 
-    //联系我们controller
+    //联系我们controller 菜单进入，获取授权code
     @RequestMapping(value = "goContactUs")
     public String goContactUs(HttpServletRequest request) throws WxErrorException {
         String code = request.getParameter("code");
@@ -132,11 +132,38 @@ public class ViewController extends GenericController {
         return "contactUs";
     }
 
-    //联系我们
+    //联系我们 直接进入页面，在别的controller中已经获得了code
     @RequestMapping(value = "contactUs")
     public String contactUs(HttpServletRequest request) throws WxErrorException {
 
         return "contactUs";
+    }
+
+    //联系我们controller 菜单进入，获取授权code
+    @RequestMapping(value = "goOpen")
+    public String goOpen(HttpServletRequest request) throws WxErrorException {
+        String code = request.getParameter("code");
+        logger.info("code：" + code);
+
+        //获取AccessToken！！！
+        WxMpOAuth2AccessToken wxMpOAuth2AccessToken = wxMpService.oauth2getAccessToken(code);
+        logger.info("wxMpOAuth2AccessToken:" + wxMpOAuth2AccessToken);
+        if (wxMpService.oauth2validateAccessToken(wxMpOAuth2AccessToken)) {
+            wxMpOAuth2AccessToken = wxMpService.oauth2refreshAccessToken(wxMpOAuth2AccessToken.getRefreshToken());
+        }
+        //openId放入session
+        String openId = wxMpOAuth2AccessToken.getOpenId();
+        request.getSession().setAttribute("openId", openId);
+
+        return "open";
+    }
+
+
+    //进入开通页面
+    @RequestMapping(value = "open")
+    public String open(HttpServletRequest request) throws WxErrorException {
+
+        return "open";
     }
 
     //vip服务价值
@@ -172,25 +199,25 @@ public class ViewController extends GenericController {
             return modelAndView;
         }
 
-        //下载图片并保存到临时文件，默认为：tomcat安装目录下的temp文件
+        //下载二维码并保存到临时文件，默认为：tomcat安装目录下的temp文件
         File file = wxMpService.getMaterialService().mediaDownload(serverId);
-        //图片名称
+        //二维码名称
         String fileName = file.getName();
 
-        //将图片放到复制到webapp目录下的img文件，方便访问
+        //将二维码放到复制到webapp目录下的img文件，方便访问
         //目标位置
         String destPath = "C:\\apache-tomcat-8.0.14\\webapps\\QRcode";
 
         //调用util
         FileUtil.copyFileAndDelSrcFile(file, destPath);
 
-        //获取原来的头像地址，并删除头像
+        //获取原来的二维码地址，并删除原二维码
         String openId = (String) request.getSession().getAttribute("openId");
         user = userService.getUserinfo(openId);
         String oldQRcodePath = user.getQRcode();
 
         if (oldQRcodePath != null) {
-            //取反，表示不是以数字结尾,分割字符串，取出文件名称
+            //如果有则删除
             String QRcodeName = StringUtil.getImgName(oldQRcodePath);
             File file1 = new File("C:\\apache-tomcat-8.0.14\\webapps\\QRcode\\" + QRcodeName);
             FileUtils.deleteQuietly(file1);
@@ -326,7 +353,6 @@ public class ViewController extends GenericController {
         return "redirect:/user";
     }
 
-    //上传二维码
 
 
 }

@@ -9,7 +9,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>首页</title>
+    <title>个人信息</title>
     <jsp:include page="${pageContext.request.contextPath}/headInfo.jsp"/>
 </head>
 <body>
@@ -47,7 +47,7 @@
 
 <%--个人信息--%>
 <div class="weui-cells" style="margin-bottom: 50px">
-    <a class="weui-cell weui-cell_access" href="javascript:;">
+    <a class="weui-cell weui-cell_access" href="/open">
         <div class="weui-cell__bd">
             <p>开通VIP</p>
         </div>

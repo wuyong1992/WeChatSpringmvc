@@ -65,7 +65,7 @@
                 var serverId = res.serverId; // 返回图片的服务器端serverId
                 serverIds = serverId;
                 $("#serverIds").val(serverIds);
-                alert("二维码上传成功,serverIds:" + $("#serverIds").val())      //获取到图片的serverId，即media_id
+                //alert("二维码上传成功,serverIds:" + $("#serverIds").val())      //获取到图片的serverId，即media_id
             }
         });
     }

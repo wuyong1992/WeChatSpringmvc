@@ -41,9 +41,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * 微信支付Controller
- * <p>
- * Created by FirenzesEagle on 2016/6/20 0020.
- * Email:liumingbo2008@gmail.com
  */
 @Controller
 @RequestMapping(value = "wxPay")
@@ -85,30 +82,28 @@ public class PaymentController extends GenericController {
 
     /**
      * 返回前台H5调用JS支付所需要的参数，公众号支付调用此接口
-     *
+     * 参数可以由数据库传入
      * @param response
      * @param request
      */
     @RequestMapping(value = "getJSSDKPayInfo")
-    public void getJSSDKPayInfo(HttpServletResponse response,
-                                HttpServletRequest request) {
+    public void getJSSDKPayInfo(HttpServletResponse response, HttpServletRequest request) {
         ReturnModel returnModel = new ReturnModel();
         WxPayUnifiedOrderRequest prepayInfo = new WxPayUnifiedOrderRequest();
-        prepayInfo.setOpenid(request.getParameter("openid"));
-        prepayInfo.setOutTradeNo(request.getParameter("out_trade_no"));
-        prepayInfo
-                .setTotalFee(Integer.valueOf(request.getParameter("total_fee")));
-        prepayInfo.setBody(request.getParameter("body"));
-        prepayInfo.setTradeType(request.getParameter("trade_type"));
-        prepayInfo.setSpbillCreateIp(request.getParameter("spbill_create_ip"));
+        prepayInfo.setOpenid(request.getParameter("openid"));               //用户openid
+        prepayInfo.setOutTradeNo(request.getParameter("out_trade_no"));     //商户订单号
+        prepayInfo.setTotalFee(Integer.valueOf(request.getParameter("total_fee")));     //标价金额
+        prepayInfo.setBody(request.getParameter("body"));                    //商品描述
+        prepayInfo.setTradeType(request.getParameter("trade_type"));        //交易类型
+        prepayInfo.setSpbillCreateIp(request.getParameter("spbill_create_ip"));         //终端ip
         //TODO(user) 填写通知回调地址
         prepayInfo.setNotifyURL("");
 
         try {
-            Map<String, String> payInfo = this.payService.getPayInfo(prepayInfo);
+            Map<String, String> payInfo = this.payService.getPayInfo(prepayInfo);       //这里是关键！！！
             returnModel.setResult(true);
             returnModel.setDatum(payInfo);
-            renderString(response, returnModel);
+            renderString(response, returnModel);            //TODO 返回前端的是个json类型的字符串，前段是否可以el表达式拿值？
         } catch (WxErrorException e) {
             returnModel.setResult(false);
             returnModel.setReason(e.getError().toString());
