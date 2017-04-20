@@ -56,7 +56,6 @@ public class SubscribeHandler extends AbstractHandler {
         user.setLanguage(wxMpUser.getLanguage());
         user.setUsername(wxMpUser.getNickname());
         user.setCity(wxMpUser.getProvince()+wxMpUser.getCity());           //获取省份和城市后，拼接成所在地信息
-//        user.setProvince(wxMpUser.getProvince());
         user.setCountry(wxMpUser.getCountry());
         user.setIsSubscribe(1);     //设这为关注用户
         user.setRegisterTime(new Date(wxMpUser.getSubscribeTime()*1000));// 创建时间单位秒，需转换成毫秒

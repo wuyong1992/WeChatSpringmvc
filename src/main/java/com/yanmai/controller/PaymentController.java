@@ -83,6 +83,7 @@ public class PaymentController extends GenericController {
     /**
      * 返回前台H5调用JS支付所需要的参数，公众号支付调用此接口
      * 参数可以由数据库传入
+     *
      * @param response
      * @param request
      */
@@ -124,29 +125,26 @@ public class PaymentController extends GenericController {
         try {
             synchronized (this) {
                 Map<String, String> kvm = XMLUtil.parseRequestXmlToMap(request);
-                if (SignUtils.checkSign(kvm,
-                        this.payConfig.getMchKey())) {
+                if (SignUtils.checkSign(kvm, this.payConfig.getMchKey())) {
                     if (kvm.get("result_code").equals("SUCCESS")) {
                         //TODO(user) 微信服务器通知此回调接口支付成功后，通知给业务系统做处理
                         logger.info("out_trade_no: " + kvm.get("out_trade_no") + " pay SUCCESS!");
                         response.getWriter().write("<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[ok]]></return_msg></xml>");
                     } else {
-                        this.logger.error("out_trade_no: "
-                                + kvm.get("out_trade_no") + " result_code is FAIL");
+                        this.logger.error("out_trade_no: " + kvm.get("out_trade_no") + " result_code is FAIL");
                         response.getWriter().write(
                                 "<xml><return_code><![CDATA[FAIL]]></return_code><return_msg><![CDATA[result_code is FAIL]]></return_msg></xml>");
                     }
                 } else {
-                    response.getWriter().write(
-                            "<xml><return_code><![CDATA[FAIL]]></return_code><return_msg><![CDATA[check signature FAIL]]></return_msg></xml>");
-                    this.logger.error("out_trade_no: " + kvm.get("out_trade_no")
-                            + " check signature FAIL");
+                    response.getWriter().write("<xml><return_code><![CDATA[FAIL]]></return_code><return_msg><![CDATA[check signature FAIL]]></return_msg></xml>");
+                    this.logger.error("out_trade_no: " + kvm.get("out_trade_no") + " check signature FAIL");
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 
     @RequestMapping(value = "payToIndividual")
     public void payToIndividual(HttpServletResponse response,
