@@ -34,6 +34,12 @@
             </div>
         </div>
         <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">微&nbsp;&nbsp;&nbsp;信&nbsp;&nbsp;&nbsp;号：</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" name="wechatID" placeholder="${user.wechatID}">
+            </div>
+        </div>
+        <div class="weui-cell">
             <div class="weui-cell__hd"><label class="weui-label">联系方式：</label></div>
             <div class="weui-cell__bd">
                 <input class="weui-input" type="number" name="phoneNum" pattern="[0-9]*" placeholder="${user.phoneNum}">

@@ -10,12 +10,22 @@
 <head>
     <title>升级开通</title>
     <jsp:include page="${pageContext.request.contextPath}/headInfo.jsp"/>
-    <%--<style>
-        #open {
-            position: fixed;
-            bottom: 50px;
+    <script>
+        function show() {
+            $.confirm({
+                title: '支付',
+                text: '亲！请确认您的信息<br>（以下信息作为订单凭证）<br>姓名：${user.username}<br>手机号：${user.phoneNum}',
+                onOK: function () {
+                    //点击确认,调起支付
+                    alert("成功")
+                },
+                onCancel: function () {
+                    //取消支付
+                    alert("取消！")
+                }
+            });
         }
-    </style>--%>
+    </script>
 </head>
 <body>
 
@@ -41,7 +51,8 @@
     <a href="javascript:" class="weui-btn weui-btn_warn" style="margin:0 auto;">马上开通</a>
 </div>--%>
 
-<button href="javascript:" class="weui-btn weui-btn_warn" style="position: fixed;bottom: 60px;left: 15%;width: 70%;height: 50px">
+<button href="javascript:" class="weui-btn weui-btn_warn"
+        style="position: fixed;bottom: 60px;left: 15%;width: 70%;height: 50px" onclick="show()">
     马&nbsp;上&nbsp;开&nbsp;通
 </button>
 

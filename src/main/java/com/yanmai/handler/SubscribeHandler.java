@@ -66,7 +66,7 @@ public class SubscribeHandler extends AbstractHandler {
 
         WxMpXmlOutTextMessage m
             = WxMpXmlOutMessage.TEXT()
-            .content("尊敬的" + wxMpUser.getNickname() + "，您好！")
+            .content("尊敬的" + wxMpUser.getNickname() + "，您好！为了您可以享受更全面的服务，请先去个人中心完善您的资料！")
             .fromUser(wxMessage.getToUser())
             .toUser(wxMessage.getFromUser())
             .build();

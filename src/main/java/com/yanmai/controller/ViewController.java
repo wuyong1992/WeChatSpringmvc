@@ -155,15 +155,24 @@ public class ViewController extends GenericController {
         String openId = wxMpOAuth2AccessToken.getOpenId();
         request.getSession().setAttribute("openId", openId);
 
-        return "open";
+        return "redirect:/open";
     }
 
 
     //进入开通页面
     @RequestMapping(value = "open")
-    public String open(HttpServletRequest request) throws WxErrorException {
+    public ModelAndView open(HttpServletRequest request) throws WxErrorException {
+        ModelAndView modelAndView = new ModelAndView();
+        String openId = (String) request.getSession().getAttribute("openId");
+        user = userService.getUserinfo(openId);
+        if (user != null) {
+            modelAndView.addObject("user", user);
+            modelAndView.setViewName("open");
+        } else {
+            return null;
+        }
 
-        return "open";
+        return modelAndView;
     }
 
     //vip服务价值
@@ -272,9 +281,6 @@ public class ViewController extends GenericController {
             return modelAndView;
         }
 
-        //获取输入流
-        //该方法是获取永久素材，用来获取临时素材会报 40007 不合法的媒体文件id
-        //InputStream inputStream = wxMpService.getMaterialService().materialImageOrVoiceDownload(serverId);
         //下载图片并保存到临时文件，默认为：tomcat安装目录下的temp文件
         File file = wxMpService.getMaterialService().mediaDownload(serverId);
 
@@ -335,11 +341,15 @@ public class ViewController extends GenericController {
     @RequestMapping(value = "updateUserinfo")
     public String updateUserinfo(HttpServletRequest request) {
         String username = request.getParameter("username");
+        String wechatID = request.getParameter("wechatID");
         String city = request.getParameter("city");
         String phone = request.getParameter("phoneNum");
 
         if (!"".equals(username)) {
             user.setUsername(username);
+        }
+        if (!"".equals(wechatID)) {
+            user.setWechatID(wechatID);
         }
         if (!"".equals(city.trim())) {
             user.setCity(city);
