@@ -6,6 +6,8 @@ import com.github.binarywang.wxpay.config.WxPayConfig;
 import com.github.binarywang.wxpay.service.WxPayService;
 import com.github.binarywang.wxpay.util.SignUtils;
 import com.google.gson.Gson;
+import com.yanmai.model.User;
+import com.yanmai.service.UserService;
 import com.yanmai.util.MD5Util;
 import com.yanmai.util.ReturnModel;
 import com.yanmai.util.Sha1Util;
@@ -23,6 +25,7 @@ import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.net.ssl.SSLContext;
 import javax.servlet.http.HttpServletRequest;
@@ -31,11 +34,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.security.KeyStore;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -54,6 +56,10 @@ public class PaymentController extends GenericController {
     protected WxPayConfig payConfig;
     @Autowired
     protected WxPayService payService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private User user;
 
     /**
      * 用于返回预支付的结果 WxMpPrepayIdResult，一般不需要使用此接口
@@ -83,34 +89,48 @@ public class PaymentController extends GenericController {
     /**
      * 返回前台H5调用JS支付所需要的参数，公众号支付调用此接口
      * 参数可以由数据库传入
-     *
-     * @param response
+     *  @param response
      * @param request
      */
+    @ResponseBody
     @RequestMapping(value = "getJSSDKPayInfo")
-    public void getJSSDKPayInfo(HttpServletResponse response, HttpServletRequest request) {
+    public String getJSSDKPayInfo(HttpServletResponse response, HttpServletRequest request) throws UnknownHostException {
+        logger.info("=================支付接口进入================");
         ReturnModel returnModel = new ReturnModel();
         WxPayUnifiedOrderRequest prepayInfo = new WxPayUnifiedOrderRequest();
-        prepayInfo.setOpenid(request.getParameter("openid"));               //用户openid
-        prepayInfo.setOutTradeNo(request.getParameter("out_trade_no"));     //商户订单号
-        prepayInfo.setTotalFee(Integer.valueOf(request.getParameter("total_fee")));     //标价金额
-        prepayInfo.setBody(request.getParameter("body"));                    //商品描述
-        prepayInfo.setTradeType(request.getParameter("trade_type"));        //交易类型
-        prepayInfo.setSpbillCreateIp(request.getParameter("spbill_create_ip"));         //终端ip
+        String openId = (String) request.getSession().getAttribute("openId");
+//        prepayInfo.setOpenid(request.getParameter("openid"));               //用户openid
+        prepayInfo.setOpenid(openId);
+//        prepayInfo.setOutTradeNo(request.getParameter("out_trade_no"));     //商户订单号
+        prepayInfo.setOutTradeNo("20170422"+(int)((Math.random()*9+1)*100000));     //商户订单号
+        prepayInfo.setTotalFee(1);     //标价金额
+        prepayInfo.setBody("测试商品");                    //商品描述
+        prepayInfo.setTradeType("JSAPI");        //交易类型
+        InetAddress addr = InetAddress.getLocalHost();
+        String IP = addr.getHostAddress().toString();
+        prepayInfo.setSpbillCreateIp(IP);         //终端ip
         //TODO(user) 填写通知回调地址
-        prepayInfo.setNotifyURL("");
+        prepayInfo.setNotifyURL("http://b.wujixuanyi.com/wxPay/getJSSDKCallbackData");
 
         try {
             Map<String, String> payInfo = this.payService.getPayInfo(prepayInfo);       //这里是关键！！！
-            returnModel.setResult(true);
+
+            logger.info(payInfo.get("package"));
+
+            Gson gson = new Gson();
+            String temp = gson.toJson(payInfo);
+            logger.info("temp=========>>>>>>>>>"+temp);
+            return temp;
+            /*returnModel.setResult(true);
             returnModel.setDatum(payInfo);
-            renderString(response, returnModel);            //TODO 返回前端的是个json类型的字符串，前段是否可以el表达式拿值？
+            renderString(response, returnModel);*/            //TODO 返回前端的是个json类型的字符串，前段是否可以el表达式拿值？
         } catch (WxErrorException e) {
             returnModel.setResult(false);
             returnModel.setReason(e.getError().toString());
             renderString(response, returnModel);
             this.logger.error(e.getError().toString());
         }
+        return null;
     }
 
     /**
@@ -128,6 +148,10 @@ public class PaymentController extends GenericController {
                 if (SignUtils.checkSign(kvm, this.payConfig.getMchKey())) {
                     if (kvm.get("result_code").equals("SUCCESS")) {
                         //TODO(user) 微信服务器通知此回调接口支付成功后，通知给业务系统做处理
+                        /*String openid = (String) request.getSession().getAttribute("openid");
+                        user = userService.getUserinfo(openid);
+                        user.setIsMember(1);
+                        user.setVipTime(new Date());*/
                         logger.info("out_trade_no: " + kvm.get("out_trade_no") + " pay SUCCESS!");
                         response.getWriter().write("<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[ok]]></return_msg></xml>");
                     } else {

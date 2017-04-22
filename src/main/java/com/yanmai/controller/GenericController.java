@@ -27,8 +27,13 @@ public abstract class GenericController {
      * @return
      */
     protected String renderString(HttpServletResponse response, Object object) {
-        return renderString(response, new Gson().toJson(object), "application/json");
+        String s = renderString(response, new Gson().toJson(object), "application/json");
+        logger.info("s==============>>>>>>>"+s);
+        return s;
     }
+    /*protected String renderString(HttpServletResponse response, Object object) {
+        return renderString(response, new Gson().toJson(object), "application/json");
+    }*/
 
     /**
      * 客户端返回字符串

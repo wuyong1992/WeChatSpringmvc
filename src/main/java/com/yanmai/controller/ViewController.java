@@ -364,5 +364,10 @@ public class ViewController extends GenericController {
     }
 
 
+    @RequestMapping(value = "paySucceed")
+    public String paySucceed(){
+
+        return "paySucceed";
+    }
 
 }
