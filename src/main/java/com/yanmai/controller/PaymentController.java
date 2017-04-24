@@ -1,45 +1,29 @@
 package com.yanmai.controller;
 
 import com.github.binarywang.wxpay.bean.request.WxPayUnifiedOrderRequest;
-import com.github.binarywang.wxpay.bean.result.WxPayUnifiedOrderResult;
 import com.github.binarywang.wxpay.config.WxPayConfig;
 import com.github.binarywang.wxpay.service.WxPayService;
 import com.github.binarywang.wxpay.util.SignUtils;
 import com.google.gson.Gson;
+import com.yanmai.model.Item;
 import com.yanmai.model.User;
+import com.yanmai.service.ItemService;
 import com.yanmai.service.UserService;
-import com.yanmai.util.MD5Util;
+import com.yanmai.util.DateUtils;
 import com.yanmai.util.ReturnModel;
-import com.yanmai.util.Sha1Util;
 import com.yanmai.util.XMLUtil;
 import me.chanjar.weixin.common.exception.WxErrorException;
-import org.apache.http.HttpEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.ssl.SSLContexts;
-import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.net.ssl.SSLContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.security.KeyStore;
-import java.util.*;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
+import java.util.Date;
+import java.util.Map;
 
 /**
  * 微信支付Controller
@@ -59,37 +43,18 @@ public class PaymentController extends GenericController {
     @Autowired
     private UserService userService;
     @Autowired
+    private ItemService itemService;
+    @Autowired
     private User user;
+    @Autowired
+    private Item item;
 
-    /**
-     * 用于返回预支付的结果 WxMpPrepayIdResult，一般不需要使用此接口
-     *
-     * @param response
-     * @param request
-     * @throws WxErrorException
-     */
-    @RequestMapping(value = "getPrepayIdResult")
-    public void getPrepayId(HttpServletResponse response,
-                            HttpServletRequest request) throws WxErrorException {
-        WxPayUnifiedOrderRequest payInfo = new WxPayUnifiedOrderRequest();
-        payInfo.setOpenid(request.getParameter("openid"));
-        payInfo.setOutTradeNo(request.getParameter("out_trade_no"));
-        payInfo.setTotalFee(Integer.valueOf(request.getParameter("total_fee")));
-        payInfo.setBody(request.getParameter("body"));
-        payInfo.setTradeType(request.getParameter("trade_type"));
-        payInfo.setSpbillCreateIp(request.getParameter("spbill_create_ip"));
-        payInfo.setNotifyURL("");
-        this.logger
-                .info("PartnerKey is :" + this.payConfig.getMchKey());
-        WxPayUnifiedOrderResult result = this.payService.unifiedOrder(payInfo);
-        this.logger.info(new Gson().toJson(result));
-        renderString(response, result);
-    }
 
     /**
      * 返回前台H5调用JS支付所需要的参数，公众号支付调用此接口
      * 参数可以由数据库传入
-     *  @param response
+     *
+     * @param response
      * @param request
      */
     @ResponseBody
@@ -98,19 +63,26 @@ public class PaymentController extends GenericController {
         logger.info("=================支付接口进入================");
         ReturnModel returnModel = new ReturnModel();
         WxPayUnifiedOrderRequest prepayInfo = new WxPayUnifiedOrderRequest();
+        //获取order类
+        item = itemService.getItemInfo(1);
+
+        logger.info("item.toString()============>>>>>>>>>>>>>" + item.toString());
+        //填入需要的信息
         String openId = (String) request.getSession().getAttribute("openId");
-//        prepayInfo.setOpenid(request.getParameter("openid"));               //用户openid
+        logger.info("openId==============>>>>>>>>>>>>>>>>>>>" + openId);
         prepayInfo.setOpenid(openId);
-//        prepayInfo.setOutTradeNo(request.getParameter("out_trade_no"));     //商户订单号
-        prepayInfo.setOutTradeNo("20170422"+(int)((Math.random()*9+1)*100000));     //商户订单号
-        prepayInfo.setTotalFee(1);     //标价金额
-        prepayInfo.setBody("测试商品");                    //商品描述
+        prepayInfo.setOutTradeNo(DateUtils.getShortYMD() + (int) ((Math.random() * 9 + 1) * 100000));     //商户订单号
+        prepayInfo.setTotalFee((int) (item.getTotalFee() * 100));     //标价金额,由于标价单位为分，，数据库中金额单位是元，所以乘以100，将元转成分
+        prepayInfo.setBody(item.getBody());                    //商品描述
         prepayInfo.setTradeType("JSAPI");        //交易类型
+        //终端ip
         InetAddress addr = InetAddress.getLocalHost();
-        String IP = addr.getHostAddress().toString();
-        prepayInfo.setSpbillCreateIp(IP);         //终端ip
+        String IP = addr.getHostAddress();
+        prepayInfo.setSpbillCreateIp(IP);
         //TODO(user) 填写通知回调地址
         prepayInfo.setNotifyURL("http://b.wujixuanyi.com/wxPay/getJSSDKCallbackData");
+
+        //将需要的信息更新进数据库
 
         try {
             Map<String, String> payInfo = this.payService.getPayInfo(prepayInfo);       //这里是关键！！！
@@ -119,11 +91,11 @@ public class PaymentController extends GenericController {
 
             Gson gson = new Gson();
             String temp = gson.toJson(payInfo);
-            logger.info("temp=========>>>>>>>>>"+temp);
+            logger.info("temp=========>>>>>>>>>" + temp);
             return temp;
             /*returnModel.setResult(true);
             returnModel.setDatum(payInfo);
-            renderString(response, returnModel);*/            //TODO 返回前端的是个json类型的字符串，前段是否可以el表达式拿值？
+            renderString(response, returnModel);*/            // 返回前端的是个json类型的字符串，前段是否可以el表达式拿值？
         } catch (WxErrorException e) {
             returnModel.setResult(false);
             returnModel.setReason(e.getError().toString());
@@ -145,13 +117,34 @@ public class PaymentController extends GenericController {
         try {
             synchronized (this) {
                 Map<String, String> kvm = XMLUtil.parseRequestXmlToMap(request);
+
                 if (SignUtils.checkSign(kvm, this.payConfig.getMchKey())) {
                     if (kvm.get("result_code").equals("SUCCESS")) {
-                        //TODO(user) 微信服务器通知此回调接口支付成功后，通知给业务系统做处理
-                        /*String openid = (String) request.getSession().getAttribute("openid");
-                        user = userService.getUserinfo(openid);
-                        user.setIsMember(1);
-                        user.setVipTime(new Date());*/
+                        // 微信服务器通知此回调接口支付成功后，通知给业务系统做处理
+                        String openid = kvm.get("openid");
+                        user = userService.getUserinfo(openid);     //获取user类
+                        //判断是否为会员，如果该用户已经是会员，在其会员到期时间上再加上一年,如果不是会员，则成为会员，并有一年的期限
+                        if (user.getIsMember() == 1) {
+                            //获取到期时间,并延期一年
+                            Date oldVipEndTime = user.getVipEndTime();
+                            Date newVipEndTime = DateUtils.addDate(oldVipEndTime, 365);
+                            user.setVipEndTime(newVipEndTime);
+                            userService.updateUser(user);
+                        } else {
+                            user.setIsMember(1);                         //将该用户设置为会员
+
+                            String time_end = kvm.get("time_end");      //支付完成时间，格式为yyyyMMddHHmmss
+                            Date vipTime = DateUtils.smartFormat(time_end);
+                            user.setVipTime(vipTime);   //将支付完成时间设置为用户VIP注册时间
+                            Date vipEndTime = DateUtils.addDate(vipTime, 365);   //有效期365天
+                            user.setVipEndTime(vipEndTime);             //VIP到期时间
+
+                            user.setTransaction_id(kvm.get("transaction_id"));  //微信支付订单号
+                            user.setTotal_fee(Float.parseFloat(kvm.get("total_fee")));      //支付金额
+
+                            userService.updateUser(user);           //更新该用户
+                        }
+
                         logger.info("out_trade_no: " + kvm.get("out_trade_no") + " pay SUCCESS!");
                         response.getWriter().write("<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[ok]]></return_msg></xml>");
                     } else {
@@ -169,123 +162,5 @@ public class PaymentController extends GenericController {
         }
     }
 
-
-    @RequestMapping(value = "payToIndividual")
-    public void payToIndividual(HttpServletResponse response,
-                                HttpServletRequest request) {
-        TreeMap<String, String> map = new TreeMap<String, String>();
-        map.put("mch_appid", this.payConfig.getAppId());
-        map.put("mchid", this.payConfig.getMchId());
-        map.put("nonce_str", Sha1Util.getNonceStr());
-        map.put("partner_trade_no", request.getParameter("partner_trade_no"));
-        map.put("openid", request.getParameter("openid"));
-        map.put("check_name", "NO_CHECK");
-        map.put("amount", request.getParameter("amount"));
-        map.put("desc", request.getParameter("desc"));
-        map.put("spbill_create_ip", request.getParameter("spbill_create_ip"));
-        try {
-            Map<String, String> returnMap = enterprisePay(map,
-                    this.payConfig.getMchKey(), CERTIFICATE_LOCATION,
-                    ENTERPRISE_PAY_URL);
-            if ("SUCCESS".equals(returnMap.get("result_code").toUpperCase())
-                    && "SUCCESS"
-                    .equals(returnMap.get("return_code").toUpperCase())) {
-                this.logger.info("企业对个人付款成功！\n付款信息：\n" + returnMap.toString());
-            } else {
-                this.logger.error("err_code: " + returnMap.get("err_code")
-                        + "  err_code_des: " + returnMap.get("err_code_des"));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * 企业付款方法,传入map,
-     * 除用到上面内容外,还用到path(证书磁盘路径),key(商户支付密匙),url(接口地址)
-     *
-     * @return
-     */
-    /**
-     * @param map,根据map中的 map中包含字段
-     *                    mch_appid         微信分配的公众账号ID（企业号corpid即为此appId）
-     *                    mchid             微信支付分配的商户号
-     *                    nonce_str         随机字符串，不长于32位
-     *                    partner_trade_no  商户订单号，需保持唯一性
-     *                    openid            商户appid下，某用户的openid
-     *                    check_name        是否校验真实姓名,如果需要,则还需要传re_user_name字段    NO_CHECK：不校验真实姓名
-     *                    amount            支付金额,以分为单位
-     *                    desc              企业付款操作说明信息。必填。
-     *                    spbill_create_ip  调用接口的机器Ip地址(随便填,查询订单详情时会显示出来)
-     * @param keys        商品平台支付密匙
-     * @param paths       证书路径
-     * @param uri         接口地址
-     * @return 返回Map<String,String>
-     * @throws Exception
-     */
-    public Map<String, String> enterprisePay(Map<String, String> map, String keys, String paths, String uri) throws Exception {
-        String mchId = map.get("mchid");
-        Set<Map.Entry<String, String>> entry2 = map.entrySet();
-        StringBuilder sb = new StringBuilder();
-        for (Map.Entry<String, String> obj : entry2) {
-            String k = obj.getKey();
-            String v = obj.getValue();
-            if (null == v || "".equals(v)) continue;
-            sb.append(k).append('=').append(v).append('&');
-        }
-        sb.append("key=").append(keys);
-        String str2 = MD5Util.md5Encode(sb.toString(), "UTF-8").toUpperCase();
-        map.put("sign", str2);
-        StringBuilder builder = new StringBuilder();
-        builder.append("<xml>");
-        for (Map.Entry<String, String> entry : map.entrySet()) {
-            builder.append('<').append(entry.getKey()).append('>')
-                    .append(entry.getValue())
-                    .append("</").append(entry.getKey()).append('>');
-        }
-        builder.append("</xml>");
-        String desc = new String(builder.toString().getBytes("UTF-8"), "ISO-8859-1");
-        KeyStore keyStore = KeyStore.getInstance("PKCS12");
-        try (FileInputStream instream = new FileInputStream(new File(paths))) {
-            keyStore.load(instream, mchId.toCharArray());
-        }
-        SSLContext sslcontext = SSLContexts.custom().loadKeyMaterial(keyStore, mchId.toCharArray()).build();
-        SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslcontext, new String[]{"TLSv1"}, null, SSLConnectionSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);
-        Map<String, String> returnMap;
-        try (CloseableHttpClient httpclient = HttpClients.custom().setSSLSocketFactory(sslsf).build()) {
-            HttpPost httpPost = new HttpPost(uri);
-            StringEntity str = new StringEntity(desc);
-            httpPost.setEntity(str);
-            returnMap = getMap(httpclient, httpPost);
-        }
-        return returnMap;
-    }
-
-    private Map<String, String> getMap(CloseableHttpClient httpclient, HttpPost httpPost) throws Exception {
-        Map<String, String> returnMap;
-        try (CloseableHttpResponse response = httpclient.execute(httpPost)) {
-            returnMap = getReturnMap(response);
-        }
-        return returnMap;
-    }
-
-    private Map<String, String> getReturnMap(CloseableHttpResponse response) throws Exception {
-        Map<String, String> returnMap = new HashMap<String, String>();
-        HttpEntity entity = response.getEntity();
-        if (entity != null) {
-            try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(entity.getContent(), UTF_8))) {
-                String text = bufferedReader.readLine();
-                StringBuilder result = new StringBuilder();
-                while (null != text) {
-                    result.append(text);
-                    text = bufferedReader.readLine();
-                }
-                //调用统一接口返回的值转换为XML格式
-                returnMap = XMLUtil.parseXmlStringToMap(new String(result.toString().getBytes(UTF_8), "UTF-8"));
-            }
-        }
-        EntityUtils.consume(entity);
-        return returnMap;
-    }
 }
 

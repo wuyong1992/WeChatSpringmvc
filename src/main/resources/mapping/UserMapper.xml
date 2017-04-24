@@ -19,7 +19,7 @@
         <result column="userPortrait" property="userPortrait" jdbcType="VARCHAR" />
     </resultMap>-->
     <sql id="Base_Column_List">
-        openId, unionId, sex, language, username,wechatID, phoneNum, city, country, isSubscribe,registerTime,vipTime, isMember, userPortrait,QRcode
+        openId, unionId, sex, language, username,wechatID, phoneNum, city, country, isSubscribe,registerTime,total_fee,vipTime,vipEndTime,transaction_id, isMember, userPortrait,QRcode
     </sql>
 
 
@@ -148,8 +148,17 @@
             <if test="registerTime != null">
                 registerTime = #{registerTime},
             </if>
+            <if test="total_fee != null">
+                total_fee = #{total_fee},
+            </if>
             <if test="vipTime != null">
                 vipTime = #{vipTime},
+            </if>
+            <if test="vipEndTime != null">
+                vipEndTime = #{vipEndTime},
+            </if>
+            <if test="transaction_id != null">
+                transaction_id = #{transaction_id},
             </if>
             <if test="userPortrait != null">
                 userPortrait = #{userPortrait},

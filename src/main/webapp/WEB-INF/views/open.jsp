@@ -44,10 +44,11 @@
                                             //支付之后的页面跳转
                                             window.location.href = "http://b.wujixuanyi.com/paySucceed";
                                         } else {
-                                            question = confirm("支付失败，是否重新支付");
+                                            //alert("支付失败...")
+                                            /*question = confirm("支付失败，是否重新支付");
                                             if (question) {
                                                 pay();
-                                            }
+                                            }*/
                                             // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
                                         }
                                     }
@@ -77,7 +78,7 @@
                 },
                 onCancel: function () {
                     //取消支付
-                    alert("取消！")
+                    //alert("取消！")
                 }
             });
         }

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yanmai.mapper.ItemMapper">
+    <sql id="Base_Column_List">
+        id,body,totalFee,originalTotalFee
+    </sql>
+
+
+    <select id="selectItemById" parameterType="java.lang.Integer" resultType="com.yanmai.model.Item">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM iteminfo
+        WHERE id = #{id}
+    </select>
+
+    <update id="updateOrder" parameterType="com.yanmai.model.Item">
+        UPDATE iteminfo
+        <set>
+            <if test="body != null">
+                body = #{body},
+            </if>
+            <if test="totalFee != null">
+                totalFee = #{totalFee},
+            </if>
+            <if test="originalTotalFee != null">
+                originalTotalFee = #{originalTotalFee},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+</mapper>

@@ -11,7 +11,31 @@
 <head>
     <title>主页</title>
     <jsp:include page="${pageContext.request.contextPath}/headInfo.jsp"/>
+    <style>
+        strong,s{
+            color: red;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            var vip = ${user.isMember};
 
+            if (vip != 1) {
+                $.confirm({
+                    title: '会员到期提醒',
+                    text: "亲，您的会员免费体验期还有<strong>${betweenTime}</strong>天！开通微站，让文章带上您的名片，让客户自动找上门！，原价<s>${item.originalTotalFee}</s>元/年,本月活动惊喜价仅<strong>${item.totalFee}</strong>元！名额有限，先抢先得，随时涨价！立即支付，避免错失重要客户！",
+                    onOK: function () {
+                        //点击确认
+                        window.location.href = "http://b.wujixuanyi.com/open";
+                    },
+                    onCancel: function () {
+                        //点击取消
+                    }
+                });
+            }
+
+        })
+    </script>
 </head>
 <body style="margin-bottom: 60px">
 

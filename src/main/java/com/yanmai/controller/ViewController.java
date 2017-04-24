@@ -1,8 +1,11 @@
 package com.yanmai.controller;
 
+import com.yanmai.model.Item;
 import com.yanmai.model.User;
 import com.yanmai.service.CoreService;
+import com.yanmai.service.ItemService;
 import com.yanmai.service.UserService;
+import com.yanmai.util.DateUtils;
 import com.yanmai.util.FileUtil;
 import com.yanmai.util.StringUtil;
 import lombok.Getter;
@@ -21,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 
 /**
  * TODO 项目中controller名称和jsp名称需要最终修改
@@ -39,7 +43,11 @@ public class ViewController extends GenericController {
     @Autowired
     private UserService userService;
     @Autowired
+    private ItemService itemService;
+    @Autowired
     private User user;
+    @Autowired
+    private Item item;
 
 
     //个人信息controller
@@ -70,13 +78,24 @@ public class ViewController extends GenericController {
         ModelAndView modelAndView = new ModelAndView();
         String openId = (String) request.getSession().getAttribute("openId");
         user = userService.getUserinfo(openId);
+        item = itemService.getItemInfo(1);
         if (user != null) {
+            if (user.getIsMember() == 1) {
+                Date endTime = user.getVipEndTime();
+                String vipEndTime = DateUtils.format(endTime, "YYYY-MM-dd");
+                //计算VIP剩余时间
+                Integer betweenTime = DateUtils.diffDate(new Date(), endTime);
+                modelAndView.addObject("betweenTime", betweenTime);
+                modelAndView.addObject("vipEndTime", vipEndTime);
+            } else {
+                modelAndView.addObject("betweenTime", 0);
+            }
             modelAndView.addObject("user", user);
-            modelAndView.setViewName("userInfo");
+            modelAndView.addObject("item", item);
         } else {
             return null;
         }
-
+        modelAndView.setViewName("userInfo");
         return modelAndView;
     }
 
@@ -102,15 +121,25 @@ public class ViewController extends GenericController {
 
     //主页
     @RequestMapping(value = "main")
-    public String goIndex(HttpServletRequest request) {
+    public ModelAndView goIndex(HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView();
         String openId = (String) request.getSession().getAttribute("openId");
         user = userService.getUserinfo(openId);
+        item = itemService.getItemInfo(1);
         if (user != null) {
-            request.getSession().setAttribute("user", user);
-        } else {
-            return "请关注该公众号";
+            if (user.getIsMember() == 1) {
+                Date endTime = user.getVipEndTime();
+                //计算VIP剩余时间
+                Integer betweenTime = DateUtils.diffDate(new Date(), endTime);
+                modelAndView.addObject("betweenTime", betweenTime);
+            } else {
+                modelAndView.addObject("betweenTime", 0);
+            }
+            modelAndView.addObject("user", user);
+            modelAndView.addObject("item", item);
         }
-        return "index";
+        modelAndView.setViewName("index");
+        return modelAndView;
     }
 
     //联系我们controller 菜单进入，获取授权code
@@ -275,9 +304,9 @@ public class ViewController extends GenericController {
         modelAndView.setViewName("userInfo");
 
         String serverId = request.getParameter("serverIds");
-        logger.info("serverId===================>"+serverId);
+        logger.info("serverId===================>" + serverId);
 
-        if ("".equals(serverId)){
+        if ("".equals(serverId)) {
             return modelAndView;
         }
 
@@ -365,7 +394,7 @@ public class ViewController extends GenericController {
 
 
     @RequestMapping(value = "paySucceed")
-    public String paySucceed(){
+    public String paySucceed() {
 
         return "paySucceed";
     }

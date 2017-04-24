@@ -21,14 +21,16 @@ public class User {
     private String username;        //用户姓名
     private String wechatID;      //用户微信号
     private Long phoneNum;          //手机号
-    //private Long yanMaiNum;         //雁脉号
     //private String superior;        //父级推广人，占时不涉及
     private String city;             //拼接所在城市
     private String country;         //国家
     private int isSubscribe;        //是否关注
     private int isMember;           //是否为会员，1表示是，0表示否
     private Date registerTime;      //注册时间
+    private float total_fee;          //充值金额
     private Date vipTime;           //VIP充值时间
+    private Date vipEndTime;        //VIP到期时间
+    private String transaction_id;  //微信订单流水号
     private String userPortrait;   //用户头像地址
     private String QRcode;          //用户二维码地址
 

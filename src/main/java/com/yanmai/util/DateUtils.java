@@ -521,6 +521,9 @@ public class DateUtils {
         long endMillis = endDate.getTime();
         long startMillis = startDate.getTime();
         long s = (endMillis - startMillis) / (24 * 3600 * 1000);
+        if (s <= 0) {
+            return 0;
+        }
         return (int) s;
     }
 
