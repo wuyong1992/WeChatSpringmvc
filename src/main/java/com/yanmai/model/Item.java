@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 /**
+ * 商品类
  * Created by admin on 2017/4/21.
  */
 @Component

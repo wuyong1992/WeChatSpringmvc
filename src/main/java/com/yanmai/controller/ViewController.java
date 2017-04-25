@@ -393,10 +393,13 @@ public class ViewController extends GenericController {
     }
 
 
+    //支付成功跳转的页面
     @RequestMapping(value = "paySucceed")
     public String paySucceed() {
 
         return "paySucceed";
     }
+
+
 
 }

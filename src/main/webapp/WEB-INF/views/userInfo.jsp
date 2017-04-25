@@ -91,7 +91,7 @@
         <div class="weui-cell__ft"></div>
     </a>
 
-    <a class="weui-cell weui-cell_access" href="javascript:;">
+    <a class="weui-cell weui-cell_access" href="/ToPlacard">
         <div class="weui-cell__hd"><img src="${pageContext.request.contextPath}/images/3.png" alt="" style="width:40px;margin-right:5px;display:block"></div>
         <div class="weui-cell__bd">
             <p>海报中心</p>

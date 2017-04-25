@@ -51,7 +51,7 @@ public class MenuConfig {
         WxMenuButton wxMenuButton3_1 = new WxMenuButton();
         wxMenuButton3_1.setName("我的海报");
         wxMenuButton3_1.setType(WxConsts.BUTTON_VIEW);
-        wxMenuButton3_1.setUrl("https://www.baidu.com/");
+        wxMenuButton3_1.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd94942f3d437c924&redirect_uri=http%3A%2F%2Fb.wujixuanyi.com%2FgoPlacard&response_type=code&scope=snsapi_base#wechat_redirect15:02:54.340 [Thread-2] INFO com.alibaba.druid.pool.DruidDataSource - {dataSource-1} closed");
         WxMenuButton wxMenuButton3_2 = new WxMenuButton();
         wxMenuButton3_2.setName("个人中心");
         wxMenuButton3_2.setType(WxConsts.BUTTON_VIEW);
@@ -93,7 +93,7 @@ public class MenuConfig {
 
     /*@Test
     public void getUrl() throws WxErrorException {
-        String url = wxMpService.oauth2buildAuthorizationUrl("http://b.wujixuanyi.com/goOpen", WxConsts.OAUTH2_SCOPE_BASE, null);
+        String url = wxMpService.oauth2buildAuthorizationUrl("http://b.wujixuanyi.com/goPlacard", WxConsts.OAUTH2_SCOPE_BASE, null);
         System.out.print(url);
     }*/
 

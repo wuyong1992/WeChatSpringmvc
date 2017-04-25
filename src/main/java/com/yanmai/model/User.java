@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 
 /**
+ * 用户类
  * Created by admin on 2017/4/5.
  */
 @Component

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yanmai.mapper.PlacardMapper">
+
+    <sql id="Base_Column_List">
+       id,address,scaleAddress,pressWidth,pressHeight,imgX,imgY,QRcodeX,QRcodeY
+    </sql>
+
+
+    <select id="selectPlacardById" parameterType="java.lang.Integer" resultType="com.yanmai.model.Placard">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM placard
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectAllPlacard" resultType="com.yanmai.model.Placard">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM placard
+    </select>
+
+    <insert id="addPlacard" parameterType="com.yanmai.model.Placard">
+        INSERT INTO userinfo
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="address != null">
+                address,
+            </if>
+            <if test="scaleAddress != null">
+                scaleAddress,
+            </if>
+            <if test="pressWidth != null">
+                pressWidth,
+            </if>
+            <if test="pressHeight != null">
+                pressHeight,
+            </if>
+            <if test="imgX != null">
+                imgX,
+            </if>
+            <if test="imgY != null">
+                imgY,
+            </if>
+            <if test="QRcodeX != null">
+                QRcodeX,
+            </if>
+            <if test="QRcodeY != null">
+                QRcodeY,
+            </if>
+        </trim>
+
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="address != null">
+                #{address},
+            </if>
+            <if test="scaleAddress != null">
+                #{scaleAddress},
+            </if>
+            <if test="pressWidth != null">
+                #{pressWidth},
+            </if>
+            <if test="pressHeight != null">
+                #{pressHeight},
+            </if>
+            <if test="imgX != null">
+                #{imgX},
+            </if>
+            <if test="imgY != null">
+                #{imgY},
+            </if>
+            <if test="QRcodeX != null">
+                #{QRcodeX},
+            </if>
+            <if test="QRcodeY != null">
+                #{QRcodeY},
+            </if>
+        </trim>
+    </insert>
+
+
+    <update id="updatePlacard" parameterType="com.yanmai.model.Placard">
+        UPDATE userinfo
+        <set>
+            <if test="address != null">
+                address = #{address},
+            </if>
+            <if test="scaleAddress != null">
+                scaleAddress = #{scaleAddress},
+            </if>
+            <if test="pressWidth != null">
+                pressWidth = #{pressWidth},
+            </if>
+            <if test="pressHeight != null">
+                pressHeight = #{pressHeight},
+            </if>
+            <if test="imgX != null">
+                imgX = #{imgX},
+            </if>
+            <if test="imgY != null">
+                imgY = #{imgY},
+            </if>
+            <if test="QRcodeX != null">
+                QRcodeX = #{QRcodeX},
+            </if>
+            <if test="QRcodeY != null">
+                QRcodeY = #{QRcodeY},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+</mapper>
