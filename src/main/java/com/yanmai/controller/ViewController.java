@@ -242,7 +242,7 @@ public class ViewController extends GenericController {
         //二维码名称
         String fileName = file.getName();
 
-        //将二维码放到复制到webapp目录下的img文件，方便访问
+        //将二维码放到复制到webapp目录下的QRcode文件，方便访问
         //目标位置
         String destPath = "C:\\apache-tomcat-8.0.14\\webapps\\QRcode";
 
@@ -261,7 +261,7 @@ public class ViewController extends GenericController {
             FileUtils.deleteQuietly(file1);
         }
 
-        //更新数据库中的头像地址
+        //更新数据库中的二维码地址
         user.setQRcode("http://b.wujixuanyi.com/QRcode/" + fileName);
         userService.updateUser(user);
 
@@ -401,5 +401,17 @@ public class ViewController extends GenericController {
     }
 
 
+    //分享该公众号界面
+    @RequestMapping(value = "goShareQRcode")
+    public ModelAndView shareQRcode(HttpServletRequest request) {
 
+        ModelAndView modelAndView = new ModelAndView();
+        String openId = (String) request.getSession().getAttribute("openId");
+        user = userService.getUserinfo(openId);
+        modelAndView.addObject("user", user);
+        modelAndView.setViewName("shareQRcode");
+        return modelAndView;
+
+
+    }
 }

@@ -121,6 +121,9 @@ public class CoreServiceImpl implements CoreService {
         newRouter.rule().async(false).msgType(WxConsts.XML_MSG_EVENT)
                 .event(WxConsts.EVT_CLICK).handler(this.menuHandler)
                 .end();
+
+        //扫码关注事件
+
         // 默认,转发消息给客服人员
         newRouter.rule().async(false).handler(this.msgHandler).end();
         this.router = newRouter;

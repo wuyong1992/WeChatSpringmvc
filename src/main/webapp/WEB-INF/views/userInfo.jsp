@@ -75,6 +75,13 @@
 <%--个人信息--%>
 <div class="weui-cells" style="margin-bottom: 50px">
 
+    <a class="weui-cell weui-cell_access" href="/goShareQRcode">
+        <div class="weui-cell__hd"><img src="${pageContext.request.contextPath}/images/1.png" style="width:40px;margin-right:5px;display:block"></div>
+        <div class="weui-cell__bd">
+            <p>分享公众号，赢取积分</p>
+        </div>
+        <div class="weui-cell__ft"></div>
+    </a>
     <a class="weui-cell weui-cell_access" href="/open">
         <div class="weui-cell__hd"><img src="${pageContext.request.contextPath}/images/1.png" style="width:40px;margin-right:5px;display:block"></div>
         <div class="weui-cell__bd">

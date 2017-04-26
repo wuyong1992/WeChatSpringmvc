@@ -58,7 +58,7 @@
 <div class="weui-flex">
     <c:forEach items="${placards}" var="placard" varStatus="status">
 
-        <div class="weui-flex__item"><img src="${placard.scaleAddress}" style="width: 100%;margin: 10px"></div>
+        <div class="weui-flex__item"><img src="${placard.scaleAddress}" style="width: 800%;margin: 10px"></div>
 
         <%--<img src="${placard.scaleAddress}" style="width: 100%">--%>
 
