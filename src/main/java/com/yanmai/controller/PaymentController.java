@@ -6,8 +6,10 @@ import com.github.binarywang.wxpay.service.WxPayService;
 import com.github.binarywang.wxpay.util.SignUtils;
 import com.google.gson.Gson;
 import com.yanmai.model.Item;
+import com.yanmai.model.Order;
 import com.yanmai.model.User;
 import com.yanmai.service.ItemService;
+import com.yanmai.service.OrderService;
 import com.yanmai.service.UserService;
 import com.yanmai.util.DateUtils;
 import com.yanmai.util.ReturnModel;
@@ -31,10 +33,6 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "wxPay")
 public class PaymentController extends GenericController {
-    //企业向个人转账微信API路径
-    private static final String ENTERPRISE_PAY_URL = "https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers";
-    //apiclient_cert.p12证书存放路径
-    private static final String CERTIFICATE_LOCATION = "";
 
     @Autowired
     protected WxPayConfig payConfig;
@@ -45,9 +43,13 @@ public class PaymentController extends GenericController {
     @Autowired
     private ItemService itemService;
     @Autowired
+    private OrderService orderService;
+    @Autowired
     private User user;
     @Autowired
     private Item item;
+    @Autowired
+    private Order order;
 
 
     /**
@@ -129,6 +131,8 @@ public class PaymentController extends GenericController {
                             Date oldVipEndTime = user.getVipEndTime();
                             Date newVipEndTime = DateUtils.addDate(oldVipEndTime, 365);
                             user.setVipEndTime(newVipEndTime);
+                            //支付金额累计
+                            user.setTotal_fee(Float.parseFloat(kvm.get("total_fee"))/100+user.getTotal_fee());
                             userService.updateUser(user);
                         } else {
                             user.setIsMember(1);                         //将该用户设置为会员
@@ -139,11 +143,21 @@ public class PaymentController extends GenericController {
                             Date vipEndTime = DateUtils.addDate(vipTime, 365);   //有效期365天
                             user.setVipEndTime(vipEndTime);             //VIP到期时间
 
-                            user.setTransaction_id(kvm.get("transaction_id"));  //微信支付订单号
+//                            user.setTransaction_id(kvm.get("transaction_id"));  //微信支付订单号
                             user.setTotal_fee(Float.parseFloat(kvm.get("total_fee")));      //支付金额
 
                             userService.updateUser(user);           //更新该用户
                         }
+
+                        //将该次充值记录到order表中
+                        order.setOpenId(openid);
+                        order.setUsername(user.getUsername());
+                        order.setWechatID(user.getWechatID());
+                        order.setPhoneNum(user.getPhoneNum());
+                        order.setTransaction_id(kvm.get("transaction_id"));
+                        order.setTotal_fee(Float.parseFloat(kvm.get("total_fee"))/100);
+                        order.setVipTime(DateUtils.smartFormat(kvm.get("time_end")));
+                        orderService.addOrder(order);
 
                         logger.info("out_trade_no: " + kvm.get("out_trade_no") + " pay SUCCESS!");
                         response.getWriter().write("<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[ok]]></return_msg></xml>");

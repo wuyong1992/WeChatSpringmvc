@@ -54,13 +54,13 @@
 </div>
 
 
-<%--TODO 海报排版 如何排出四个一行--%>
+<%--海报排版 四个一行--%>
 <div class="weui-flex">
     <c:forEach items="${placards}" var="placard" varStatus="status">
 
-        <div class="weui-flex__item"><img src="${placard.scaleAddress}" style="width: 800%;margin: 10px"></div>
-
-        <%--<img src="${placard.scaleAddress}" style="width: 100%">--%>
+        <div class="weui-flex__item">
+            <img src="${placard.scaleAddress}" style="width: 800%;margin: 10px">
+        </div>
 
         <c:if test="${status.count % 4 == 0}">
             </div>

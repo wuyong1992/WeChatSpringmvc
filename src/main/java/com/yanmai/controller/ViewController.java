@@ -384,8 +384,7 @@ public class ViewController extends GenericController {
             user.setCity(city);
         }
         if (!"".equals(phone.trim())) {
-            Long phoneNum = Long.parseLong(phone);
-            user.setPhoneNum(phoneNum);
+            user.setPhoneNum(phone);
         }
         userService.updateUser(user);
 

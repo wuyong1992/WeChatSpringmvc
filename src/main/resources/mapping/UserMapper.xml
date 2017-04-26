@@ -6,7 +6,7 @@
     </resultMap>-->
     <sql id="Base_Column_List">
         openId, unionId, sex, language, username,wechatID, phoneNum, city, country,
-        isSubscribe,registerTime,total_fee,vipTime,vipEndTime,transaction_id, isMember,
+        isSubscribe,registerTime,total_fee,vipTime,vipEndTime,isMember,
         points,userPortrait,QRcode,superior,shareQRcode
     </sql>
 
@@ -165,9 +165,6 @@
             </if>
             <if test="vipEndTime != null">
                 vipEndTime = #{vipEndTime},
-            </if>
-            <if test="transaction_id != null">
-                transaction_id = #{transaction_id},
             </if>
             <if test="userPortrait != null">
                 userPortrait = #{userPortrait},

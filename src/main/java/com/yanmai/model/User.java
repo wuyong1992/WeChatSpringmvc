@@ -21,7 +21,7 @@ public class User {
     private String language;        //语言，默认zh_CN
     private String username;        //用户姓名
     private String wechatID;      //用户微信号
-    private Long phoneNum;          //手机号
+    private String phoneNum;          //手机号
     private String city;             //拼接所在城市
     private String country;         //国家
     private int isSubscribe;        //是否关注
@@ -31,8 +31,6 @@ public class User {
     private float total_fee;          //充值总金额
     private Date vipTime;           //VIP充值时间
     private Date vipEndTime;        //VIP到期时间
-//    TODO 将流水号去除，放到订单类里面
-    private String transaction_id;  //微信订单流水号
     private String userPortrait;   //用户头像地址
     private String QRcode;          //用户二维码地址
     private String superior;        //父级推广人，占时不涉及

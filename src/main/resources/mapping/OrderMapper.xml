@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yanmai.mapper.OrderMapper">
+
+    <sql id="Base_Column_List">
+        id,openId,username,wechatID,phoneNum,transaction_id,total_fee,vipTime
+    </sql>
+
+
+    <select id="selectOrdreByOpenId" parameterType="java.lang.String" resultType="com.yanmai.model.Order">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM orders
+        WHERE openId = #{openId}
+    </select>
+
+    <select id="selectAllOrder" resultType="com.yanmai.model.Order">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM orders
+    </select>
+
+    <insert id="addOrder" parameterType="com.yanmai.model.Order">
+        INSERT INTO orders
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="openId != null">
+                openId,
+            </if>
+            <if test="username != null">
+                username,
+            </if>
+            <if test="wechatID != null">
+                wechatID,
+            </if>
+            <if test="phoneNum != null">
+                phoneNum,
+            </if>
+            <if test="transaction_id != null">
+                transaction_id,
+            </if>
+            <if test="total_fee != null">
+                total_fee,
+            </if>
+            <if test="vipTime != null">
+                vipTime,
+            </if>
+        </trim>
+
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="openId != null">
+                #{openId},
+            </if>
+            <if test="username != null">
+                #{username},
+            </if>
+            <if test="wechatID != null">
+                #{wechatID},
+            </if>
+            <if test="phoneNum != null">
+                #{phoneNum},
+            </if>
+            <if test="transaction_id != null">
+                #{transaction_id},
+            </if>
+            <if test="total_fee != null">
+                #{total_fee},
+            </if>
+            <if test="vipTime != null">
+                #{vipTime},
+            </if>
+        </trim>
+    </insert>
+
+</mapper>
