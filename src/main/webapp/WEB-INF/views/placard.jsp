@@ -59,7 +59,7 @@
     <c:forEach items="${placards}" var="placard" varStatus="status">
 
         <div class="weui-flex__item">
-            <img src="${placard.scaleAddress}" style="width: 800%;margin: 10px">
+            <img src="${placard.scaleAddress}" style="width: 80%;margin: 10px">
         </div>
 
         <c:if test="${status.count % 4 == 0}">
