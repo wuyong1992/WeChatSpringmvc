@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>测试水印</title>
+    <script src="jquery.min.js"></script>
+    <style>
+
+        .d1 {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+        }
+
+        .d2 {
+            position: relative;
+            width: 50px;
+            height: 50px;
+            z-index: 1;
+            left: 10%;
+            top: 80%;
+        }
+
+    </style>
+
+
+</head>
+<body>
+<div style="width: 50%;height:200px;margin: 0 auto">
+
+    <div class="d1">
+        <img src="sucai.png">
+    </div>
+    <div class="d2" style="display: none" id="div2">
+        <img src="button01.png" alt="" class="i2">
+        <p style="margin: 0px">
+            hahahahha
+        </p>
+    </div>
+
+</div>
+
+<div>
+    <button id="but">点击</button>
+</div>
+
+<script>
+    $("#but").click(function(){
+        $("#div2").css("display","");
+    });
+</script>
+</body>
+</html>

@@ -34,10 +34,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean isUser(String openid) {
         User user = this.getUserinfo(openid);
-        if (user != null) {
+        /*if (user != null) {
             return true;
-        }
-        return false;
+        }*/
+        return user != null;
     }
 
     @Override
