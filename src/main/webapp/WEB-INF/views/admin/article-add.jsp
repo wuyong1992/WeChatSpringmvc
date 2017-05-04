@@ -11,6 +11,7 @@
     <!--/meta 作为公共模版分离出去-->
     <jsp:include page="_meta.jsp"/>
     <title>新增文章</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/lib/ueditor/1.4.3/themes/default/css/ueditor.min.css">
 </head>
 <body>
 <!--_header 作为公共模版分离出去-->
@@ -58,15 +59,15 @@
                     <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>文章类型：</label>
                     <div class="formControls col-xs-8 col-sm-9" >
                         <div style="width: 30%;margin-right: 20px;text-align: center;display: inline-block">
-                            <img src="${pageContext.request.contextPath}/img/TextType1.png" alt="" style="width: 100%"><br>
+                            <img src="${pageContext.request.contextPath}/images/TextType1.png" alt="" style="width: 100%"><br>
                             <input type="radio" name="article">
                         </div>
                         <div style="width: 30%;margin-right: 20px;text-align: center;display: inline-block">
-                            <img src="${pageContext.request.contextPath}/img/TextType2.png" alt="" style="width: 100%"><br>
+                            <img src="${pageContext.request.contextPath}/images/TextType2.png" alt="" style="width: 100%"><br>
                             <input type="radio" name="article">
                         </div>
                         <div style="width: 30%;text-align: center;display: inline-block">
-                            <img src="${pageContext.request.contextPath}/img/TextType3.png" alt="" style="width: 100%"><br>
+                            <img src="${pageContext.request.contextPath}/images/TextType3.png" alt="" style="width: 100%"><br>
                             <input type="radio" name="article">
                         </div>
                     </div>

@@ -4,7 +4,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 // 
-//      http:// tangram.baidu.com/license.html
+//      http:// tangram.com.baidu.com/license.html
 // 
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS-IS" BASIS,
@@ -43,7 +43,7 @@ baidu.dom = baidu.dom || {};
  * 从文档中获取指定的DOM元素
  * @name baidu.dom.g
  * @function
- * @grammar baidu.dom.g(id)
+ * @grammar com.baidu.dom.g(id)
  * @param {string|HTMLElement} id 元素的id或DOM元素.
  * @shortcut g,T.G
  * @meta standard
@@ -75,7 +75,7 @@ baidu.array = baidu.array || {};
  * 遍历数组中所有元素
  * @name baidu.array.each
  * @function
- * @grammar baidu.array.each(source, iterator[, thisObject])
+ * @grammar com.baidu.array.each(source, iterator[, thisObject])
  * @param {Array} source 需要遍历的数组
  * @param {Function} iterator 对每个数组元素进行调用的函数，该函数有两个参数，第一个为数组元素，第二个为数组索引值，function (item, index)。
  * @param {Object} [thisObject] 函数调用时的this指针，如果没有此参数，默认是当前遍历的数组
@@ -114,7 +114,7 @@ baidu.lang = baidu.lang || {};
  * 判断目标参数是否为function或Function实例
  * @name baidu.lang.isFunction
  * @function
- * @grammar baidu.lang.isFunction(source)
+ * @grammar com.baidu.lang.isFunction(source)
  * @param {Any} source 目标参数
  * @version 1.2
  * @see baidu.lang.isString,baidu.lang.isObject,baidu.lang.isNumber,baidu.lang.isArray,baidu.lang.isElement,baidu.lang.isBoolean,baidu.lang.isDate
@@ -129,7 +129,7 @@ baidu.lang.isFunction = function (source) {
  * 判断目标参数是否string类型或String对象
  * @name baidu.lang.isString
  * @function
- * @grammar baidu.lang.isString(source)
+ * @grammar com.baidu.lang.isString(source)
  * @param {Any} source 目标参数
  * @shortcut isString
  * @meta standard
@@ -153,7 +153,7 @@ baidu.browser = baidu.browser || {};
 /**
  * 判断是否为opera浏览器
  * @property opera opera版本号
- * @grammar baidu.browser.opera
+ * @grammar com.baidu.browser.opera
  * @meta standard
  * @see baidu.browser.ie,baidu.browser.firefox,baidu.browser.safari,baidu.browser.chrome
  * @returns {Number} opera版本号
@@ -171,7 +171,7 @@ baidu.browser.opera = /opera(\/| )(\d+(\.\d+)?)(.+?(version\/(\d+(\.\d+)?)))?/i.
  * 在目标元素的指定位置插入HTML代码
  * @name baidu.dom.insertHTML
  * @function
- * @grammar baidu.dom.insertHTML(element, position, html)
+ * @grammar com.baidu.dom.insertHTML(element, position, html)
  * @param {HTMLElement|string} element 目标元素或目标元素的id
  * @param {string} position 插入html的位置信息，取值为beforeBegin,afterBegin,beforeEnd,afterEnd
  * @param {string} html 要插入的html
@@ -219,7 +219,7 @@ baidu.swf = baidu.swf || {};
 /**
  * 浏览器支持的flash插件版本
  * @property version 浏览器支持的flash插件版本
- * @grammar baidu.swf.version
+ * @grammar com.baidu.swf.version
  * @return {String} 版本号
  * @meta standard
  */
@@ -256,7 +256,7 @@ baidu.string = baidu.string || {};
  * 对目标字符串进行html编码
  * @name baidu.string.encodeHTML
  * @function
- * @grammar baidu.string.encodeHTML(source)
+ * @grammar com.baidu.string.encodeHTML(source)
  * @param {string} source 目标字符串
  * @remark
  * 编码字符有5个：&<>"'
@@ -281,7 +281,7 @@ baidu.encodeHTML = baidu.string.encodeHTML;
  * 创建flash对象的html字符串
  * @name baidu.swf.createHTML
  * @function
- * @grammar baidu.swf.createHTML(options)
+ * @grammar com.baidu.swf.createHTML(options)
  * 
  * @param {Object} 	options 					创建flash的选项参数
  * @param {string} 	options.id 					要创建的flash的标识
@@ -424,7 +424,7 @@ baidu.swf.createHTML = function (options) {
  * 在页面中创建一个flash对象
  * @name baidu.swf.create
  * @function
- * @grammar baidu.swf.create(options[, container])
+ * @grammar com.baidu.swf.create(options[, container])
  * 
  * @param {Object} 	options 					创建flash的选项参数
  * @param {string} 	options.id 					要创建的flash的标识
@@ -470,7 +470,7 @@ baidu.swf.create = function (options, target) {
  * 判断是否为ie浏览器
  * @name baidu.browser.ie
  * @field
- * @grammar baidu.browser.ie
+ * @grammar com.baidu.browser.ie
  * @returns {Number} IE版本号
  */
 baidu.browser.ie = baidu.ie = /msie (\d+\.\d+)/i.test(navigator.userAgent) ? (document.documentMode || + RegExp['\x241']) : undefined;
@@ -479,7 +479,7 @@ baidu.browser.ie = baidu.ie = /msie (\d+\.\d+)/i.test(navigator.userAgent) ? (do
  * 移除数组中的项
  * @name baidu.array.remove
  * @function
- * @grammar baidu.array.remove(source, match)
+ * @grammar com.baidu.array.remove(source, match)
  * @param {Array} source 需要移除项的数组
  * @param {Any} match 要移除的项
  * @meta standard
@@ -502,7 +502,7 @@ baidu.array.remove = function (source, match) {
  * 判断目标参数是否Array对象
  * @name baidu.lang.isArray
  * @function
- * @grammar baidu.lang.isArray(source)
+ * @grammar com.baidu.lang.isArray(source)
  * @param {Any} source 目标参数
  * @meta standard
  * @see baidu.lang.isString,baidu.lang.isObject,baidu.lang.isNumber,baidu.lang.isElement,baidu.lang.isBoolean,baidu.lang.isDate
@@ -519,7 +519,7 @@ baidu.lang.isArray = function (source) {
  * 将一个变量转换成array
  * @name baidu.lang.toArray
  * @function
- * @grammar baidu.lang.toArray(source)
+ * @grammar com.baidu.lang.toArray(source)
  * @param {mix} source 需要转换成array的变量
  * @version 1.3
  * @meta standard
@@ -547,7 +547,7 @@ baidu.lang.toArray = function (source) {
  * 获得flash对象的实例
  * @name baidu.swf.getMovie
  * @function
- * @grammar baidu.swf.getMovie(name)
+ * @grammar com.baidu.swf.getMovie(name)
  * @param {string} name flash对象的名称
  * @see baidu.swf.create
  * @meta standard
@@ -754,7 +754,7 @@ baidu.flash._Base = (function(){
 /**
  * 创建flash based imageUploader
  * @class
- * @grammar baidu.flash.imageUploader(options)
+ * @grammar com.baidu.flash.imageUploader(options)
  * @param {Object} createOptions 创建flash时需要的参数，请参照baidu.swf.create文档
  * @config {Object} vars 创建imageUploader时所需要的参数
  * @config {Number} vars.gridWidth 每一个预览图片所占的宽度，应该为flash寛的整除
@@ -830,7 +830,7 @@ baidu.object = baidu.object || {};
  * @author erik
  * @name baidu.object.extend
  * @function
- * @grammar baidu.object.extend(target, source)
+ * @grammar com.baidu.object.extend(target, source)
  * @param {Object} target 目标对象
  * @param {Object} source 源对象
  * @see baidu.array.merge
@@ -862,7 +862,7 @@ baidu.object.extend = function (target, source) {
 /**
  * 创建flash based fileUploader
  * @class
- * @grammar baidu.flash.fileUploader(options)
+ * @grammar com.baidu.flash.fileUploader(options)
  * @param {Object} options
  * @config {Object} createOptions 创建flash时需要的参数，请参照baidu.swf.create文档
  * @config {String} createOptions.width
@@ -1088,7 +1088,7 @@ baidu.sio._removeScriptTag = function(scr){
  * 通过script标签加载数据，加载完成由浏览器端触发回调
  * @name baidu.sio.callByBrowser
  * @function
- * @grammar baidu.sio.callByBrowser(url, opt_callback, opt_options)
+ * @grammar com.baidu.sio.callByBrowser(url, opt_callback, opt_options)
  * @param {string} url 加载数据的url
  * @param {Function|string} opt_callback 数据加载结束时调用的函数或函数名
  * @param {Object} opt_options 其他可选项
@@ -1144,7 +1144,7 @@ baidu.sio.callByBrowser = function (url, opt_callback, opt_options) {
  * 通过script标签加载数据，加载完成由服务器端触发回调
  * @name baidu.sio.callByServer
  * @function
- * @grammar baidu.sio.callByServer(url, callback[, opt_options])
+ * @grammar com.baidu.sio.callByServer(url, callback[, opt_options])
  * @param {string} url 加载数据的url.
  * @param {Function|string} callback 服务器端调用的函数或函数名。如果没有指定本参数，将在URL中寻找options['queryField']做为callback的方法名.
  * @param {Object} opt_options 加载数据时的选项.
@@ -1217,7 +1217,7 @@ baidu.sio.callByServer = /**@function*/function(url, callback, opt_options) {
 /**
  * 通过请求一个图片的方式令服务器存储一条日志
  * @function
- * @grammar baidu.sio.log(url)
+ * @grammar com.baidu.sio.log(url)
  * @param {string} url 要发送的地址.
  * @author: int08h,leeight
  */
@@ -1242,7 +1242,7 @@ baidu.sio.log = function(url) {
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
  * 
- * path: baidu/json.js
+ * path: com.baidu/json.js
  * author: erik
  * version: 1.1.0
  * date: 2009/12/02
@@ -1258,7 +1258,7 @@ baidu.json = baidu.json || {};
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
  * 
- * path: baidu/json/parse.js
+ * path: com.baidu/json/parse.js
  * author: erik, berg
  * version: 1.2
  * date: 2009/11/23
@@ -1270,7 +1270,7 @@ baidu.json = baidu.json || {};
  * 将字符串解析成json对象。注：不会自动祛除空格
  * @name baidu.json.parse
  * @function
- * @grammar baidu.json.parse(data)
+ * @grammar com.baidu.json.parse(data)
  * @param {string} source 需要解析的字符串
  * @remark
  * 该方法的实现与ecma-262第五版中规定的JSON.parse不同，暂时只支持传入一个参数。后续会进行功能丰富。
@@ -1287,7 +1287,7 @@ baidu.json.parse = function (data) {
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
  * 
- * path: baidu/json/decode.js
+ * path: com.baidu/json/decode.js
  * author: erik, cat
  * version: 1.3.4
  * date: 2010/12/23
@@ -1299,7 +1299,7 @@ baidu.json.parse = function (data) {
  * 将字符串解析成json对象，为过时接口，今后会被baidu.json.parse代替
  * @name baidu.json.decode
  * @function
- * @grammar baidu.json.decode(source)
+ * @grammar com.baidu.json.decode(source)
  * @param {string} source 需要解析的字符串
  * @meta out
  * @see baidu.json.encode,baidu.json.parse
@@ -1311,7 +1311,7 @@ baidu.json.decode = baidu.json.parse;
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
  * 
- * path: baidu/json/stringify.js
+ * path: com.baidu/json/stringify.js
  * author: erik
  * version: 1.1.0
  * date: 2010/01/11
@@ -1323,7 +1323,7 @@ baidu.json.decode = baidu.json.parse;
  * 将json对象序列化
  * @name baidu.json.stringify
  * @function
- * @grammar baidu.json.stringify(value)
+ * @grammar com.baidu.json.stringify(value)
  * @param {JSON} value 需要序列化的json对象
  * @remark
  * 该方法的实现与ecma-262第五版中规定的JSON.stringify不同，暂时只支持传入一个参数。后续会进行功能丰富。
@@ -1473,7 +1473,7 @@ baidu.json.stringify = (function () {
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
  * 
- * path: baidu/json/encode.js
+ * path: com.baidu/json/encode.js
  * author: erik, cat
  * version: 1.3.4
  * date: 2010/12/23
@@ -1485,7 +1485,7 @@ baidu.json.stringify = (function () {
  * 将json对象序列化，为过时接口，今后会被baidu.json.stringify代替
  * @name baidu.json.encode
  * @function
- * @grammar baidu.json.encode(value)
+ * @grammar com.baidu.json.encode(value)
  * @param {JSON} value 需要序列化的json对象
  * @meta out
  * @see baidu.json.decode,baidu.json.stringify

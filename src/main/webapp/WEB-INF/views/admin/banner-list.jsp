@@ -65,7 +65,7 @@
                                      src="${pageContext.request.contextPath}/temp/200x150.jpg">
                             </a>
                         </td>
-                        <td>http://www.baidu.com</td>
+                        <td>http://www.com.baidu.com</td>
                         <td>1</td>
                         <td class="td-status"><span class="label label-success radius">已发布</span></td>
                         <td class="td-manage">

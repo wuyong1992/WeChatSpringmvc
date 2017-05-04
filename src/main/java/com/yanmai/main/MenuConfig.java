@@ -59,7 +59,7 @@ public class MenuConfig {
         WxMenuButton wxMenuButton3_3 = new WxMenuButton();
         wxMenuButton3_3.setName("我的订单");
         wxMenuButton3_3.setType(WxConsts.BUTTON_VIEW);
-        wxMenuButton3_3.setUrl("https://www.baidu.com/");
+        wxMenuButton3_3.setUrl("https://www.com.baidu.com/");
         WxMenuButton wxMenuButton3_4 = new WxMenuButton();
         wxMenuButton3_4.setName("人工客服");
         wxMenuButton3_4.setType(WxConsts.BUTTON_CLICK);
