@@ -53,6 +53,8 @@
 
     <!--设置不拦截静态资源-->
     <mvc:default-servlet-handler/>
+    <!--<mvc:resources location="/lib/" mapping="/**"/>-->
+
 
     <!-- 会自动注册DefaultAnnotationHandlerMapping与AnnotationMethodHandlerAdapter 两个bean,是spring MVC为@Controllers分发请求所必须的 -->
     <mvc:annotation-driven/>
