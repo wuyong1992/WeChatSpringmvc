@@ -11,16 +11,38 @@
 <head>
     <title>测试页</title>
     <jsp:include page="${pageContext.request.contextPath}/headInfo.jsp"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/lib/wangEditor/css/wangEditor.min.css">
 </head>
 <body>
-<h3>
-    ok!
-    <%--测试jquery是否引入成功--%>
-    <%--<script>
-        $(function () {
-            alert("hahaha")
-        })
-    </script>--%>
-</h3>
+<%--ok!--%>
+<%--测试jquery是否引入成功--%>
+<%--<script>
+    $(function () {
+        alert("hahaha")
+    })
+</script>--%>
+
+<div>
+    <form action="/admin/test" enctype="multipart/form-data">
+        <p>请输入内容</p>
+        <textarea id="editor" name="editorValue" style="height: 500px;width: 100%"></textarea>
+        <input type="submit" value="提交">
+    </form>
+</div>
+
+<script src="${pageContext.request.contextPath}/lib/wangEditor/js/lib/jquery-1.10.2.min.js"></script>
+<script src="${pageContext.request.contextPath}/lib/wangEditor/js/wangEditor.min.js"></script>
+<script>
+
+    $(function () {
+        var editor = new wangEditor('editor');
+        editor.config.uploadImgUrl = '/admin/test';
+        editor.config.uploadImgFileName = 'myFileName';
+
+        editor.create();
+
+    })
+
+</script>
 </body>
 </html>
