@@ -1,16 +1,18 @@
 package com.yanmai.controller.adminController;
 
+import com.google.gson.Gson;
+import com.yanmai.util.UploadUtil;
+import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  *
@@ -23,37 +25,9 @@ public class UploadController {
     @RequestMapping("uploader")
     public void upload(HttpServletRequest request, HttpServletResponse response){
 
-        Integer count = 0;
-        System.out.println("收到图片!");
-        MultipartHttpServletRequest Murequest = (MultipartHttpServletRequest)request;
-        Map<String, MultipartFile> files = Murequest.getFileMap();//得到文件map对象
-
         String upaloadUrl = "C:\\upload\\";//文件存放位置
-        File dir = new File(upaloadUrl);
-        if(!dir.exists())//目录不存在则创建
-            dir.mkdirs();
-        for(MultipartFile file :files.values()){
-            count++;
-            String fileName=file.getOriginalFilename();
-            //使用随机字符串生产新的文件名
-            String newFileName = UUID.randomUUID().toString()+fileName.substring(fileName.lastIndexOf("."));
-            File tagetFile = new File(upaloadUrl+newFileName);//创建文件对象
-            if(!tagetFile.exists()){//文件名不存在 则新建文件，并将文件复制到新建文件中
-                try {
-                    tagetFile.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    file.transferTo(tagetFile);
-                } catch (IllegalStateException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        System.out.println("接收完毕");
+
+        UploadUtil.uploadImg(request,upaloadUrl);
     }
 
     @RequestMapping(value = "goUpload")
@@ -61,5 +35,51 @@ public class UploadController {
 
         return "test/webupload";
     }
+
+    @RequestMapping(value = "testUpload")
+    public String testUpload(){
+
+        System.out.println("跳转");
+        return "test/webupload2";
+    }
+
+    @RequestMapping("uploader2")
+    public String uploads(@RequestParam("file")MultipartFile sortPicImg, HttpServletRequest request, HttpServletResponse response) {
+
+        System.out.println("hahah");
+        String upaloadUrl = "C:\\apache-tomcat-8.0.14\\webapps\\articleUpload\\";//文件存放位置
+
+        UploadUtil.uploadImg(request,upaloadUrl);
+
+        //String path = SysConstants.PIC_SERVER_FILE_ROOT_DIR +SysConstants.PIC_PTYPE_DIR ;
+        String fileName = System.currentTimeMillis()+"_"+sortPicImg.getOriginalFilename();
+        File targetFile = new File(upaloadUrl, fileName);
+        if (!targetFile.exists()) {
+            targetFile.mkdirs();
+        }
+        JSONObject json = new JSONObject();
+        Gson gson = new Gson();
+        //保存
+        try {
+            sortPicImg.transferTo(targetFile);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Map<String,String> map = new HashMap<String,String>();
+            //json.put("msg","error");
+            map.put("msg","error");
+            return gson.toJson(map);
+            //return json.toJSONString();
+        }
+        json.put("msg","success");
+        //json.put("filePath",request.getContextPath() + "/upload/" + fileName);
+        File retfile = new File(upaloadUrl, fileName);
+        Map<String,String> map = new HashMap<String,String>();
+        json.put("filePath",retfile.getPath());
+        //System.out.println("json="+json.toJSONString());
+        //return  json.toJSONString();
+        map.put("filePath",retfile.getPath());
+        return gson.toJson(map);
+    }
+
 
 }

@@ -36,31 +36,7 @@ public class AdminMainController {
         return "admin/user-show";
     }
 
-    //文章列表
-    @RequestMapping(value = "article-list")
-    public String articleList(){
-        System.out.println("文章列表");
-        return "admin/article-list";
-    }
 
-    //添加文章页面
-    @RequestMapping(value = "article-add")
-    public String articleAdd(){
-        return "admin/article-add";
-    }
-
-    //添加文章处理controller
-    @RequestMapping(value = "articleHandle")
-    public String articleHandle(){
-        System.out.println("文章已收到");
-        return "redirect:/admin/article-list";
-    }
-
-    //查看编辑文章
-    @RequestMapping(value = "article-editor")
-    public String articleEditor(){
-        return "admin/article-editor";
-    }
 
 
     //财务列表

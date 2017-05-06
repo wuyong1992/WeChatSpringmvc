@@ -12,6 +12,7 @@
     <jsp:include page="_meta.jsp"/>
     <title>新增文章</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/lib/wangEditor/css/wangEditor.min.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/lib/html5up/control/css/zyUpload.css">
 </head>
 <body>
 <!--_header 作为公共模版分离出去-->
@@ -34,7 +35,7 @@
     <div class="Hui-article">
         <article class="page-container">
             <%--<form class="form form-horizontal" id="form-article-add" action="/admin/articleHandle" method="post" enctype="multipart/form-data">--%>
-            <form class="form form-horizontal" id="form-article-add" action="/admin/editorHTML" method="post" enctype="multipart/form-data">
+            <form class="form form-horizontal" id="form-article-add" action="/admin/articleUpload" method="post" enctype="multipart/form-data">
                 <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>文章标题：</label>
                     <div class="formControls col-xs-8 col-sm-9">
@@ -77,13 +78,24 @@
                 <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-2">文章图片：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <div class="uploader-thum-container">
+                        <%--<div class="uploader-thum-container">
                             <div id="fileList" class="uploader-list"></div>
                             <div id="filePicker">选择图片</div>
-                            <button id="btn-star" class="btn btn-default btn-uploadstar radius ml-10">开始上传</button>
-                        </div>
+                            &lt;%&ndash;<button id="btn" class="btn btn-default btn-uploadstar radius ml-10">开始上传</button>&ndash;%&gt;
+                        </div>--%>
+                        <input type="file" name="file">
+                        <input type="file" name="file">
+                           <%-- <div id="demo" class="demo"></div>--%>
                     </div>
                 </div>
+
+               <%-- <div id="uploader-demo">
+                    <!--用来存放item-->
+                    <div id="fileList" class="uploader-list"></div>
+                    <div id="upInfo"></div>
+                    <div id="filePicker">选择图片</div>
+                </div>
+                <input type="button" id="btn" value="开始上传">--%>
 
                 <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-2">排序值：</label>
@@ -109,7 +121,7 @@
                 </div>
                 <div class="row cl">
                     <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
-                        <button class="btn btn-primary radius" type="submit">
+                        <button id="btn" class="btn btn-primary radius" type="submit">
                             <i class="Hui-iconfont">&#xe632;</i> 保存并发布
                         </button>
                         <%--TODO 通过controller返回文章列表--%>
@@ -134,6 +146,9 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/lib/jquery.validation/1.14.0/messages_zh.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/lib/webuploader/0.1.5/webuploader.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/lib/wangEditor/js/wangEditor.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/lib/html5up/control/js/zyUpload.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/lib/html5up/core/zyFile.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/lib/html5up/core/jq22.js"></script>
 <script type="text/javascript">
 
     //取消页面
@@ -159,40 +174,40 @@
         $("#form-article-add").validate({
             rules: {
                 articletitle: {
-                    required: true,
+                    required: true
                 },
                 articletitle2: {
-                    required: true,
+                    required: true
                 },
                 articlecolumn: {
-                    required: true,
+                    required: true
                 },
                 articletype: {
-                    required: true,
+                    required: true
                 },
                 articlesort: {
-                    required: true,
+                    required: true
                 },
                 keywords: {
-                    required: true,
+                    required: true
                 },
                 abstract: {
-                    required: true,
+                    required: true
                 },
                 author: {
-                    required: true,
+                    required: true
                 },
                 sources: {
-                    required: true,
+                    required: true
                 },
                 allowcomments: {
-                    required: true,
+                    required: true
                 },
                 commentdatemin: {
-                    required: true,
+                    required: true
                 },
                 commentdatemax: {
-                    required: true,
+                    required: true
                 },
 
             },
@@ -215,6 +230,9 @@
             editor.config.uploadImgFileName = 'myFileName';
             editor.create();
         })
+
+        //html5up
+
 
     });
 </script>

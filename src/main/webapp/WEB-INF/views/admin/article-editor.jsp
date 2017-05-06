@@ -77,7 +77,7 @@
                         <div class="uploader-thum-container">
                             <div id="fileList" class="uploader-list"></div>
                             <div id="filePicker">选择图片</div>
-                            <button id="btn-star" class="btn btn-default btn-uploadstar radius ml-10">开始上传</button>
+                            <button id="btn" class="btn btn-default btn-uploadstar radius ml-10">开始上传</button>
                         </div>
                     </div>
                 </div>
@@ -132,9 +132,8 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/lib/jquery.validation/1.14.0/validate-methods.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/lib/jquery.validation/1.14.0/messages_zh.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/lib/webuploader/0.1.5/webuploader.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/lib/ueditor/1.4.3/ueditor.config.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/lib/ueditor/1.4.3/ueditor.all.min.js"> </script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/lib/ueditor/1.4.3/lang/zh-cn/zh-cn.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/lib/wangEditor/js/wangEditor.min.js"></script>
+
 <script type="text/javascript">
     $(function(){
         $('.skin-minimal input').iCheck({
@@ -143,107 +142,178 @@
             increaseArea: '20%'
         });
 
+//表单验证TODO 无效
+        $("#form-article-add").validate({
+            rules: {
+                articletitle: {
+                    required: true,
+                },
+                articletitle2: {
+                    required: true,
+                },
+                articlecolumn: {
+                    required: true,
+                },
+                articletype: {
+                    required: true,
+                },
+                articlesort: {
+                    required: true,
+                },
+                keywords: {
+                    required: true,
+                },
+                abstract: {
+                    required: true,
+                },
+                author: {
+                    required: true,
+                },
+                sources: {
+                    required: true,
+                },
+                allowcomments: {
+                    required: true,
+                },
+                commentdatemin: {
+                    required: true,
+                },
+                commentdatemax: {
+                    required: true,
+                },
 
-        $list = $("#fileList"),
-            $btn = $("#btn-star"),
-            state = "pending",
-            uploader;
-
-        var uploader = WebUploader.create({
-            auto: true,
-            swf: 'lib/webuploader/0.1.5/Uploader.swf',
-
-            // 文件接收服务端。
-            server: 'fileupload.php',
-
-            // 选择文件的按钮。可选。
-            // 内部根据当前运行是创建，可能是input元素，也可能是flash.
-            pick: '#filePicker',
-
-            // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
-            resize: false,
-            // 只允许选择图片文件。
-            accept: {
-                title: 'Images',
-                extensions: 'gif,jpg,jpeg,bmp,png',
-                mimeTypes: 'image/gif,image/jpg,image/jpeg,image/bmp,image/png'
+            },
+            onkeyup: false,
+            focusCleanup: true,
+            success: "valid",
+            submitHandler: function (form) {
+                //$(form).ajaxSubmit();
+                form.submit();
+                //var index = parent.layer.getFrameIndex(window.name);
+                //parent.$('.btn-refresh').click();
+                //parent.layer.close(index);
             }
         });
-        uploader.on( 'fileQueued', function( file ) {
+
+        //文章图片上传
+        var $ = jQuery,
+            $list = $('#fileList'),
+            // 优化retina, 在retina下这个值是2
+            ratio = window.devicePixelRatio || 1,
+            // 缩略图大小
+            thumbnailWidth = 100 * ratio,
+            thumbnailHeight = 100 * ratio,
+            // Web Uploader实例
+            uploader;
+        // 初始化Web Uploader
+        uploader = WebUploader.create({
+            // 自动上传。
+            auto: false,
+            // swf文件路径
+            swf: '${pageContext.request.contextPath}/lib/webuploader/0.1.5/webuploader/Uploader.swf',
+            // 文件接收服务端。
+            server: 'avatarUploader',
+            threads: '5',        //同时运行5个线程传输
+            fileNumLimit: '1',  //文件总数量只能选择10个
+
+            // 选择文件的按钮。可选。
+            pick: {
+                id: '#filePicker',  //选择文件的按钮
+                multiple: true
+            },   //允许可以同时选择多个图片
+            // 图片质量，只有type为`image/jpeg`的时候才有效。
+            quality: 90,
+
+            //限制传输文件类型，accept可以不写
+            accept: {
+                title: 'Images',//描述
+                extensions: 'gif,jpg,jpeg,png',//类型
+                mimeTypes: 'image/gif,image/jpg,image/jpeg,image/png' //mime类型
+            }
+        });
+
+
+        // 当有文件添加进来的时候，创建img显示缩略图使用
+        uploader.on('fileQueued', function (file) {
             var $li = $(
-                    '<div id="' + file.id + '" class="item">' +
-                    '<div class="pic-box"><img></div>'+
+                    '<div id="' + file.id + '" class="file-item thumbnail">' +
+                    '<img>' +
                     '<div class="info">' + file.name + '</div>' +
-                    '<p class="state">等待上传...</p>'+
                     '</div>'
                 ),
                 $img = $li.find('img');
-            $list.append( $li );
+
+            // $list为容器jQuery实例
+            $list.append($li);
 
             // 创建缩略图
             // 如果为非图片文件，可以不用调用此方法。
             // thumbnailWidth x thumbnailHeight 为 100 x 100
-            uploader.makeThumb( file, function( error, src ) {
-                if ( error ) {
+            uploader.makeThumb(file, function (error, src) {
+                if (error) {
                     $img.replaceWith('<span>不能预览</span>');
                     return;
                 }
 
-                $img.attr( 'src', src );
-            }, thumbnailWidth, thumbnailHeight );
+                $img.attr('src', src);
+            }, thumbnailWidth, thumbnailHeight);
         });
-        // 文件上传过程中创建进度条实时显示。
-        uploader.on( 'uploadProgress', function( file, percentage ) {
-            var $li = $( '#'+file.id ),
-                $percent = $li.find('.progress-box .sr-only');
+
+        // 文件上传过程中创建进度条实时显示。    uploadProgress事件：上传过程中触发，携带上传进度。 file文件对象 percentage传输进度 Nuber类型
+        uploader.on('uploadProgress', function (file, percentage) {
+            var $li = $('#' + file.id),
+                $percent = $li.find('.progress span');
 
             // 避免重复创建
-            if ( !$percent.length ) {
-                $percent = $('<div class="progress-box"><span class="progress-bar radius"><span class="sr-only" style="width:0%"></span></span></div>').appendTo( $li ).find('.sr-only');
-            }
-            $li.find(".state").text("上传中");
-            $percent.css( 'width', percentage * 100 + '%' );
-        });
-
-        // 文件上传成功，给item添加成功class, 用样式标记上传成功。
-        uploader.on( 'uploadSuccess', function( file ) {
-            $( '#'+file.id ).addClass('upload-state-success').find(".state").text("已上传");
-        });
-
-        // 文件上传失败，显示上传出错。
-        uploader.on( 'uploadError', function( file ) {
-            $( '#'+file.id ).addClass('upload-state-error').find(".state").text("上传出错");
-        });
-
-        // 完成上传完了，成功或者失败，先删除进度条。
-        uploader.on( 'uploadComplete', function( file ) {
-            $( '#'+file.id ).find('.progress-box').fadeOut();
-        });
-        uploader.on('all', function (type) {
-            if (type === 'startUpload') {
-                state = 'uploading';
-            } else if (type === 'stopUpload') {
-                state = 'paused';
-            } else if (type === 'uploadFinished') {
-                state = 'done';
+            if (!$percent.length) {
+                $percent = $('<p class="progress"><span></span></p>')
+                    .appendTo($li)
+                    .find('span');
             }
 
-            if (state === 'uploading') {
-                $btn.text('暂停上传');
-            } else {
-                $btn.text('开始上传');
-            }
+            $percent.css('width', percentage * 100 + '%');
         });
 
-        $btn.on('click', function () {
-            if (state === 'uploading') {
-                uploader.stop();
-            } else {
-                uploader.upload();
-            }
+        // 文件上传成功时候触发，给item添加成功class, 用样式标记上传成功。 file：文件对象，    response：服务器返回数据
+        uploader.on('uploadSuccess', function (file, response) {
+            $('#' + file.id).addClass('upload-state-done');
+            //console.info(response);
+            $("#upInfo").html("<font color='red'>" + response._raw + "</font>");
         });
 
-        var ue = UE.getEditor('editor');
+        // 文件上传失败                                file:文件对象 ， code：出错代码
+        uploader.on('uploadError', function (file, code) {
+            var $li = $('#' + file.id),
+                $error = $li.find('div.error');
+
+            // 避免重复创建
+            if (!$error.length) {
+                $error = $('<div class="error"></div>').appendTo($li);
+            }
+
+            $error.text('上传失败!');
+        });
+
+        // 不管成功或者失败，文件上传完成时触发。 file： 文件对象
+        uploader.on('uploadComplete', function (file) {
+            $('#' + file.id).find('.progress').remove();
+        });
+
+        //绑定提交事件
+        $("#btn").click(function () {
+            uploader.upload();   //执行手动提交
+        });
+
+
+
+        //初始化富文本
+        $(function () {
+            var editor = new wangEditor('editor');
+            editor.config.uploadImgUrl = '/admin/uploadImg';
+            editor.config.uploadImgFileName = 'myFileName';
+            editor.create();
+        })
+
 
     });
 </script>
