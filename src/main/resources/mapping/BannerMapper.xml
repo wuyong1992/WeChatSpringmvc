@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yanmai.mapper.BannerMapper">
+    <sql id="Base_Column_List">
+        id,bannerPath,status,link,sort
+    </sql>
+
+
+    <select id="selectAllBanner"  resultType="com.yanmai.model.Banner">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM banner
+    </select>
+
+    <select id="selectBannerById" parameterType="java.lang.Integer" resultType="com.yanmai.model.Banner">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM banner
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectBannerPathById" parameterType="java.lang.Integer" resultType="java.lang.String">
+        SELECT bannerPath FROM banner WHERE id = #{id}
+    </select>
+
+    <insert id="addBanner" parameterType="com.yanmai.model.Banner">
+        INSERT INTO banner
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="bannerPath != null">
+                bannerPath,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="link != null">
+                link,
+            </if>
+            <if test="sort != null">
+                sort,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="bannerPath != null">
+                #{bannerPath},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+            <if test="link != null">
+                #{link},
+            </if>
+            <if test="sort != null">
+                #{sort},
+            </if>
+        </trim>
+    </insert>
+
+
+    <update id="updateBanner" parameterType="com.yanmai.model.Banner">
+        UPDATE banner
+        <set>
+            <if test="bannerPath != null">
+                bannerPath = #{bannerPath},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="link != null">
+                link = #{link},
+            </if>
+            <if test="sort != null">
+                sort = #{sort},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateBannerStatus" parameterType="com.yanmai.model.Banner">
+        UPDATE banner
+        <set>
+            <if test="status != null">
+                status = #{status},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateBannerSort" parameterType="com.yanmai.model.Banner">
+        UPDATE banner
+        <set>
+            <if test="sort != null">
+                sort = #{sort},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateBannerLink" parameterType="com.yanmai.model.Banner">
+        UPDATE banner
+        <set>
+            <if test="link != null">
+                sort = #{link},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteBannerById" parameterType="java.lang.Integer">
+        DELETE FROM banner WHERE id = #{id}
+    </delete>
+
+</mapper>

@@ -67,31 +67,8 @@ public class AdminMainController {
 
 
 
-    //banner图列表
-    @RequestMapping(value = "banner-list")
-    public String bannerList(){
-        System.out.println("banner列表");
-        return "admin/banner-list";
-    }
 
-    //添加banner图
-    @RequestMapping(value = "banner-add")
-    public String bannerAdd(){
-        return "admin/banner-add";
-    }
 
-    //编辑banner图
-    @RequestMapping(value = "banner-editor")
-    public String bannerEditor(){
-        return "admin/banner-editor";
-    }
-
-    //添加文章处理controller
-    @RequestMapping(value = "bannerHandle")
-    public String bannerHandle(){
-        System.out.println("banner图已收到");
-        return "redirect:/admin/banner-list";
-    }
 
 
 

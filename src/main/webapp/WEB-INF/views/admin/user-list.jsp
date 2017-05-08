@@ -68,10 +68,10 @@
                         <td><input type="checkbox" value="1" name=""></td>
                         <td>1</td>
                         <td>
-                            <u style="cursor:pointer" class="text-primary" onclick="user_show('张三','/admin/user-show','10001','500','400')">张三</u>
+                            <u style="cursor:pointer" class="text-primary" onclick="user_show('用户信息','/admin/user-show','10001','500','400')">张三</u>
                         </td>
                         <td><u style="cursor:pointer" class="text-primary"
-                               onclick="user_show('张三','/admin/user-show','10001','500','400')">张三</u></td>
+                               onclick="user_show('用户信息','/admin/user-show','10001','500','400')">张三</u></td>
                         <td>男</td>
                         <td>13000000000</td>
                         <td>1</td>

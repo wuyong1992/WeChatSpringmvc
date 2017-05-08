@@ -38,19 +38,12 @@
 
     <div class="Hui-article">
         <article class="cl pd-20">
-            <div class="row cl">
-                <label class="form-label col-xs-4 col-sm-2">无极玄推广头像：</label>
-                <div id="uploader-demo">
-                    <!--用来存放item-->
-                    <div id="fileList" class="uploader-list"></div>
-                    <div id="upInfo"></div>
-                    <div id="filePicker">选择头像</div>
-                </div>
-            </div>
-            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
-                <button class="btn btn-primary radius" type="submit" id="btn">
-                    开始上传
-                </button>
+            <%--TODO 添加form表单--%>
+            <div>
+                <img src="${pageContext.request.contextPath}/images/moren.jpg" alt="" id="showAvatar">
+                <br>
+                <%--TODO 限制只能选择图片--%>
+                <input type="file" id="avatar" name="file" value="选择海报">
             </div>
         </article>
     </div>
@@ -62,117 +55,25 @@
 
 <!--请在下方写此页面业务相关的脚本-->
 <script>
-    // 图片上传demo
-    jQuery(function () {
-        var $ = jQuery,
-            $list = $('#fileList'),
-            // 优化retina, 在retina下这个值是2
-            ratio = window.devicePixelRatio || 1,
-            // 缩略图大小
-            thumbnailWidth = 100 * ratio,
-            thumbnailHeight = 100 * ratio,
-            // Web Uploader实例
-            uploader;
-        // 初始化Web Uploader
-        uploader = WebUploader.create({
-            // 自动上传。
-            auto: false,
-            // swf文件路径
-            swf: '${pageContext.request.contextPath}/lib/webuploader/0.1.5/webuploader/Uploader.swf',
-            // 文件接收服务端。
-            server: 'avatarUploader',
-            threads: '5',        //同时运行5个线程传输
-            fileNumLimit: '1',  //文件总数量只能选择10个
-
-            // 选择文件的按钮。可选。
-            pick: {
-                id: '#filePicker',  //选择文件的按钮
-                multiple: true
-            },   //允许可以同时选择多个图片
-            // 图片质量，只有type为`image/jpeg`的时候才有效。
-            quality: 90,
-
-            //限制传输文件类型，accept可以不写
-            accept: {
-                title: 'Images',//描述
-                extensions: 'gif,jpg,jpeg,png',//类型
-                mimeTypes: 'image/gif,image/jpg,image/jpeg,image/png' //mime类型
-            }
-        });
-
-
-        // 当有文件添加进来的时候，创建img显示缩略图使用
-        uploader.on('fileQueued', function (file) {
-            var $li = $(
-                    '<div id="' + file.id + '" class="file-item thumbnail">' +
-                    '<img>' +
-                    '<div class="info">' + file.name + '</div>' +
-                    '</div>'
-                ),
-                $img = $li.find('img');
-
-            // $list为容器jQuery实例
-            $list.append($li);
-
-            // 创建缩略图
-            // 如果为非图片文件，可以不用调用此方法。
-            // thumbnailWidth x thumbnailHeight 为 100 x 100
-            uploader.makeThumb(file, function (error, src) {
-                if (error) {
-                    $img.replaceWith('<span>不能预览</span>');
-                    return;
-                }
-
-                $img.attr('src', src);
-            }, thumbnailWidth, thumbnailHeight);
-        });
-
-        // 文件上传过程中创建进度条实时显示。    uploadProgress事件：上传过程中触发，携带上传进度。 file文件对象 percentage传输进度 Nuber类型
-        uploader.on('uploadProgress', function (file, percentage) {
-            var $li = $('#' + file.id),
-                $percent = $li.find('.progress span');
-
-            // 避免重复创建
-            if (!$percent.length) {
-                $percent = $('<p class="progress"><span></span></p>')
-                    .appendTo($li)
-                    .find('span');
-            }
-
-            $percent.css('width', percentage * 100 + '%');
-        });
-
-        // 文件上传成功时候触发，给item添加成功class, 用样式标记上传成功。 file：文件对象，    response：服务器返回数据
-        uploader.on('uploadSuccess', function (file, response) {
-            $('#' + file.id).addClass('upload-state-done');
-            //console.info(response);
-            $("#upInfo").html("<font color='red'>" + response._raw + "</font>");
-        });
-
-        // 文件上传失败                                file:文件对象 ， code：出错代码
-        uploader.on('uploadError', function (file, code) {
-            var $li = $('#' + file.id),
-                $error = $li.find('div.error');
-
-            // 避免重复创建
-            if (!$error.length) {
-                $error = $('<div class="error"></div>').appendTo($li);
-            }
-
-            $error.text('上传失败!');
-        });
-
-        // 不管成功或者失败，文件上传完成时触发。 file： 文件对象
-        uploader.on('uploadComplete', function (file) {
-            $('#' + file.id).find('.progress').remove();
-        });
-
-        //绑定提交事件
-        $("#btn").click(function () {
-            uploader.upload();   //执行手动提交
-        });
-
+    $("#avatar").change(function () {
+        var objUrl = getObjectURL(this.files[0]);
+        console.log("objUrl = " + objUrl);
+        if (objUrl) {
+            $("#showAvatar").attr("src", objUrl);
+        }
     });
+    //建立一個可存取到該file的url
+    function getObjectURL(file) {
+        var url = null;
+        if (window.createObjectURL != undefined) { // basic
+            url = window.createObjectURL(file);
+        } else if (window.URL != undefined) { // mozilla(firefox)
+            url = window.URL.createObjectURL(file);
+        } else if (window.webkitURL != undefined) { // webkit or chrome
+            url = window.webkitURL.createObjectURL(file);
+        }
+        return url;
+    }
 </script>
 <!--/请在上方写此页面业务相关的脚本-->
 </body>

@@ -60,17 +60,17 @@
                 <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>文章类型：</label>
                     <div class="formControls col-xs-8 col-sm-9" >
-                        <div style="width: 30%;margin-right: 20px;text-align: center;display: inline-block">
-                            <img src="${pageContext.request.contextPath}/images/TextType1.png" alt="" style="width: 100%"><br>
-                            <input type="radio" name="article">
-                        </div>
-                        <div style="width: 30%;margin-right: 20px;text-align: center;display: inline-block">
-                            <img src="${pageContext.request.contextPath}/images/TextType2.png" alt="" style="width: 100%"><br>
-                            <input type="radio" name="article">
-                        </div>
-                        <div style="width: 30%;text-align: center;display: inline-block">
-                            <img src="${pageContext.request.contextPath}/images/TextType3.png" alt="" style="width: 100%"><br>
-                            <input type="radio" name="article">
+                        <div id="radioDiv" style="width: 30%;margin-right: 20px;text-align: center;">
+
+                            <img src="${pageContext.request.contextPath}/images/TextType1.png" alt="" style="width: 100%">
+                            <input type="radio" name="imgType" value="1" onclick="showArticleType()">
+
+                            <hr style="margin: 10px">
+                            <img src="${pageContext.request.contextPath}/images/TextType2.png" alt="" style="width: 100%">
+                            <input type="radio" name="imgType" value="2" onclick="showArticleType()">
+                            <hr style="margin: 10px">
+                            <img src="${pageContext.request.contextPath}/images/TextType3.png" alt="" style="width: 100%">
+                            <input type="radio" name="imgType" value="3" onclick="showArticleType()">
                         </div>
                     </div>
                 </div>
@@ -78,24 +78,34 @@
                 <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-2">文章图片：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <%--<div class="uploader-thum-container">
-                            <div id="fileList" class="uploader-list"></div>
-                            <div id="filePicker">选择图片</div>
-                            &lt;%&ndash;<button id="btn" class="btn btn-default btn-uploadstar radius ml-10">开始上传</button>&ndash;%&gt;
-                        </div>--%>
-                        <input type="file" name="file">
-                        <input type="file" name="file">
-                           <%-- <div id="demo" class="demo"></div>--%>
+
+                        <%--显示图片--%>
+                        <div id="selectImg1"  style="display: none">
+
+                            <img src="${pageContext.request.contextPath}/images/moren.jpg" alt="" id="showImg" style="width: 200px;height: 150px">
+                            <br>
+                            <%--TODO 限制只能选择图片--%>
+                            <input type="file" id="myImg1" name="file" value="选择图片" >
+                        </div>
+
+                        <div id="selectImg2" style="display: none">
+                            <img src="${pageContext.request.contextPath}/images/moren.jpg" alt="" id="showImg2" style="width: 200px;height: 150px">
+                            <br>
+                            <input type="file" id="myImg2" name="file" value="选择图片" > <br>
+                        </div>
+
+                        <div id="selectImg3" style="display: none">
+                            <img src="${pageContext.request.contextPath}/images/moren.jpg" alt="" id="showImg3" style="width: 200px;height: 150px">
+                            <br>
+                            <input type="file" id="myImg3" name="file" value="选择图片" > <br>
+                        </div>
+
+
+
+
                     </div>
                 </div>
 
-               <%-- <div id="uploader-demo">
-                    <!--用来存放item-->
-                    <div id="fileList" class="uploader-list"></div>
-                    <div id="upInfo"></div>
-                    <div id="filePicker">选择图片</div>
-                </div>
-                <input type="button" id="btn" value="开始上传">--%>
 
                 <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-2">排序值：</label>
@@ -144,25 +154,8 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/lib/jquery.validation/1.14.0/jquery.validate.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/lib/jquery.validation/1.14.0/validate-methods.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/lib/jquery.validation/1.14.0/messages_zh.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/lib/webuploader/0.1.5/webuploader.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/lib/wangEditor/js/wangEditor.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/lib/html5up/control/js/zyUpload.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/lib/html5up/core/zyFile.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/lib/html5up/core/jq22.js"></script>
 <script type="text/javascript">
-
-    //取消页面
-    /*function removeIframe() {
-        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-        parent.layer.close(index); //再执行关闭
-    }*/
-
-    //文章保存并发布
-    /*function article_save() {
-        window.parent.location.reload();
-    }*/
-
-
     $(function(){
         $('.skin-minimal input').iCheck({
             checkboxClass: 'icheckbox-blue',
@@ -183,6 +176,9 @@
                     required: true
                 },
                 articletype: {
+                    required: true
+                },
+                imgType: {
                     required: true
                 },
                 articlesort: {
@@ -231,10 +227,66 @@
             editor.create();
         })
 
-        //html5up
-
 
     });
+
+    //获取文章类型的值
+    function showArticleType() {
+        var imgType = $('#radioDiv input[name="imgType"]:checked ').val();
+
+        console.log(imgType);
+
+        if (imgType == 1 || imgType == 3){
+            $("#selectImg1").show();
+            $("#selectImg2").hide();
+            $("#selectImg3").hide();
+
+        }
+        if (imgType == 2 ){
+            $("#selectImg1").show();
+            $("#selectImg2").show();
+            $("#selectImg3").show();
+        }
+    }
+
+    //根据文章类型，添加input框
+
+
+
+    //图片上传预览
+    $("#myImg1").change(function(){
+        var objUrl = getObjectURL(this.files[0]) ;
+        console.log("objUrl = "+objUrl) ;
+        if (objUrl) {
+            $("#showImg").attr("src", objUrl) ;
+        }
+    }) ;
+    $("#myImg2").change(function(){
+        var objUrl = getObjectURL(this.files[0]) ;
+        console.log("objUrl = "+objUrl) ;
+        if (objUrl) {
+            $("#showImg").attr("src", objUrl) ;
+        }
+    }) ;
+    $("#myImg3").change(function(){
+        var objUrl = getObjectURL(this.files[0]) ;
+        console.log("objUrl = "+objUrl) ;
+        if (objUrl) {
+            $("#showImg").attr("src", objUrl) ;
+        }
+    }) ;
+    //建立一個可存取到該file的url
+    function getObjectURL(file) {
+        var url = null ;
+        if (window.createObjectURL!=undefined) { // basic
+            url = window.createObjectURL(file) ;
+        } else if (window.URL!=undefined) { // mozilla(firefox)
+            url = window.URL.createObjectURL(file) ;
+        } else if (window.webkitURL!=undefined) { // webkit or chrome
+            url = window.webkitURL.createObjectURL(file) ;
+        }
+        return url ;
+    }
 </script>
 <!--/请在上方写此页面业务相关的脚本-->
 </body>

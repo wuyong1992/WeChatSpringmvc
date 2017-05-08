@@ -38,7 +38,7 @@
             <dt><i class="Hui-iconfont">&#xe613;</i> banner图<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i>
             <dd>
                 <ul>
-                    <li><a href="/admin/banner-list" title="banner图">banner图</a></li>
+                    <li><a href="/admin/bannerList" title="banner图">banner图</a></li>
                 </ul>
             </dd>
         </dl>

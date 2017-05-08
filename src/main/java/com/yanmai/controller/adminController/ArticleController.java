@@ -1,5 +1,6 @@
 package com.yanmai.controller.adminController;
 
+import com.yanmai.util.UploadUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -7,7 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 
 /**
  * Created by admin on 2017/5/6.
@@ -51,20 +51,13 @@ public class ArticleController {
 
         String upaloadUrl = "C:\\apache-tomcat-8.0.14\\webapps\\articleUpload\\";
 
-        //UploadUtil.uploadImg(request,upaloadUrl);
-
-        /*MultipartResolver resolver = new CommonsMultipartResolver(request.getSession().getServletContext());
-
-        MultipartHttpServletRequest multipartRequest = resolver.resolveMultipart(request);
-
-        MultipartFile file = multipartRequest.getFile("fileList");*/
 
         if(files!=null&&files.length>0){
             //循环获取file数组中得文件
             for(int i = 0;i<files.length;i++){
                 MultipartFile file = files[i];
                 //保存文件
-                saveFile(file,request);
+                UploadUtil.saveFile(file,request,upaloadUrl);
             }
         }
 
@@ -88,31 +81,16 @@ public class ArticleController {
 
     //富文本编辑器中的图片上传
 
-
-    private boolean saveFile(MultipartFile file ,HttpServletRequest request) {
-        // 判断文件是否为空
-        if (!file.isEmpty()) {
-            try {
-                // 文件保存路径
-                String filePath = "C:\\apache-tomcat-8.0.14\\webapps\\articleUpload\\" + file.getOriginalFilename();
-                // 转存文件
-                file.transferTo(new File(filePath));
-                return true;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return false;
-    }
     @RequestMapping("filesUpload")
     public String filesUpload(@RequestParam("files") MultipartFile[] files,HttpServletRequest request) {
+        String upaloadUrl = "C:\\apache-tomcat-8.0.14\\webapps\\articleUpload\\";
         //判断file数组不能为空并且长度大于0
         if(files!=null&&files.length>0){
             //循环获取file数组中得文件
             for(int i = 0;i<files.length;i++){
                 MultipartFile file = files[i];
                 //保存文件
-                saveFile(file,request);
+                UploadUtil.saveFile(file,request,upaloadUrl);
             }
         }
         // 重定向

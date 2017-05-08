@@ -50,4 +50,23 @@ public class UploadUtil {
     }
 
 
+    //返回保存的文件名称
+    public static String saveFile(MultipartFile file ,HttpServletRequest request,String filePath) {
+        // 判断文件是否为空
+        if (!file.isEmpty()) {
+            try {
+                // 文件保存路径
+                //String filePath = "C:\\apache-tomcat-8.0.14\\webapps\\articleUpload\\" + file.getOriginalFilename();
+                // 转存文件
+                String fileName=file.getOriginalFilename();
+                //使用随机字符串生产新的文件名
+                String newFileName = UUID.randomUUID().toString()+fileName.substring(fileName.lastIndexOf("."));
+                file.transferTo(new File(filePath+newFileName));
+                return newFileName;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
 }
