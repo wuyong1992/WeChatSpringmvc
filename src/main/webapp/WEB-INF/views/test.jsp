@@ -22,6 +22,11 @@
     })
 </script>--%>
 
+<%--<div>
+    <img src="http://localhost:8080/files/2d23593b-f90e-4d05-aa8a-802fbfb8719d.jpg" alt="">
+</div>--%>
+
+
 <div>
     <form action="/admin/test" enctype="multipart/form-data">
         <p>请输入内容</p>

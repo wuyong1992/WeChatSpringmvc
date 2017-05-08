@@ -12,7 +12,6 @@
     <jsp:include page="_meta.jsp"/>
     <title>新增文章</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/lib/wangEditor/css/wangEditor.min.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/lib/html5up/control/css/zyUpload.css">
 </head>
 <body>
 <!--_header 作为公共模版分离出去-->
@@ -34,7 +33,6 @@
     </nav>
     <div class="Hui-article">
         <article class="page-container">
-            <%--<form class="form form-horizontal" id="form-article-add" action="/admin/articleHandle" method="post" enctype="multipart/form-data">--%>
             <form class="form form-horizontal" id="form-article-add" action="/admin/articleUpload" method="post" enctype="multipart/form-data">
                 <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>文章标题：</label>
@@ -64,13 +62,12 @@
 
                             <img src="${pageContext.request.contextPath}/images/TextType1.png" alt="" style="width: 100%">
                             <input type="radio" name="imgType" value="1" onclick="showArticleType()">
-
                             <hr style="margin: 10px">
                             <img src="${pageContext.request.contextPath}/images/TextType2.png" alt="" style="width: 100%">
-                            <input type="radio" name="imgType" value="2" onclick="showArticleType()">
+                            <input type="radio" id="radio-1" name="imgType" value="2" onclick="showArticleType()">
                             <hr style="margin: 10px">
                             <img src="${pageContext.request.contextPath}/images/TextType3.png" alt="" style="width: 100%">
-                            <input type="radio" name="imgType" value="3" onclick="showArticleType()">
+                            <input type="radio"  name="imgType" value="3" onclick="showArticleType()">
                         </div>
                     </div>
                 </div>
@@ -82,10 +79,13 @@
                         <%--显示图片--%>
                         <div id="selectImg1"  style="display: none">
 
-                            <img src="${pageContext.request.contextPath}/images/moren.jpg" alt="" id="showImg" style="width: 200px;height: 150px">
+                            <img src="${pageContext.request.contextPath}/images/moren.jpg" alt="" id="showImg" style="width: 200px;height: 150px;margin-bottom: 10px">
                             <br>
-                            <%--TODO 限制只能选择图片--%>
-                            <input type="file" id="myImg1" name="file" value="选择图片" >
+                            <%--限制只能选择图片--%>
+                            <span class="btn-upload">
+                                <a href="javascript:;" class="btn btn-primary radius"><i class="iconfont">&#xf0020;</i> 浏览文件</a>
+                            <input type="file" id="myImg1" class="input-file" name="file" value="选择图片" accept="image/gif,image/png,image/jpeg,image/jpg" >
+                            </span>
                         </div>
 
                         <div id="selectImg2" style="display: none">

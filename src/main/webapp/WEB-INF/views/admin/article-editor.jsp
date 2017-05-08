@@ -85,20 +85,20 @@
 
                             <img src="${pageContext.request.contextPath}/images/moren.jpg" alt="" id="showImg" style="width: 200px;height: 150px">
                             <br>
-                            <%--TODO 限制只能选择图片--%>
-                            <input type="file" id="myImg1" name="file" value="选择图片" >
+                            <%--限制只能选择图片--%>
+                            <input type="file" id="myImg1" name="file" value="选择图片" accept="image/gif,image/png,image/jpeg,image/jpg"  >
                         </div>
 
                         <div id="selectImg2" style="display: none">
                             <img src="${pageContext.request.contextPath}/images/moren.jpg" alt="" id="showImg2" style="width: 200px;height: 150px">
                             <br>
-                            <input type="file" id="myImg2" name="file" value="选择图片" > <br>
+                            <input type="file" id="myImg2" name="file" value="选择图片" accept="image/gif,image/png,image/jpeg,image/jpg"  > <br>
                         </div>
 
                         <div id="selectImg3" style="display: none">
                             <img src="${pageContext.request.contextPath}/images/moren.jpg" alt="" id="showImg3" style="width: 200px;height: 150px">
                             <br>
-                            <input type="file" id="myImg3" name="file" value="选择图片" > <br>
+                            <input type="file" id="myImg3" name="file" value="选择图片" accept="image/gif,image/png,image/jpeg,image/jpg"  > <br>
                         </div>
 
 

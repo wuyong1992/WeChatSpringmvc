@@ -43,8 +43,8 @@
             <div>
                 <img src="${pageContext.request.contextPath}/images/moren.jpg" alt="" id="showVipBGI">
                 <br>
-                <%--TODO 限制只能选择图片--%>
-                <input type="file" id="vipBGI" name="file" value="选择背景图" >
+                <%--限制只能选择图片--%>
+                <input type="file" id="vipBGI" name="file" value="选择背景图" accept="image/gif,image/png,image/jpeg,image/jpg"  >
             </div>
         </article>
     </div>

@@ -42,8 +42,8 @@
             <div>
                 <img src="${pageContext.request.contextPath}/images/moren.jpg" alt="" id="showAvatar">
                 <br>
-                <%--TODO 限制只能选择图片--%>
-                <input type="file" id="avatar" name="file" value="选择海报">
+                <%--限制只能选择图片--%>
+                <input type="file" id="avatar" name="file" value="选择海报" accept="image/gif,image/png,image/jpeg,image/jpg" >
             </div>
         </article>
     </div>

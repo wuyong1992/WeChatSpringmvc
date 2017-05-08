@@ -38,7 +38,7 @@ public class ArticleController {
     }
 
     //查看编辑文章
-    @RequestMapping(value = "article-editor")
+    @RequestMapping(value = "articleEditor")
     public String articleEditor(){
         return "admin/article-editor";
     }

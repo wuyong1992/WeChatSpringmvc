@@ -47,12 +47,12 @@ public class BannerController {
         return modelAndView;
     }
 
-    //添加bannaer
+    //添加banner
     @RequestMapping("addBanner")
     public String addBanner(Banner banner , MultipartFile file, HttpServletRequest request){
         String path = "C:\\apache-tomcat-8.0.14\\webapps\\bannerUpload\\";
         String fileName = UploadUtil.saveFile(file,request,path);
-        String bannerPath = "localhost:8080/bannerUpload/"+fileName;    //本次测试
+        String bannerPath = "http://localhost:8080/bannerUpload/"+fileName;    //本次测试
 
         //String bannerPath = "http://b.wujixuanyi.com/bannerUpload/"+fileName;     //服务器地址
 

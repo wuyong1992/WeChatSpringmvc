@@ -43,8 +43,8 @@
             <div>
                 <img src="${pageContext.request.contextPath}/images/moren.jpg" alt="" id="showQRcode">
                 <br>
-                <%--TODO 限制只能选择图片--%>
-                <input type="file" id="QRcode" name="file" value="选择二维码">
+                <%--限制只能选择图片--%>
+                <input type="file" id="QRcode" name="file" value="选择二维码" accept="image/gif,image/png,image/jpeg,image/jpg" >
             </div>
         </article>
     </div>

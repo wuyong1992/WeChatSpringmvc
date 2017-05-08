@@ -57,8 +57,8 @@
                             <div>
                                 <img src="${pageContext.request.contextPath}/images/moren.jpg" alt="" id="showEditorBanner">
                                 <br>
-                                <%--TODO 限制只能选择图片--%>
-                                <input type="file" id="editorBanner" name="file" value="选择海报">
+                                <%--限制只能选择图片--%>
+                                <input type="file" id="editorBanner" name="file" value="选择banner图" accept="image/gif,image/png,image/jpeg,image/jpg" >
                             </div>
                         </div>
                     </div>
