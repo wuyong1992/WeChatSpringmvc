@@ -98,13 +98,17 @@ public class ArticleController {
                 MultipartFile file = files[i];
                 //保存文件
                 String imgName = UploadUtil.saveFile(file, request, upaloadUrl);
-                temp.add("http://b.wujixuanyi.com/articleUpload/" + imgName);
+                if (imgName != null && !"".equals(imgName)){
+                    temp.add("http://b.wujixuanyi.com/articleUpload/" + imgName);
+                }
             }
         }
 
         String imgPath = (String) temp.get(0);
-        for (int i = 1; i < temp.size(); i++) {
-            imgPath += ("," + temp.get(i));
+        if (article.getImgType() == 3){
+            for (int i = 1; i < temp.size(); i++) {
+                imgPath += ("," + temp.get(i));
+            }
         }
 
         article.setImgPath(imgPath);
@@ -152,6 +156,7 @@ public class ArticleController {
             FileUtils.deleteQuietly(new File("C:\\apache-tomcat-8.0.14\\webapps\\articleUpload\\" + imgName));
         }
 
+        articleService.deleteArticleById(id);
     }
 
     //富文本编辑器中的图片上传

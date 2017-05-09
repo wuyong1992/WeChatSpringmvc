@@ -38,4 +38,6 @@ public interface ArticleService {
     //更新文章状态
     public void updateArticleStatus(Article article);
 
+    //删除文章
+    public void deleteArticleById(Integer id);
 }

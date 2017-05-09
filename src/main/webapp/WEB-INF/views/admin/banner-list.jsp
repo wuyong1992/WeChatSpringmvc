@@ -224,8 +224,8 @@
             var url = "/admin/deleteBannerById";
             var params = {"id": id};
             $.post(url, params);
-            window.location.reload();       //刷新页面
             layer.msg('已删除', {icon: 1});
+            window.location.reload();       //刷新页面
         }, function () {
             layer.msg('已取消', {icon: 2});
         });

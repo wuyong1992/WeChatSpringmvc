@@ -35,7 +35,7 @@
     <div class="Hui-article">
         <article class="page-container">
             <form class="form form-horizontal" id="form-article-add" action="/admin/articleUpload" method="post"
-                  enctype="multipart/form-data" onsubmit="return checkImg()">
+                  enctype="multipart/form-data">
                 <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>文章标题：</label>
                     <div class="formControls col-xs-8 col-sm-9">
@@ -79,19 +79,17 @@
 
                 <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-2">文章图片：</label>
-                    <div class="formControls col-xs-8 col-sm-9">
+                    <div class="formControls col-xs-8 col-sm-9" id="imgDiv">
 
-                        <%--显示图片--%>
+                        <%--动态显示图片--%>
                         <div id="selectImg1" style="display: none">
-
                             <img src="${pageContext.request.contextPath}/images/moren.jpg" alt="" id="showImg1"
                                  style="width: 200px;height: 150px;margin-bottom: 10px">
                             <br>
-                            <%--限制只能选择图片--%>
                             <span class="btn-upload">
                                 <a href="javascript:;" class="btn btn-primary radius"><i class="iconfont">&#xf0020;</i> 浏览文件</a>
                             <input type="file" id="myImg1" class="input-file" name="file" value="选择图片"
-                                   accept="image/gif,image/png,image/jpeg,image/jpg" required="required">
+                                   accept="image/gif,image/png,image/jpeg,image/jpg">
                             </span>
                         </div>
 
@@ -182,6 +180,30 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/lib/wangEditor/js/wangEditor.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript">
+
+    $(function () {
+        if ($.validator) {
+            //fix: when several input elements shares the same name, but has different id-ies....
+            $.validator.prototype.elements = function () {
+                var validator = this,
+                rulesCache = {};
+                return $([]).add(this.currentForm.elements)
+                    .filter(":input")
+                    .not(":submit, :reset, :image, [disabled]")
+                    .not(this.settings.ignore)
+                    .filter(function () {
+                        var elementIdentification = this.id || this.name;
+                        !elementIdentification && validator.settings.debug && window.console && console.error("%o has no id nor name assigned", this);
+                        if (elementIdentification in rulesCache || !validator.objectLength($(this).rules()))
+                        return false;
+                        rulesCache[elementIdentification] = true;
+                        return true;
+                    });
+            };
+        }
+    });
+
+
     $(function () {
         $('.skin-minimal input').iCheck({
             checkboxClass: 'icheckbox-blue',
@@ -216,6 +238,9 @@
                 intro: {
                     required: true
                 },
+                file:{
+                    required: true
+                }
 
             },
             onkeyup: false,
@@ -239,33 +264,6 @@
         });
     });
 
-    //提交前验证是否符合图片上传要求
-    //TODO return false 还是提交了
-    function checkImg() {
-        /*if ($(".input-file").length == 3) {
-
-            $(".input-file").each(function () {
-                if ($(this).val() == "") {
-                    layer.alert("请上传图片");
-                    return false;
-                }
-            });
-        }*/
-
-        if ($("#myimg1").val() == null){
-            layer.alert("请上传图片");
-            return false;
-        }if ($("#myimg2").val() == null){
-            layer.alert("请上传图片");
-            return false;
-        }if ($("#myimg3").val() == null){
-            layer.alert("请上传图片");
-            return false;
-        }
-
-        return true;
-
-    }
 
 
     function selectChange() {
@@ -274,7 +272,8 @@
         console.log(articleSelect);
         if (articleSelect != 1) {
             $("#radioDiv").hide();
-            $("#selectImg1").show();
+            $("#selectImg1").remove();
+            <%--$("#imgDiv").append('<div id="selectImg1"> <img src="${pageContext.request.contextPath}/images/moren.jpg" alt="" id="showImg1"style="width: 200px;height: 150px;margin-bottom: 10px"> <br> <span class="btn-upload"> <a href="javascript:;" class="btn btn-primary radius"><i class="iconfont">&#xf0020;</i> 浏览文件</a> <input type="file" id="myImg1" class="input-file" name="file" value="选择图片" accept="image/gif,image/png,image/jpeg,image/jpg"> </span> </div>');--%>
         } else {
             $("#radioDiv").show();
         }
@@ -288,12 +287,26 @@
         console.log(imgType);
 
         if (imgType == 1 || imgType == 2) {
+
+            /*$("#selectImg1").remove();
+            $("#selectImg2").remove();
+            $("#selectImg3").remove();
+            $("#imgDiv").append('<div id="selectImg1"> <img src="${pageContext.request.contextPath}/images/moren.jpg" alt="" id="showImg1"style="width: 200px;height: 150px;margin-bottom: 10px"> <br> <span class="btn-upload"> <a href="javascript:;" class="btn btn-primary radius"><i class="iconfont">&#xf0020;</i> 浏览文件</a> <input type="file" id="myImg1" class="input-file" name="file" value="选择图片" accept="image/gif,image/png,image/jpeg,image/jpg"> </span> </div>');
+*/
             $("#selectImg1").show();
             $("#selectImg2").hide();
             $("#selectImg3").hide();
 
         }
         if (imgType == 3) {
+
+            /*$("#selectImg1").remove();
+            $("#selectImg2").remove();
+            $("#selectImg3").remove();
+            $("#imgDiv").append('<div id="selectImg1"> <img src="${pageContext.request.contextPath}/images/moren.jpg" alt="" id="showImg1"style="width: 200px;height: 150px;margin-bottom: 10px"> <br> <span class="btn-upload"> <a href="javascript:;" class="btn btn-primary radius"><i class="iconfont">&#xf0020;</i> 浏览文件</a> <input type="file" id="myImg1" class="input-file" name="file" value="选择图片" accept="image/gif,image/png,image/jpeg,image/jpg"> </span> </div>');
+            $("#imgDiv").append('<div id="selectImg2"> <img src="${pageContext.request.contextPath}/images/moren.jpg" alt="" id="showImg2"style="width: 200px;height: 150px;margin-bottom: 10px"> <br> <span class="btn-upload"> <a href="javascript:;" class="btn btn-primary radius"><i class="iconfont">&#xf0020;</i> 浏览文件</a> <input type="file" id="myImg2" class="input-file" name="file" value="选择图片" accept="image/gif,image/png,image/jpeg,image/jpg"> </span> </div>');
+            $("#imgDiv").append('<div id="selectImg3"> <img src="${pageContext.request.contextPath}/images/moren.jpg" alt="" id="showImg3"style="width: 200px;height: 150px;margin-bottom: 10px"> <br> <span class="btn-upload"> <a href="javascript:;" class="btn btn-primary radius"><i class="iconfont">&#xf0020;</i> 浏览文件</a> <input type="file" id="myImg3" class="input-file" name="file" value="选择图片" accept="image/gif,image/png,image/jpeg,image/jpg"> </span> </div>');
+ */
             $("#selectImg1").show();
             $("#selectImg2").show();
             $("#selectImg3").show();

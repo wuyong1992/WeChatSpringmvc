@@ -251,6 +251,7 @@
         });
     }*/
 
+    /*文章-删除*/
     function article_del(obj, id) {
         layer.confirm('确定要删除吗', {
             btn: ['确定', '取消'] //按钮
@@ -258,8 +259,8 @@
             var url = "/admin/deleteArticleById";
             var params = {"id": id};
             $.post(url, params);
-            window.location.reload();       //刷新页面
             layer.msg('已删除', {icon: 1});
+            window.location.reload();       //刷新页面
         }, function () {
             layer.msg('已取消', {icon: 2});
         });

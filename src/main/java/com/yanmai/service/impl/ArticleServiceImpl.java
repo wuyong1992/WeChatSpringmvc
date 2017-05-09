@@ -64,4 +64,9 @@ public class ArticleServiceImpl implements ArticleService {
     public void updateArticleStatus(Article article) {
         articleMapper.updateArticleStatus(article);
     }
+
+    @Override
+    public void deleteArticleById(Integer id) {
+        articleMapper.deleteArticleById(id);
+    }
 }

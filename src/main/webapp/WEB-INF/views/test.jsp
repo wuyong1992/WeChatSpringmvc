@@ -26,6 +26,11 @@
     <img src="http://localhost:8080/files/2d23593b-f90e-4d05-aa8a-802fbfb8719d.jpg" alt="">
 </div>--%>
 
+<button id="add" onclick="add()">添加一个input框</button>
+<button id="del" onclick="del()">删除一个input框</button>
+<div id="testDiv">
+    <input id="textInput" type="text" value="测试">
+</div>
 
 <div>
     <form action="/admin/test" enctype="multipart/form-data">
@@ -47,6 +52,15 @@
         editor.create();
 
     })
+
+    function add() {
+        $("#testDiv").append("<input id='input2' type='text' value='追加1'>")
+    }
+
+    function del() {
+        $("#input2").remove();
+        $("#input3").remove();
+    }
 
 </script>
 </body>
