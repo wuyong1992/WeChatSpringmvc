@@ -23,6 +23,8 @@
         SELECT bannerPath FROM banner WHERE id = #{id}
     </select>
 
+
+
     <insert id="addBanner" parameterType="com.yanmai.model.Banner">
         INSERT INTO banner
         <trim prefix="(" suffix=")" suffixOverrides=",">

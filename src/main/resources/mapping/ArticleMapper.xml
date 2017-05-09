@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yanmai.mapper.ArticleMapper">
+    <sql id="Base_Column_List">
+        id,title,intro,counts,articleType,imgType,imgPath,sort,content,updateTime,status
+    </sql>
+
+
+    <select id="selectAllArticle"  resultType="com.yanmai.model.Article">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM article
+    </select>
+
+    <select id="selectArticleById" parameterType="java.lang.Integer" resultType="com.yanmai.model.Article">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM article
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectArticleType1"  resultType="com.yanmai.model.Article">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM article
+        WHERE articleType = 1;
+    </select>
+
+    <select id="selectArticleType2"  resultType="com.yanmai.model.Article">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM article
+        WHERE articleType = 2;
+    </select>
+
+    <select id="selectArticleType3"  resultType="com.yanmai.model.Article">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM article
+        WHERE articleType = 3;
+    </select>
+
+
+
+    <insert id="addArticle" parameterType="com.yanmai.model.Article">
+        INSERT INTO article
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null">
+                title,
+            </if>
+            <if test="intro != null">
+                intro,
+            </if>
+            <if test="counts != null">
+                counts,
+            </if>
+            <if test="articleType != null">
+                articleType,
+            </if>
+            <if test="imgType != null">
+                imgType,
+            </if>
+            <if test="imgPath != null">
+                imgPath,
+            </if>
+            <if test="sort != null">
+                sort,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="updateTime != null">
+                updateTime,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null">
+                #{title},
+            </if>
+            <if test="intro != null">
+                #{intro},
+            </if>
+            <if test="counts != null">
+                #{counts},
+            </if>
+            <if test="articleType != null">
+                #{articleType},
+            </if>
+            <if test="imgType != null">
+                #{imgType},
+            </if>
+            <if test="imgPath != null">
+                #{imgPath},
+            </if>
+            <if test="sort != null">
+                #{sort},
+            </if>
+            <if test="content != null">
+                #{content},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+        </trim>
+    </insert>
+
+
+    <update id="updateArticle" parameterType="com.yanmai.model.Article">
+        UPDATE article
+        <set>
+            <if test="title != null">
+                title = #{title},
+            </if>
+            <if test="intro != null">
+                intro = #{intro},
+            </if>
+            <if test="counts != null">
+                counts = #{counts},
+            </if>
+            <if test="articleType != null">
+                articleType = #{articleType},
+            </if>
+            <if test="imgType != null">
+                imgType = #{imgType},
+            </if>
+            <if test="imgPath != null">
+                imgPath = #{imgPath},
+            </if>
+            <if test="sort != null">
+                sort = #{sort},
+            </if>
+            <if test="content != null">
+                content = #{content},
+            </if>
+            <if test="updateTime != null">
+                updateTime = #{updateTime},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateArticleStatus" parameterType="com.yanmai.model.Article">
+        UPDATE article
+        <set>
+            <if test="status != null">
+                status = #{status},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+
+
+    <delete id="deleteArticleById" parameterType="java.lang.Integer">
+        DELETE FROM article WHERE id = #{id}
+    </delete>
+
+</mapper>

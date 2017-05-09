@@ -37,12 +37,12 @@
         <article class="cl pd-20">
             <div class="cl pd-5 bg-1 bk-gray mt-20">
                 <span class="l">
-                    <a class="btn btn-primary radius" href="/admin/addBanner">
+                    <a class="btn btn-primary radius" href="/admin/goAddBanner">
                         <i class="Hui-iconfont">&#xe600;</i>
                         添加banner
                     </a>
                 </span>
-                <span class="r">共有数据：<strong>54</strong> 条</span>
+                <span class="r">共有数据：<strong>${count}</strong> 条</span>
             </div>
             <div class="mt-20">
                 <table class="table table-border table-bordered table-bg table-hover table-sort">
@@ -51,7 +51,7 @@
                         <th width="40"><input name="" type="checkbox" value=""></th>
                         <th width="40">ID</th>
                         <th>缩略图</th>
-                        <th>链接地址</th>
+                        <th width="200">链接地址</th>
                         <th width="100">排序</th>
                         <th width="100">状态</th>
                         <th width="150">操作</th>
@@ -72,27 +72,31 @@
                             <td>${banner.link}</td>
                             <td>${banner.sort}</td>
                             <td class="td-status">
-                                <span class="label label-success radius">
-                                    <c:if test="${banner.status ==0}">禁用</c:if>
-                                    <c:if test="${banner.status ==1}">已发布</c:if>
-                                </span>
+
+                                    <c:if test="${banner.status ==0}">
+                                        <span class="label label-default radius">已禁用</span>
+                                    </c:if>
+                                    <c:if test="${banner.status ==1}">
+                                        <span class="label label-success radius">已发布</span>
+                                    </c:if>
+
                             </td>
                             <td class="td-manage">
                                 <c:if test="${banner.status ==0}">
-                                    <a style="text-decoration:none" onClick="picture_start(this,'${banner.id}')"
+                                    <a style="text-decoration:none" onClick="banner_start(this,'${banner.id}')"
                                        href="javascript:;"
-                                       title="已发布">
-                                        <span class="label label-success radius">已发布</span>
+                                       title="发布">
+                                        <span class="label label-success radius">发布</span>
                                     </a>
                                 </c:if>
                                 <c:if test="${banner.status ==1}">
-                                    <a style="text-decoration:none" onClick="picture_stop(this,'${banner.id}')"
+                                    <a style="text-decoration:none" onClick="banner_stop(this,'${banner.id}')"
                                        href="javascript:;" title="禁用">
-                                        <span class="label label-success radius">禁用</span>
+                                        <span class="label label-default radius">禁用</span>
                                     </a>
                                 </c:if>
 
-                                <a style="text-decoration:none" class="ml-5" href="/admin/editorBanner?id=${banner.id}"
+                                <a style="text-decoration:none" class="ml-5" href="/admin/bannerEditor/${banner.id}"
                                    title="编辑">
                                     <span class="label label-primary radius">修改</span>
                                 </a>
@@ -115,7 +119,7 @@
                         </td>
                         <td>http://www.com.baidu.com</td>
                         <td>1</td>
-                        <td class="td-status"><span class="label label-success radius">已发布</span></td>
+                        <td class="td-status"><span class="label label-success radius">发布</span></td>
                         <td class="td-manage">
                             <a style="text-decoration:none" onClick="picture_stop(this,'10001')" href="javascript:;"
                                title="禁用">
@@ -158,7 +162,7 @@
         ]
     });
 
-    /*图片-下架*/
+    /*/!*图片-下架*!/
     function picture_stop(obj, id) {
         layer.confirm('确认要禁用吗？', function (index) {
             $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="picture_start(this,id)" href="javascript:;" title="发布"><span class="label label-success radius">发布</span></a>');
@@ -168,25 +172,50 @@
         });
     }
 
-    /*图片-发布*/
+    /!*图片-发布*!/
     function picture_start(obj, id) {
         layer.confirm('确认要发布吗？', function (index) {
             $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="picture_stop(this,id)" href="javascript:;" title="禁用"><span class="label label-success radius">禁用</span></a>');
-            $(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已发布</span>');
+            $(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">发布</span>');
             $(obj).remove();
             layer.msg('已发布!', {icon: 6, time: 1000});
         });
+    }*/
+
+    /*图片-发布*/
+    function banner_start(obj, id) {
+        layer.confirm('确定要发布吗', {
+            btn: ['确定', '取消'] //按钮
+        }, function () {
+            var url = "/admin/updateBannerStatus";
+            var params = {"id": id};
+            $.post(url, params);
+            $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="banner_stop(this,id)" href="javascript:;" title="禁用"><span class="label label-success radius">禁用</span></a>');
+            $(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已发布</span>');
+            $(obj).remove();
+            layer.msg('已发布!', {icon: 6, time: 1000});
+        }, function () {
+            layer.msg('已取消', {icon: 2});
+        });
     }
 
-    /*图片-编辑*/
-    function picture_edit(title, url, id) {
-        var index = layer.open({
-            type: 2,
-            title: title,
-            content: url
+    /*图片-禁用*/
+    function banner_stop(obj, id) {
+        layer.confirm('确定要禁用吗', {
+            btn: ['确定', '取消'] //按钮
+        }, function () {
+            var url = "/admin/updateStatus";
+            var params = {"id": id};
+            $.post(url, params);
+            $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="banner_start(this,id)" href="javascript:;" title="发布"><span class="label label-success radius">发布</span></a>');
+            $(obj).parents("tr").find(".td-status").html('<span class="label label-default radius">已禁用</span>');
+            $(obj).remove();
+            layer.msg('已禁用!', {icon: 7, time: 1000});
+        }, function () {
+            layer.msg('已取消', {icon: 2});
         });
-        layer.full(index);
     }
+
     /*图片-删除*/
     function picture_del(obj, id) {
         layer.confirm('确定要删除吗', {
@@ -194,12 +223,12 @@
         }, function () {
             var url = "/admin/deleteBannerById";
             var params = {"id": id};
-            $.post(url, params)
+            $.post(url, params);
+            window.location.reload();       //刷新页面
             layer.msg('已删除', {icon: 1});
         }, function () {
             layer.msg('已取消', {icon: 2});
         });
-
     }
 </script>
 <!--/请在上方写此页面业务相关的脚本-->

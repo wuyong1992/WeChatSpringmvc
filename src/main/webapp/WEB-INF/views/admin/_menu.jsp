@@ -21,7 +21,7 @@
             <dt><i class="Hui-iconfont">&#xe720;</i> 文章管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
             <dd>
                 <ul>
-                    <li><a href="/admin/article-list" title="文章管理">文章管理</a></li>
+                    <li><a href="/admin/articleList" title="文章管理">文章管理</a></li>
                 </ul>
             </dd>
         </dl>

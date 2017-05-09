@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <!--/meta 作为公共模版分离出去-->
@@ -27,7 +28,8 @@
         文章管理
         <span class="c-gray en">&gt;</span>
         文章列表
-        <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px"href="javascript:location.replace(location.href);" title="刷新">
+        <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px"
+           href="javascript:location.replace(location.href);" title="刷新">
             <i class="Hui-iconfont">&#xe68f;</i>
         </a>
     </nav>
@@ -55,12 +57,12 @@
             </div>
             <div class="cl pd-5 bg-1 bk-gray mt-20">
 				<span class="l">
-				<a class="btn btn-primary radius" href="/admin/article-add">
+				<a class="btn btn-primary radius" href="/admin/articleAdd">
 					<i class="Hui-iconfont">&#xe600;</i> 
 					添加文章
 				</a>
 				</span>
-                <span class="r">共有数据：<strong>54</strong> 条</span>
+                <span class="r">共有数据：<strong>${size}</strong> 条</span>
             </div>
             <div class="mt-20">
                 <table class="table table-border table-bordered table-bg table-hover table-sort">
@@ -78,7 +80,69 @@
                     </tr>
                     </thead>
                     <tbody>
+
+                    <c:forEach items="${articles}" var="article">
                     <tr class="text-c">
+                        <td><input type="checkbox" value="" name=""></td>
+                        <td>${article.id}</td>
+                        <td>
+                            <a style="cursor:pointer" class="text-primary" href="/admin/articleEditor" title="查看">
+                                ${article.title}
+                            </a>
+                        </td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${article.articleType == 1}">
+                                    首页
+                                </c:when>
+                                <c:when test="${article.articleType == 2}">
+                                    每日动态
+                                </c:when>
+                                <c:when test="${article.articleType == 3}">
+                                    产品介绍
+                                </c:when>
+                                <c:otherwise>
+                                    玄灸图谱
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
+                        <td>${article.counts}</td>
+                        <td>${article.updateTime}</td>
+                        <td>${article.sort}</td>
+                        <td class="td-status">
+                            <c:if test="${article.status == 0}">
+                                <span class="label label-default radius">已禁用</span>
+                            </c:if>
+                            <c:if test="${article.status == 1}">
+                                <span class="label label-success radius">已发布</span>
+                            </c:if>
+                        </td>
+                        <td class="f-14 td-manage">
+                            <a style="text-decoration:none" class="ml-5" href="/admin/goArticleEditor/${article.id}" title="编辑">
+                                <i class="Hui-iconfont">&#xe6df;</i>
+                            </a>
+                            <c:if test="${article.status == 0}">
+                                <a style="text-decoration:none" onClick="article_stop(this,'${article.id}')" href="javascript:"
+                                   title="发布">
+                                    <span class="label label-success radius">发布</span>
+                                </a>
+                            </c:if>
+                            <c:if test="${article.status == 1}">
+                                <a style="text-decoration:none" onClick="article_stop(this,'${article.id}')" href="javascript:"
+                                   title="禁用">
+                                    <span class="label label-default radius">禁用</span>
+                                </a>
+                            </c:if>
+                            <a style="text-decoration:none" class="ml-5" onClick="article_del(this,'${article.id}')"
+                               href="javascript:"
+                               title="删除">
+                                <i class="Hui-iconfont">&#xe6e2;</i>
+                            </a>
+
+                        </td>
+                    </tr>
+                    </c:forEach>
+                    <%--<tr class="text-c">
                         <td><input type="checkbox" value="" name=""></td>
                         <td>1</td>
                         <td>
@@ -132,7 +196,7 @@
                                 <span class="label label-success radius">禁用</span>
                             </a>
                         </td>
-                    </tr>
+                    </tr>--%>
                     </tbody>
                 </table>
             </div>
@@ -146,7 +210,8 @@
 
 <!--请在下方写此页面业务相关的脚本-->
 <script type="text/javascript" src="${pageContext.request.contextPath}/lib/My97DatePicker/4.8/WdatePicker.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript">
     $('.table-sort').dataTable({
@@ -160,16 +225,16 @@
 
 
     /*资讯-编辑*/
-    function article_edit(title, url, id, w, h) {
+   /* function article_edit(title, url, id, w, h) {
         var index = layer.open({
             type: 2,
             title: title,
             content: url
         });
         layer.full(index);
-    }
-    /*资讯-删除*/
-    function article_del(obj, id) {
+    }*/
+    /*文章-删除*/
+    /*function article_del(obj, id) {
         layer.confirm('确认要删除吗？', function (index) {
             $.ajax({
                 type: 'POST',
@@ -184,26 +249,74 @@
                 },
             });
         });
+    }*/
+
+    function article_del(obj, id) {
+        layer.confirm('确定要删除吗', {
+            btn: ['确定', '取消'] //按钮
+        }, function () {
+            var url = "/admin/deleteArticleById";
+            var params = {"id": id};
+            $.post(url, params);
+            window.location.reload();       //刷新页面
+            layer.msg('已删除', {icon: 1});
+        }, function () {
+            layer.msg('已取消', {icon: 2});
+        });
     }
 
 
     /*文章-下架*/
-    function article_stop(obj, id) {
+    /*function article_stop1(obj, id) {
         layer.confirm('确认要禁用吗？', function (index) {
             $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="article_start(this,id)" href="javascript:;" title="发布"><span class="label label-success radius">发布</span></a>');
             $(obj).parents("tr").find(".td-status").html('<span class="label label-defaunt radius">已禁用</span>');
             $(obj).remove();
             layer.msg('已禁用!', {icon: 5, time: 1000});
         });
-    }
+    }*/
 
     /*文章-发布*/
-    function article_start(obj, id) {
+    /*function article_start1(obj, id) {
         layer.confirm('确认要发布吗？', function (index) {
             $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="article_stop(this,id)" href="javascript:;" title="禁用"><span class="label label-success radius">禁用</span></a>');
             $(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已发布</span>');
             $(obj).remove();
             layer.msg('已发布!', {icon: 6, time: 1000});
+        });
+    }*/
+
+
+    /*文章-发布*/
+    function article_start(obj, id) {
+        layer.confirm('确定要发布吗', {
+            btn: ['确定', '取消'] //按钮
+        }, function () {
+            var url = "/admin/updateArticleStatus";
+            var params = {"id": id};
+            $.post(url, params);
+            $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="article_stop(this,id)" href="javascript:;" title="禁用"><span class="label label-success radius">禁用</span></a>');
+            $(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已发布</span>');
+            $(obj).remove();
+            layer.msg('已发布!', {icon: 6, time: 1000});
+        }, function () {
+            layer.msg('已取消', {icon: 2});
+        });
+    }
+    /*文章-禁用*/
+    function article_stop(obj, id) {
+        layer.confirm('确定要发布吗', {
+            btn: ['确定', '取消'] //按钮
+        }, function () {
+            var url = "/admin/updateArticleStatus";
+            var params = {"id": id};
+            $.post(url, params);
+            $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="article_start(this,id)" href="javascript:;" title="发布"><span class="label label-success radius">发布</span></a>');
+            $(obj).parents("tr").find(".td-status").html('<span class="label label-defaunt radius">已禁用</span>');
+            $(obj).remove();
+            layer.msg('已禁用!', {icon: 7, time: 1000});
+        }, function () {
+            layer.msg('已取消', {icon: 2});
         });
     }
 

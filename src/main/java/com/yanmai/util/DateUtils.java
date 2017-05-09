@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
+ * Date工具类
  * Created by admin on 2017/3/31.
  */
 public class DateUtils {
@@ -463,7 +464,7 @@ public class DateUtils {
      * @return
      */
     public static Date format(String dateStr, String format) {
-        if (StringUtils.isBlank(format)) {
+        if (StringUtils.isBlank(dateStr)) {
             return new Date();
         }
         if (StringUtils.isBlank(format)) {

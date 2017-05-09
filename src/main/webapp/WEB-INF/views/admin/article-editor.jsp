@@ -12,7 +12,6 @@
     <jsp:include page="_meta.jsp"/>
     <title>编辑文章</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/lib/wangEditor/css/wangEditor.min.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/lib/html5up/control/css/zyUpload.css">
 </head>
 <body>
 <!--_header 作为公共模版分离出去-->
@@ -47,10 +46,10 @@
                     <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>文章分类：</label>
                     <div class="formControls col-xs-8 col-sm-9">
 				<span class="select-box">
-				<select name="articletype" class="select">
+				<select name="articletype" class="select" id="articleSelect" onchange="selectChange()">
 					<option value="1">首页</option>
-                    <option value="2">产品介绍</option>
-                    <option value="3">加盟合作</option>
+                    <option value="2">每日动态</option>
+                    <option value="3">产品介绍</option>
                     <option value="4">玄灸图谱</option>
 				</select>
 				</span>
@@ -234,27 +233,37 @@
 
     });
 
+
+    function selectChange() {
+        //获取文章分类的值
+        var articleSelect = $("#articleSelect").val();
+        console.log(articleSelect);
+        if (articleSelect != 1){
+            $("#radioDiv").hide();
+            $("#selectImg1").show();
+        }else {
+            $("#radioDiv").show();
+        }
+    }
+
     //获取文章类型的值
     function showArticleType() {
         var imgType = $('#radioDiv input[name="imgType"]:checked ').val();
 
         console.log(imgType);
 
-        if (imgType == 1 || imgType == 3){
+        if (imgType == 1 || imgType == 2){
             $("#selectImg1").show();
             $("#selectImg2").hide();
             $("#selectImg3").hide();
 
         }
-        if (imgType == 2 ){
+        if (imgType == 3 ){
             $("#selectImg1").show();
             $("#selectImg2").show();
             $("#selectImg3").show();
         }
     }
-
-    //根据文章类型，添加input框
-
 
 
     //图片上传预览
