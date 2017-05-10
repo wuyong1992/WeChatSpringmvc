@@ -124,6 +124,7 @@
                         <input type="text" class="input-text" value="0" placeholder="" id="articlesort" name="sort">
                     </div>
                 </div>
+
                 <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-2">状态：</label>
                     <div class="formControls col-xs-8 col-sm-9">
@@ -155,7 +156,7 @@
                         </button>
                         <%--TODO 通过controller返回文章列表--%>
                         <button class="btn btn-default radius" type="button"
-                                onclick="window.open('/admin/article-list')">
+                                onclick="window.open('/admin/articleList')">
                             &nbsp;&nbsp;取消&nbsp;&nbsp;
                         </button>
                     </div>
@@ -272,7 +273,8 @@
         console.log(articleSelect);
         if (articleSelect != 1) {
             $("#radioDiv").hide();
-            $("#selectImg1").remove();
+            $("#selectImg1").show();
+            /*$("#selectImg1").remove();*/
             <%--$("#imgDiv").append('<div id="selectImg1"> <img src="${pageContext.request.contextPath}/images/moren.jpg" alt="" id="showImg1"style="width: 200px;height: 150px;margin-bottom: 10px"> <br> <span class="btn-upload"> <a href="javascript:;" class="btn btn-primary radius"><i class="iconfont">&#xf0020;</i> 浏览文件</a> <input type="file" id="myImg1" class="input-file" name="file" value="选择图片" accept="image/gif,image/png,image/jpeg,image/jpg"> </span> </div>');--%>
         } else {
             $("#radioDiv").show();

@@ -24,17 +24,9 @@ public class AdminMainController {
         return "admin/main";
     }
 
-    //用户列表
-    @RequestMapping(value = "userList")
-    public String userList(){
-        return "admin/user-list";
-    }
 
-    //显示某个用户的详细信息
-    @RequestMapping(value = "user-show")
-    public String userShow(){
-        return "admin/user-show";
-    }
+
+
 
 
 

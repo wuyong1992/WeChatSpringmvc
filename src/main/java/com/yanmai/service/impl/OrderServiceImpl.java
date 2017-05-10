@@ -26,7 +26,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order getOrdreByOpenId(String openId) {
+    public List<Order> getOrdreByOpenId(String openId) {
         return orderMapper.selectOrdreByOpenId(openId);
     }
 

@@ -13,7 +13,7 @@ public interface OrderService {
     public void addOrder(Order order);
 
     //按照openid查找订单
-    public Order getOrdreByOpenId(String openId);
+    public List<Order> getOrdreByOpenId(String openId);
 
     //找找所有订单
     public List<Order> getAllOrder();

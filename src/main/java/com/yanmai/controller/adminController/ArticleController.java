@@ -63,10 +63,17 @@ public class ArticleController {
 
     //进入查看编辑文章
     @RequestMapping(value = "goArticleEditor/{id}")
-    public String goArticleEditor(@PathVariable("id") Integer id) {
+    public ModelAndView goArticleEditor(@PathVariable("id") Integer id) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("admin/article-editor");
+        article = articleService.selectArticleById(id);
+        modelAndView.addObject("article",article);
+        if(article.getImgType() == 3){
+            String[] imgPaths =article.getImgPath().split(",");
+            modelAndView.addObject("imgPaths",imgPaths);
+        }
 
-
-        return "admin/article-editor";
+        return modelAndView;
     }
 
     //查看编辑文章
@@ -78,7 +85,6 @@ public class ArticleController {
     //文章上传
     @RequestMapping(value = "articleUpload")
     public String articleUpload(@RequestParam("file") MultipartFile[] files, HttpServletRequest request, Article article) {
-        System.out.println("进入文章上传");
 
         if(article.getImgType() == null){
             article.setImgType(2);
@@ -99,7 +105,8 @@ public class ArticleController {
                 //保存文件
                 String imgName = UploadUtil.saveFile(file, request, upaloadUrl);
                 if (imgName != null && !"".equals(imgName)){
-                    temp.add("http://b.wujixuanyi.com/articleUpload/" + imgName);
+                    temp.add("http://localhost:8080/articleUpload/" + imgName);   //本机测试
+                    //temp.add("http://b.wujixuanyi.com/articleUpload/" + imgName);   //服务器测试
                 }
             }
         }
@@ -110,15 +117,67 @@ public class ArticleController {
                 imgPath += ("," + temp.get(i));
             }
         }
-
         article.setImgPath(imgPath);
-        System.out.println(imgPath);
-
         articleService.addArticle(article);
-        return "redirect:/admin/articleList";
 
+        return "redirect:/admin/articleList";
     }
 
+
+    //编辑文章后更新
+    //TODO 后续完善更新其中某一张图片的具体操作
+    @RequestMapping(value = "updateArticle")
+    public String updateArticle(@RequestParam("file") MultipartFile[] files, HttpServletRequest request, Article article){
+        if(article.getImgType() == null){
+            article.setImgType(2);
+        }
+        article.setUpdateTime(DateUtils.format(new Date(), "yyyy-MM-dd hh:mm:ss"));
+
+        ArrayList temp = new ArrayList();
+        //设置文章图片的上传路劲
+        String upaloadUrl = "C:\\apache-tomcat-8.0.14\\webapps\\articleUpload\\";
+
+        //循环上传图片
+        if (files != null && files.length > 0) {
+            //循环获取file数组中得文件
+            for (int i = 0; i < files.length; i++) {
+                MultipartFile file = files[i];
+                //保存文件
+                String imgName = UploadUtil.saveFile(file, request, upaloadUrl);
+                if (imgName != null && !"".equals(imgName)){
+                    //说明上传了新图片，先保存图片，然后将原图片删除
+                    temp.add("http://localhost:8080/articleUpload/" + imgName);   //本机测试
+                    //temp.add("http://b.wujixuanyi.com/articleUpload/" + imgName);   //服务器测试
+                    //删除原图
+                   /* if (this.article.getImgType() == 3) {
+                        //如果是类型3，有三张图
+                        String[] imgPaths2 = this.article.getImgPath().split(",");
+                        for (String imgPath : imgPaths2) {
+                            String imgName2 = StringUtil.getImgName(imgPath);
+                            FileUtils.deleteQuietly(new File("C:\\apache-tomcat-8.0.14\\webapps\\articleUpload\\" + imgName2));
+                        }
+                    } else {
+                        String imgPath2 = this.article.getImgPath();
+                        String imgName2 = StringUtil.getImgName(imgPath2);
+                        if (imgName2 != null){
+                            FileUtils.deleteQuietly(new File("C:\\apache-tomcat-8.0.14\\webapps\\articleUpload\\" + imgName2));
+                        }
+                    }*/
+                }
+            }
+        }
+
+        String imgPath = (String) temp.get(0);
+        if (article.getImgType() == 3){
+            for (int i = 1; i < temp.size(); i++) {
+                imgPath += ("," + temp.get(i));
+            }
+        }
+        article.setImgPath(imgPath);
+        articleService.updateArticle(article);
+
+        return "redirect:/admin/articleList";
+    }
 
 
 

@@ -5,11 +5,24 @@
         <id column="id" property="id" jdbcType="INT" />
     </resultMap>-->
     <sql id="Base_Column_List">
-        openId, unionId, sex, language, username,wechatID, phoneNum, city, country,
+        id,openId, unionId, sex, language, username,wechatID, phoneNum, city, country,
         isSubscribe,registerTime,total_fee,vipTime,vipEndTime,isMember,
         points,userPortrait,QRcode,superior,shareQRcode
     </sql>
 
+
+    <select id="selectALLUser" resultType="com.yanmai.model.User">
+        SELECT
+        *
+        FROM userinfo
+    </select>
+
+    <select id="selectUserById" parameterType="java.lang.Integer"  resultType="com.yanmai.model.User">
+        SELECT
+        *
+        FROM userinfo
+        WHERE id=#{id}
+    </select>
 
     <select id="selectUserByOpenId" parameterType="java.lang.String" resultType="com.yanmai.model.User">
         SELECT

@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * Created by wuyong on 2017/4/5.
  */
@@ -66,6 +68,16 @@ public class UserServiceImpl implements UserService {
 
         userMapper.updateSubscribe(openId);
 
+    }
+
+    @Override
+    public List<User> selectALLUser() {
+        return userMapper.selectALLUser();
+    }
+
+    @Override
+    public User selectUserById(Integer id) {
+        return userMapper.selectUserById(id);
     }
 
 

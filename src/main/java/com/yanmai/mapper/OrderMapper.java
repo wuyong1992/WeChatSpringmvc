@@ -15,9 +15,10 @@ public interface OrderMapper {
     public void addOrder(Order order);
 
     //按照openid查找订单
-    public Order selectOrdreByOpenId(String openId);
+    public List<Order> selectOrdreByOpenId(String openId);
 
     //找找所有订单
     public List<Order> selectAllOrder();
+
 
 }

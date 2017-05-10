@@ -20,6 +20,13 @@
         FROM orders
     </select>
 
+    <select id="selectOrderByUserOpenId" parameterType="java.lang.String" resultType="com.yanmai.model.Order">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM orders
+        WHERE openId = #{openId}
+    </select>
+
     <insert id="addOrder" parameterType="com.yanmai.model.Order">
         INSERT INTO orders
         <trim prefix="(" suffix=")" suffixOverrides=",">

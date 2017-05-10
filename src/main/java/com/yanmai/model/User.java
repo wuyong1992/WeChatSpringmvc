@@ -14,7 +14,7 @@ import java.util.Date;
 @Getter@Setter
 public class User {
 
-    private String id;              //用户id
+    private Integer id;              //用户id
     private String openId;          //用户关注公众号后的openid
     private String unionId;         //用户会议unionId
     private Integer sex;             //性别，1表示男，2表示女，0表示未知

@@ -37,11 +37,11 @@
         <article class="cl pd-20">
             <div class="text-c">
 				<span class="select-box inline">
-				<select name="" class="select">
+				<select name="articleType" class="select" id="articleSelect">
 					<option value="0">全部分类</option>
 					<option value="1">首页</option>
-					<option value="2">产品介绍</option>
-					<option value="3">加盟合作</option>
+					<option value="2">每日动态</option>
+					<option value="3">产品介绍</option>
 					<option value="4">玄灸图谱</option>
 				</select>
 				</span>
@@ -49,7 +49,7 @@
                 <input type="text" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'logmax\')||\'%y-%M-%d\'}'})" id="logmin" class="input-text Wdate" style="width:120px;">
                 -
                 <input type="text" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'logmin\')}',maxDate:'%y-%M-%d'})" id="logmax" class="input-text Wdate" style="width:120px;">-->
-                <input type="text" name="" placeholder=" 文章标题" style="width:250px" class="input-text">
+                <input type="text" name="title" placeholder=" 文章标题" style="width:250px" class="input-text">
                 <button name="" id="" class="btn btn-success" type="submit">
                     <i class="Hui-iconfont">&#xe665;</i>
                     搜文章
@@ -86,7 +86,7 @@
                         <td><input type="checkbox" value="" name=""></td>
                         <td>${article.id}</td>
                         <td>
-                            <a style="cursor:pointer" class="text-primary" href="/admin/articleEditor" title="查看">
+                            <a style="cursor:pointer" class="text-primary" href="/admin/goArticleEditor/${article.id}" title="查看">
                                 ${article.title}
                             </a>
                         </td>
@@ -223,34 +223,6 @@
         ]
     });
 
-
-    /*资讯-编辑*/
-   /* function article_edit(title, url, id, w, h) {
-        var index = layer.open({
-            type: 2,
-            title: title,
-            content: url
-        });
-        layer.full(index);
-    }*/
-    /*文章-删除*/
-    /*function article_del(obj, id) {
-        layer.confirm('确认要删除吗？', function (index) {
-            $.ajax({
-                type: 'POST',
-                url: '',
-                dataType: 'json',
-                success: function (data) {
-                    $(obj).parents("tr").remove();
-                    layer.msg('已删除!', {icon: 1, time: 1000});
-                },
-                error: function (data) {
-                    console.log(data.msg);
-                },
-            });
-        });
-    }*/
-
     /*文章-删除*/
     function article_del(obj, id) {
         layer.confirm('确定要删除吗', {
@@ -265,28 +237,6 @@
             layer.msg('已取消', {icon: 2});
         });
     }
-
-
-    /*文章-下架*/
-    /*function article_stop1(obj, id) {
-        layer.confirm('确认要禁用吗？', function (index) {
-            $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="article_start(this,id)" href="javascript:;" title="发布"><span class="label label-success radius">发布</span></a>');
-            $(obj).parents("tr").find(".td-status").html('<span class="label label-defaunt radius">已禁用</span>');
-            $(obj).remove();
-            layer.msg('已禁用!', {icon: 5, time: 1000});
-        });
-    }*/
-
-    /*文章-发布*/
-    /*function article_start1(obj, id) {
-        layer.confirm('确认要发布吗？', function (index) {
-            $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="article_stop(this,id)" href="javascript:;" title="禁用"><span class="label label-success radius">禁用</span></a>');
-            $(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已发布</span>');
-            $(obj).remove();
-            layer.msg('已发布!', {icon: 6, time: 1000});
-        });
-    }*/
-
 
     /*文章-发布*/
     function article_start(obj, id) {

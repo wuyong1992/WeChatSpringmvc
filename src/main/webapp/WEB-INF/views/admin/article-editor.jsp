@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <!--/meta 作为公共模版分离出去-->
@@ -14,13 +15,8 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/lib/wangEditor/css/wangEditor.min.css">
 </head>
 <body>
-<!--_header 作为公共模版分离出去-->
 <jsp:include page="_header.jsp"/>
-<!--/_header 作为公共模版分离出去-->
-
-<!--_menu 作为公共模版分离出去-->
 <jsp:include page="_menu.jsp"/>
-<!--/_menu 作为公共模版分离出去-->
 
 <section class="Hui-article-box">
     <nav class="breadcrumb">
@@ -34,11 +30,16 @@
     <div class="Hui-article">
         <article class="page-container">
             <%--<form class="form form-horizontal" id="form-article-add" action="/admin/articleHandle" method="post" enctype="multipart/form-data">--%>
-            <form class="form form-horizontal" id="form-article-add" action="/admin/articleUpload" method="post" enctype="multipart/form-data">
-                <div class="row cl">
+            <form class="form form-horizontal" id="form-article-add" action="/admin/updateArticle" method="post" enctype="multipart/form-data">
+                <div class="row cl" style="display: none">
+                    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>文章ID：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" class="input-text" value="${article.id}" placeholder=""  name="id">
+                    </div>
+                </div><div class="row cl">
                     <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>文章标题：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <input type="text" class="input-text" value="" placeholder="" id="articletitle" name="articletitle">
+                        <input type="text" class="input-text" value="${article.title}" placeholder="" id="articletitle" name="title">
                     </div>
                 </div>
 
@@ -46,7 +47,7 @@
                     <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>文章分类：</label>
                     <div class="formControls col-xs-8 col-sm-9">
 				<span class="select-box">
-				<select name="articletype" class="select" id="articleSelect" onchange="selectChange()">
+				<select name="articleType" class="select" id="articleSelect" onchange="selectChange()">
 					<option value="1">首页</option>
                     <option value="2">每日动态</option>
                     <option value="3">产品介绍</option>
@@ -68,40 +69,60 @@
                             <hr style="margin: 10px">
                             <img src="${pageContext.request.contextPath}/images/TextType2.png" alt="" style="width: 100%">
                             <input type="radio" name="imgType" value="2" onclick="showArticleType()">
+
                             <hr style="margin: 10px">
                             <img src="${pageContext.request.contextPath}/images/TextType3.png" alt="" style="width: 100%">
                             <input type="radio" name="imgType" value="3" onclick="showArticleType()">
+
                         </div>
                     </div>
                 </div>
 
                 <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-2">文章图片：</label>
-                    <div class="formControls col-xs-8 col-sm-9">
+                    <div class="formControls col-xs-8 col-sm-9" id="imgDiv">
 
+                        <c:if test="${article.imgType ==3}">
+                            <div id="selectImg1"  style="display: none">
+
+                                <img src="${imgPaths[0]}" alt="" id="showImg1" style="width: 200px;height: 150px">
+                                <br>
+                                <input type="file" id="myImg1" name="file" value="选择图片" accept="image/gif,image/png,image/jpeg,image/jpg"  >
+                            </div>
+
+                            <div id="selectImg2" style="display: none">
+                                <img src="${imgPaths[1]}" alt="" id="showImg2" style="width: 200px;height: 150px">
+                                <br>
+                                <input type="file" id="myImg2" name="file" value="选择图片" accept="image/gif,image/png,image/jpeg,image/jpg"  > <br>
+                            </div>
+
+                            <div id="selectImg3" style="display: none">
+                                <img src="${imgPaths[2]}" alt="" id="showImg3" style="width: 200px;height: 150px">
+                                <br>
+                                <input type="file" id="myImg3" name="file" value="选择图片" accept="image/gif,image/png,image/jpeg,image/jpg"  > <br>
+                            </div>
+                        </c:if>
                         <%--显示图片--%>
-                        <div id="selectImg1"  style="display: none">
+                        <c:if test="${article.imgType !=3}">
+                            <div id="selectImg1"  style="display: none">
 
-                            <img src="${pageContext.request.contextPath}/images/moren.jpg" alt="" id="showImg" style="width: 200px;height: 150px">
-                            <br>
-                            <%--限制只能选择图片--%>
-                            <input type="file" id="myImg1" name="file" value="选择图片" accept="image/gif,image/png,image/jpeg,image/jpg"  >
-                        </div>
+                                <img src="${article.imgPath}" alt="" id="showImg1" style="width: 200px;height: 150px">
+                                <br>
+                                <input type="file" id="myImg1" name="file" value="选择图片" accept="image/gif,image/png,image/jpeg,image/jpg"  >
+                            </div>
 
-                        <div id="selectImg2" style="display: none">
-                            <img src="${pageContext.request.contextPath}/images/moren.jpg" alt="" id="showImg2" style="width: 200px;height: 150px">
-                            <br>
-                            <input type="file" id="myImg2" name="file" value="选择图片" accept="image/gif,image/png,image/jpeg,image/jpg"  > <br>
-                        </div>
+                            <div id="selectImg2" style="display: none">
+                                <img src="${pageContext.request.contextPath}/images/moren.jpg" alt="" id="showImg2" style="width: 200px;height: 150px">
+                                <br>
+                                <input type="file" id="myImg2" name="file" value="选择图片" accept="image/gif,image/png,image/jpeg,image/jpg"  > <br>
+                            </div>
 
-                        <div id="selectImg3" style="display: none">
-                            <img src="${pageContext.request.contextPath}/images/moren.jpg" alt="" id="showImg3" style="width: 200px;height: 150px">
-                            <br>
-                            <input type="file" id="myImg3" name="file" value="选择图片" accept="image/gif,image/png,image/jpeg,image/jpg"  > <br>
-                        </div>
-
-
-
+                            <div id="selectImg3" style="display: none">
+                                <img src="${pageContext.request.contextPath}/images/moren.jpg" alt="" id="showImg3" style="width: 200px;height: 150px">
+                                <br>
+                                <input type="file" id="myImg3" name="file" value="选择图片" accept="image/gif,image/png,image/jpeg,image/jpg"  > <br>
+                            </div>
+                        </c:if>
 
                     </div>
                 </div>
@@ -110,14 +131,21 @@
                 <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-2">排序值：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <input type="text" class="input-text" value="0" placeholder="" id="articlesort" name="articlesort">
+                        <input type="text" class="input-text"  placeholder="" id="articlesort" name="sort" value="${article.sort}">
+                    </div>
+                </div>
+
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">状态：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" class="input-text" value="${article.status}" placeholder="" name="status">
                     </div>
                 </div>
 
                 <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-2">文章简介：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <textarea name="abstract" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" datatype="*10-100" dragonfly="true" nullmsg="备注不能为空！" onKeyUp="$.Huitextarealength(this,200)"></textarea>
+                        <textarea name="intro" cols="" rows="" class="textarea" placeholder="" datatype="*10-100" dragonfly="true" nullmsg="备注不能为空！" onKeyUp="$.Huitextarealength(this,200)">${article.intro}</textarea>
                         <p class="textarea-numberbar"><em class="textarea-length">0</em>/200</p>
                     </div>
                 </div>
@@ -126,7 +154,7 @@
                 <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-2">文章内容：</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        <textarea id="editor" name="editorValue" style="height: 600px;width: 100%"></textarea>
+                        <textarea id="editor" name="content"  style="height: 600px;width: 100%">${article.content} </textarea>
                     </div>
                 </div>
                 <div class="row cl">
@@ -135,7 +163,7 @@
                             <i class="Hui-iconfont">&#xe632;</i> 保存并发布
                         </button>
                         <%--TODO 通过controller返回文章列表--%>
-                        <button  class="btn btn-default radius" type="button" onclick="window.open('/admin/article-list','_self')">
+                        <button  class="btn btn-default radius" type="button" onclick="window.open('/admin/articleList','_self')">
                             &nbsp;&nbsp;取消&nbsp;&nbsp;
                         </button>
                     </div>
@@ -156,6 +184,29 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/lib/jquery.validation/1.14.0/messages_zh.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/lib/wangEditor/js/wangEditor.min.js"></script>
 <script type="text/javascript">
+    //当name相同时，表单验证根据id验证
+    $(function () {
+        if ($.validator) {
+            //fix: when several input elements shares the same name, but has different id-ies....
+            $.validator.prototype.elements = function () {
+                var validator = this,
+                    rulesCache = {};
+                return $([]).add(this.currentForm.elements)
+                    .filter(":input")
+                    .not(":submit, :reset, :image, [disabled]")
+                    .not(this.settings.ignore)
+                    .filter(function () {
+                        var elementIdentification = this.id || this.name;
+                        !elementIdentification && validator.settings.debug && window.console && console.error("%o has no id nor name assigned", this);
+                        if (elementIdentification in rulesCache || !validator.objectLength($(this).rules()))
+                            return false;
+                        rulesCache[elementIdentification] = true;
+                        return true;
+                    });
+            };
+        }
+    });
+
     $(function(){
         $('.skin-minimal input').iCheck({
             checkboxClass: 'icheckbox-blue',
@@ -166,43 +217,31 @@
         //表单验证TODO 无效
         $("#form-article-add").validate({
             rules: {
-                articletitle: {
+                title: {
                     required: true
                 },
-                articletitle2: {
-                    required: true
-                },
-                articlecolumn: {
-                    required: true
-                },
-                articletype: {
+                articleType: {
                     required: true
                 },
                 imgType: {
                     required: true
                 },
-                articlesort: {
-                    required: true
+                sort: {
+                    digits: true,
+                    min: 0
+                },
+                status: {
+                    digits: true,
+                    range: [0, 1],
+                    maxlength: 1
                 },
                 keywords: {
                     required: true
                 },
-                abstract: {
+                intro: {
                     required: true
                 },
-                author: {
-                    required: true
-                },
-                sources: {
-                    required: true
-                },
-                allowcomments: {
-                    required: true
-                },
-                commentdatemin: {
-                    required: true
-                },
-                commentdatemax: {
+                file:{
                     required: true
                 }
             },
@@ -227,9 +266,34 @@
         })
 
         //根据传过来的值判断单选按钮的默认值
-        //TODO 需要根据传值动态选择，测出默认为文章类型1
-        $("input:radio[value='1']").attr('checked','true');
-        $("#selectImg1").show();
+        //判断当前的文章类型，冬天选定
+        var articleType = ${article.articleType};
+        if (articleType == 1){
+            $("#articleSelect option[value='1']").attr("selected","selected");
+            $("input:radio[value='1']").attr('checked','true');
+            $("#radioDiv").show();
+        }else if (articleType == 2){
+            $("#articleSelect option[value='2']").attr("selected","selected");
+            $("#radioDiv").hide();
+        }else if (articleType == 3){
+            $("#articleSelect option[value='3']").attr("selected","selected");
+            $("#radioDiv").hide();
+        }else if (articleType == 4){
+            $("#articleSelect option[value='4']").attr("selected","selected");
+            $("#radioDiv").hide();
+        }
+
+        //判断当前的单选按钮
+        var imgType = ${article.imgType}
+        if(imgType == 3){
+            $("#selectImg1").show();
+            $("#selectImg2").show();
+            $("#selectImg3").show();
+        }else {
+            $("#selectImg1").show();
+            $("#selectImg2").hide();
+            $("#selectImg3").hide();
+        }
 
     });
 
@@ -241,6 +305,8 @@
         if (articleSelect != 1){
             $("#radioDiv").hide();
             $("#selectImg1").show();
+            $("#selectImg2").hide();
+            $("#selectImg3").hide();
         }else {
             $("#radioDiv").show();
         }
@@ -271,21 +337,21 @@
         var objUrl = getObjectURL(this.files[0]) ;
         console.log("objUrl = "+objUrl) ;
         if (objUrl) {
-            $("#showImg").attr("src", objUrl) ;
+            $("#showImg1").attr("src", objUrl) ;
         }
     }) ;
     $("#myImg2").change(function(){
         var objUrl = getObjectURL(this.files[0]) ;
         console.log("objUrl = "+objUrl) ;
         if (objUrl) {
-            $("#showImg").attr("src", objUrl) ;
+            $("#showImg2").attr("src", objUrl) ;
         }
     }) ;
     $("#myImg3").change(function(){
         var objUrl = getObjectURL(this.files[0]) ;
         console.log("objUrl = "+objUrl) ;
         if (objUrl) {
-            $("#showImg").attr("src", objUrl) ;
+            $("#showImg3").attr("src", objUrl) ;
         }
     }) ;
     //建立一個可存取到該file的url
